@@ -1,60 +1,92 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NSE.Identidade.API.Data;
+using NSE.Identidade.API.Extensions;
 
 namespace NSE.Identidade.API
 {
-    public class Program
+  public class Program
+  {
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+      var builder = WebApplication.CreateBuilder(args);
+
+      // Add services to the container.
+      builder.Services.AddDbContext<ApplicationDbContext>(options =>
+          options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+      builder.Services.AddDefaultIdentity<IdentityUser>()
+          .AddRoles<IdentityRole>()
+          .AddEntityFrameworkStores<ApplicationDbContext>()
+          .AddDefaultTokenProviders();
+
+      //JWT CONFIGURATION
+      var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+      builder.Services.Configure<AppSettings>(appSettingsSection);
+
+      var appSettings = appSettingsSection.Get<AppSettings>();
+
+      builder.Services.AddAuthentication(options =>
+      {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+      })
+      .AddJwtBearer(bearerOptions =>
+      {
+        bearerOptions.RequireHttpsMetadata = true;
+        bearerOptions.SaveToken = true;
+        bearerOptions.TokenValidationParameters = new TokenValidationParameters
         {
-            var builder = WebApplication.CreateBuilder(args);
+          ValidateIssuerSigningKey = true,
+          IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Secret)),
+          ValidateIssuer = true,
+          ValidateAudience = true,
+          ValidAudience = appSettings.Emissor,
+          ValidIssuer = appSettings.ValidoEm
+        };
+      });
 
-            // Add services to the container.
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+      // END JWT CONFIGURATION
 
-            builder.Services.AddDefaultIdentity<IdentityUser>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+      builder.Services.AddControllers();
+      // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+      builder.Services.AddEndpointsApiExplorer();
+      builder.Services.AddSwaggerGen(c =>
+          c.SwaggerDoc("v1", new OpenApiInfo
+          {
+            Title = "NerdStore Enterprise API",
+            Description = "Esta API faz parte do curso ASP.NET Core Enterprise Applications.",
+            Contact = new OpenApiContact() { Name = "Rômulo Ferreira Fraga", Email = "romulo.fraga.dev@gmail.com" },
+            License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensourse.org/licenses/MIT") }
+          })
+      );
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c =>
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "NerdStore Enterprise API",
-                    Description = "Esta API faz parte do curso ASP.NET Core Enterprise Applicaitions.",
-                    Contact = new OpenApiContact() { Name = "Romulo Ferreira Fraga", Email = "romulo.fraga.dev@gmail.com" },
-                    License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensourse.org/licenses/MIT") }
-                })
-            );
+      var app = builder.Build();
 
-            var app = builder.Build();
+      // Configure the HTTP request pipeline.
+      if (app.Environment.IsDevelopment())
+      {
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+          c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        });
+      }
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-                });
-            }
+      app.UseHttpsRedirection();
 
-            app.UseHttpsRedirection();
+      app.UseAuthorization();
 
-            app.UseAuthorization();
-
-            app.UseAuthentication();
+      app.UseAuthentication();
 
 
-            app.MapControllers();
+      app.MapControllers();
 
-            app.Run();
-        }
+      app.Run();
     }
+  }
 }
