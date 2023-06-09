@@ -28,7 +28,7 @@ namespace NSE.Identidade.API
                 {
                     Title = "NerdStore Enterprise API",
                     Description = "Esta API faz parte do curso ASP.NET Core Enterprise Applicaitions.",
-                    Contact = new OpenApiContact() { Name = "Romulo Fraga", Email = "romulo.fraga.dev@gmail.com" },
+                    Contact = new OpenApiContact() { Name = "Romulo Ferreira Fraga", Email = "romulo.fraga.dev@gmail.com" },
                     License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensourse.org/licenses/MIT") }
                 })
             );
