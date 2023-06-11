@@ -1,4 +1,3 @@
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -6,87 +5,89 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NSE.Identidade.API.Data;
 using NSE.Identidade.API.Extensions;
+using System.Text;
 
 namespace NSE.Identidade.API
 {
-  public class Program
-  {
-    public static void Main(string[] args)
+    public class Program
     {
-      var builder = WebApplication.CreateBuilder(args);
-
-      // Add services to the container.
-      builder.Services.AddDbContext<ApplicationDbContext>(options =>
-          options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-      builder.Services.AddDefaultIdentity<IdentityUser>()
-          .AddRoles<IdentityRole>()
-          .AddEntityFrameworkStores<ApplicationDbContext>()
-          .AddDefaultTokenProviders();
-
-      //JWT CONFIGURATION
-      var appSettingsSection = builder.Configuration.GetSection("AppSettings");
-      builder.Services.Configure<AppSettings>(appSettingsSection);
-
-      var appSettings = appSettingsSection.Get<AppSettings>();
-
-      builder.Services.AddAuthentication(options =>
-      {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-      })
-      .AddJwtBearer(bearerOptions =>
-      {
-        bearerOptions.RequireHttpsMetadata = true;
-        bearerOptions.SaveToken = true;
-        bearerOptions.TokenValidationParameters = new TokenValidationParameters
+        public static void Main(string[] args)
         {
-          ValidateIssuerSigningKey = true,
-          IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Secret)),
-          ValidateIssuer = true,
-          ValidateAudience = true,
-          ValidAudience = appSettings.Emissor,
-          ValidIssuer = appSettings.ValidoEm
-        };
-      });
+            var builder = WebApplication.CreateBuilder(args);
 
-      // END JWT CONFIGURATION
+            // Add services to the container.
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-      builder.Services.AddControllers();
-      // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-      builder.Services.AddEndpointsApiExplorer();
-      builder.Services.AddSwaggerGen(c =>
-          c.SwaggerDoc("v1", new OpenApiInfo
-          {
-            Title = "NerdStore Enterprise API",
-            Description = "Esta API faz parte do curso ASP.NET Core Enterprise Applications.",
-            Contact = new OpenApiContact() { Name = "Rômulo Ferreira Fraga", Email = "romulo.fraga.dev@gmail.com" },
-            License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensourse.org/licenses/MIT") }
-          })
-      );
+            builder.Services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
+                .AddErrorDescriber<IdentityMensagensPortugues>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
-      var app = builder.Build();
+            //JWT CONFIGURATION
+            var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+            builder.Services.Configure<AppSettings>(appSettingsSection);
 
-      // Configure the HTTP request pipeline.
-      if (app.Environment.IsDevelopment())
-      {
-        app.UseSwagger();
-        app.UseSwaggerUI(c =>
-        {
-          c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-        });
-      }
+            var appSettings = appSettingsSection.Get<AppSettings>();
 
-      app.UseHttpsRedirection();
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(bearerOptions =>
+            {
+                bearerOptions.RequireHttpsMetadata = true;
+                bearerOptions.SaveToken = true;
+                bearerOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Secret)),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = appSettings.Emissor,
+                    ValidIssuer = appSettings.ValidoEm
+                };
+            });
 
-      app.UseAuthorization();
+            // END JWT CONFIGURATION
 
-      app.UseAuthentication();
+            builder.Services.AddControllers();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(c =>
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "NerdStore Enterprise API",
+                    Description = "Esta API faz parte do curso ASP.NET Core Enterprise Applications.",
+                    Contact = new OpenApiContact() { Name = "Rômulo Ferreira Fraga", Email = "romulo.fraga.dev@gmail.com" },
+                    License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensourse.org/licenses/MIT") }
+                })
+            );
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                });
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+
+            app.UseAuthentication();
 
 
-      app.MapControllers();
+            app.MapControllers();
 
-      app.Run();
+            app.Run();
+        }
     }
-  }
 }
