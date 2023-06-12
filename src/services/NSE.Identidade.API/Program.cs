@@ -1,11 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using NSE.Identidade.API.Data;
-using NSE.Identidade.API.Extensions;
-using System.Text;
+using NSE.Identidade.API.Configuration;
 
 namespace NSE.Identidade.API
 {
@@ -15,6 +8,26 @@ namespace NSE.Identidade.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Configuration.ConfigureDevelopmentEnvironment(builder.Environment);
+
+            /*
+             * substitui -> {
+             
+            builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{builder.Environment}.json", true, true)
+                .AddEnvironmentVariables();
+
+            if (builder.Environment.IsDevelopment())
+            {
+                builder.Configuration.AddUserSecrets<Program>();
+            }
+             */
+
+            builder.Services.AddIdentityConfiguration(builder.Configuration);
+
+            /*
+             * substitui {
             // Add services to the container.
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -50,10 +63,19 @@ namespace NSE.Identidade.API
                     ValidIssuer = appSettings.ValidoEm
                 };
             });
-
             // END JWT CONFIGURATION
+             */
 
-            builder.Services.AddControllers();
+            builder.Services.AddApiConfiguration();
+
+            /* 
+             * substitui -> builder.Services.AddControllers(); 
+             */
+
+            builder.Services.AddSwaggerConfiguration();
+
+            /*
+             * substitui {
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
@@ -65,10 +87,17 @@ namespace NSE.Identidade.API
                     License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensourse.org/licenses/MIT") }
                 })
             );
+             */
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+
+            app.UseSwaggerConfiguration(app.Environment);
+
+            /*
+             * substitui por -> {
+             
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -76,7 +105,28 @@ namespace NSE.Identidade.API
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 });
+             }
+
+             }
+             */
+
+            /*
+            app.UseAuthorization();
+
+            app.UseAuthentication();
+
+             * substituido por -> {
+             
+             app.UseIdentityConfiguration();
+             
+             Dentro de ApiConfig.cs
             }
+            */
+
+            app.UseApiConfiguration(app.Environment);
+
+            /*
+             * substitui {
 
             app.UseHttpsRedirection();
 
@@ -86,6 +136,9 @@ namespace NSE.Identidade.API
 
 
             app.MapControllers();
+
+            }
+            */
 
             app.Run();
         }
