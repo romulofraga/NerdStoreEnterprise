@@ -1,4 +1,4 @@
-﻿namespace NSE.WebAPI.MVC.Configuration
+﻿namespace NSE.WebApp.MVC.Configuration
 {
     public static class WebAppConfig
     {
@@ -15,7 +15,7 @@
             }
             else
             {
-                app.UseExceptionHandler("/home/error");
+                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
@@ -31,7 +31,7 @@
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-            }));
+            });
         }
     }
 }

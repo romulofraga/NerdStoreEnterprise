@@ -1,6 +1,6 @@
-using NSE.WebAPI.MVC.Configuration;
+using NSE.WebApp.MVC.Configuration;
 
-namespace NSE.WebAPI.MVC
+namespace NSE.WebApp.MVC
 {
     public class Program
     {

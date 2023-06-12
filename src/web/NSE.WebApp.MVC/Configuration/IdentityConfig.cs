@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 
-namespace NSE.WebAPI.MVC.Configuration
+namespace NSE.WebApp.MVC.Configuration
 {
     public static class IdentityConfig
     {

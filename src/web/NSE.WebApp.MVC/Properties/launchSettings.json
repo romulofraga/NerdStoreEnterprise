@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "NSE.WebAPI.MVC": {
+    "NSE.WebApp.MVC": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
