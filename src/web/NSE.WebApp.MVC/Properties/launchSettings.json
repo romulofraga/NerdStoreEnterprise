@@ -1,5 +1,12 @@
 {
   "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
     "NSE.WebApp.MVC": {
       "commandName": "Project",
       "launchBrowser": true,
@@ -8,13 +15,6 @@
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7208;http://localhost:5233"
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
     },
     "Docker": {
       "commandName": "Docker",
