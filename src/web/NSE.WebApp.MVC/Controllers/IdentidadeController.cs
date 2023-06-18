@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace NSE.WebApp.MVC.Controllers
 {
-    public class IdentidadeController : Controller
+    public class IdentidadeController : MainController
     {
         private readonly IAutenticacaoService _autenticacaoService;
 
@@ -32,7 +32,10 @@ namespace NSE.WebApp.MVC.Controllers
 
             var resposta = await _autenticacaoService.Registro(usuarioRegistro);
 
-            if (false) return View(usuarioRegistro);
+            if (ResponsePossuiErros(resposta.ResponseResult))
+            {
+                return View(usuarioRegistro);
+            }
 
             // REALIZAR LOGIN NO APP
             await RealizarLogin(resposta);
@@ -56,7 +59,10 @@ namespace NSE.WebApp.MVC.Controllers
             // LOGIN API
             var resposta = await _autenticacaoService.Login(usuarioLogin);
 
-            if (false) return View(usuarioLogin);
+            if (ResponsePossuiErros(resposta.ResponseResult))
+            {
+                return View(usuarioLogin);
+            }
 
             // REALIZAR LOGIN NO APP
             await RealizarLogin(resposta);
@@ -66,9 +72,10 @@ namespace NSE.WebApp.MVC.Controllers
 
         [HttpGet]
         [Route("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> LogoutAsync()
         {
-            //LIMPAR O COOKIE DE AUTH
+            await HttpContext.SignOutAsync();
+
             return RedirectToAction("Index", "Home");
         }
 
