@@ -23,7 +23,7 @@ namespace NSE.WebApp.MVC.Extensions
             }
         }
 
-        private void HandleRequestExceptionAsync(HttpContext context, CustomHttpRequestException httpRequestException)
+        private static void HandleRequestExceptionAsync(HttpContext context, CustomHttpRequestException httpRequestException)
         {
             if (httpRequestException.StatusCode == HttpStatusCode.Unauthorized)
             {
