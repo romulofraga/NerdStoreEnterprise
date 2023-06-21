@@ -8,10 +8,12 @@ namespace NSE.WebApp.MVC
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Configuration.ConfigureDevelopmentEnvironment(builder.Environment);
+
             builder.Services.AddIdentityConfiguration();
 
             // Add services to the container.
-            builder.Services.AddMvcConfiguration();
+            builder.Services.AddMvcConfiguration(builder.Configuration);
 
             builder.Services.RegisterServices();
 
