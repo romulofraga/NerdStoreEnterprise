@@ -36,6 +36,5 @@ namespace NSE.Catalogo.API.Data.Repository
         }
 
         public void Dispose() => _context?.Dispose();
-
     }
 }
