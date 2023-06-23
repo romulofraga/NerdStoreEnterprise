@@ -6,7 +6,7 @@ namespace NSE.Catalogo.API.Configuration
 {
     public static class ApiConfig
     {
-        public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<CatalogoContext>(options =>
             {
@@ -28,9 +28,11 @@ namespace NSE.Catalogo.API.Configuration
                             .AllowAnyHeader();
                         });
                 });
+
+            return services;
         }
 
-        public static void UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment Environment)
+        public static IApplicationBuilder UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment Environment)
         {
             if (Environment.IsDevelopment())
             {
@@ -46,6 +48,8 @@ namespace NSE.Catalogo.API.Configuration
             app.UseAuthConfiguration();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
+
+            return app;
         }
     }
 }

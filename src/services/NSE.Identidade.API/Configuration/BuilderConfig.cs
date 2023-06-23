@@ -2,7 +2,7 @@
 {
     public static class BuilderConfig
     {
-        public static IConfigurationBuilder ConfigureDevelopmentEnvironment(this IConfigurationBuilder configuration, IWebHostEnvironment Environment)
+        public static void ConfigureDevelopmentEnvironment(this IConfigurationBuilder configuration, IWebHostEnvironment Environment)
         {
             configuration.SetBasePath(Environment.ContentRootPath)
                .AddJsonFile("appsettings.json", true, true)
@@ -13,8 +13,6 @@
             {
                 configuration.AddUserSecrets<Program>();
             }
-
-            return configuration;
         }
     }
 }
