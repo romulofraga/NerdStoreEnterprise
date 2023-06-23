@@ -1,5 +1,6 @@
 using NSE.Catalogo.API.Configuration;
 using NSE.Identidade.API.Configuration;
+using NSE.WebApi.Core.Identidade;
 
 namespace NSE.Catalogo.API
 {
@@ -14,6 +15,8 @@ namespace NSE.Catalogo.API
             // Add services to the container.
 
             builder.Services.AddApiConfiguration(builder.Configuration);
+
+            builder.Services.AddJwtConfiguration(builder.Configuration);
 
             builder.Services.AddSwaggerConfiguration();
 
