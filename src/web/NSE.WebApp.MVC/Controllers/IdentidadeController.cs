@@ -40,7 +40,7 @@ namespace NSE.WebApp.MVC.Controllers
             // REALIZAR LOGIN NO APP
             await RealizarLogin(resposta);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Catalogo");
         }
 
         [HttpGet]
@@ -70,7 +70,7 @@ namespace NSE.WebApp.MVC.Controllers
             // REALIZAR LOGIN NO APP
             await RealizarLogin(resposta);
 
-            if (string.IsNullOrEmpty(returnUrl)) return RedirectToAction("Index", "Home");
+            if (string.IsNullOrEmpty(returnUrl)) return RedirectToAction("Index", "Catalogo");
 
             return LocalRedirect(returnUrl);
         }
@@ -81,7 +81,7 @@ namespace NSE.WebApp.MVC.Controllers
         {
             await HttpContext.SignOutAsync();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Catalogo");
         }
 
         private async Task RealizarLogin(UsuarioResponse response)

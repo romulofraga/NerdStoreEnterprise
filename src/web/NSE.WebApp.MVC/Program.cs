@@ -15,7 +15,7 @@ namespace NSE.WebApp.MVC
             // Add services to the container.
             builder.Services.AddMvcConfiguration(builder.Configuration);
 
-            builder.Services.RegisterServices();
+            builder.Services.RegisterServices(builder.Configuration);
 
             var app = builder.Build();
 
