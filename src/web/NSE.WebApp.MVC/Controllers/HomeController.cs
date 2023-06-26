@@ -17,6 +17,19 @@ namespace NSE.WebApp.MVC.Controllers
         }
 
         [Route("erro/{id:length(3,3)}")]
+        public IActionResult SistemaIndisponivel(int id)
+        {
+            var modelErro = new ErrorViewModel
+            {
+                Mensagem = "O Sistema está temporariamente indisponivel, ocorreram muitas solicitações de acesso ao conteudo.",
+                Titulo = "Sistema indisponivel.",
+                ErrorCode = 500
+            };
+
+            return View("Error", modelErro);
+        }
+
+        [Route("erro/{id:length(3,3)}")]
         public IActionResult Error(int id)
         {
             var modelErro = new ErrorViewModel();
