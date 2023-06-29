@@ -9,11 +9,6 @@ namespace NSE.WebApp.MVC.Controllers
         private readonly ICatalogoService _catalogoService;
         private readonly ICatalogoServiceRefit _catalogoServiceRefit;
 
-        public CatalogoController(ICatalogoServiceRefit catalogoServiceRefit)
-        {
-            _catalogoServiceRefit = catalogoServiceRefit;
-        }
-
         public CatalogoController(ICatalogoService catalogoService)
         {
             _catalogoService = catalogoService;
