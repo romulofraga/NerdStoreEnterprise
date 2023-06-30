@@ -1,4 +1,5 @@
 using NSE.Catalogo.API.Configuration;
+using NSE.Clientes.API.Configuration;
 using NSE.Identidade.API.Configuration;
 using NSE.WebApi.Core.Identidade;
 
