@@ -1,4 +1,6 @@
-﻿namespace NSE.Core.DomainObjects
+﻿using NSE.Core.Utils;
+
+namespace NSE.Core.DomainObjects
 {
     public class Cpf
     {
@@ -15,46 +17,59 @@
 
         public static bool Validar(string cpf)
         {
-            // Remove any non-digit characters from the input
-            string digits = new(cpf.Where(char.IsDigit).ToArray());
+            cpf = cpf.ApenasNumeros(cpf);
 
-            // Check if the CPF has the correct length
-            if (digits.Length != 11)
-            {
+            if (cpf.Length > 11)
                 return false;
-            }
 
-            // Check if all digits are the same (e.g., 00000000000)
-            bool allSameDigits = digits.Distinct().Count() == 1;
-            if (allSameDigits)
-            {
+            while (cpf.Length != 11)
+                cpf = '0' + cpf;
+
+            var igual = true;
+            for (var i = 1; i < 11 && igual; i++)
+                if (cpf[i] != cpf[0])
+                    igual = false;
+
+            if (igual || cpf == "12345678909")
                 return false;
-            }
 
-            // Calculate the verification digits
-            int[] factors = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int[] cpfDigits = digits.Take(9).Select(c => int.Parse(c.ToString())).ToArray();
-            int[] firstVerifier = CalculateVerifiers(cpfDigits, factors);
-            int[] secondVerifier = CalculateVerifiers(cpfDigits.Concat(firstVerifier).ToArray(), factors);
+            var numeros = new int[11];
 
-            // Compare the calculated verifiers with the provided ones
-            return digits.Substring(9, 2) == $"{firstVerifier[0]}{secondVerifier[0]}";
-        }
+            for (var i = 0; i < 11; i++)
+                numeros[i] = int.Parse(cpf[i].ToString());
 
-        private static int[] CalculateVerifiers(int[] digits, int[] factors)
-        {
-            int sum = 0;
+            var soma = 0;
+            for (var i = 0; i < 9; i++)
+                soma += (10 - i) * numeros[i];
 
-            for (int i = 0; i < digits.Length; i++)
+            var resultado = soma % 11;
+
+            if (resultado == 1 || resultado == 0)
             {
-                sum += digits[i] * factors[i];
+                if (numeros[9] != 0)
+                    return false;
             }
+            else if (numeros[9] != 11 - resultado)
+                return false;
 
-            int remainder = sum % 11;
-            int verifier = remainder < 2 ? 0 : 11 - remainder;
+            soma = 0;
+            for (var i = 0; i < 10; i++)
+                soma += (11 - i) * numeros[i];
 
-            return new[] { verifier };
+            resultado = soma % 11;
+
+            if (resultado == 1 || resultado == 0)
+            {
+                if (numeros[10] != 0)
+                    return false;
+            }
+            else if (numeros[10] != 11 - resultado)
+                return false;
+
+            return true;
         }
 
     }
+
 }
+
