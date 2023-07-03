@@ -1,6 +1,4 @@
-﻿using NSE.CLientes.API;
-
-namespace NSE.Clientes.API.Configuration
+﻿namespace NSE.Clientes.API.Configuration
 {
     public static class BuilderConfig
     {

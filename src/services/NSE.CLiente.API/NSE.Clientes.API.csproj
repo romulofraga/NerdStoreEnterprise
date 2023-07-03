@@ -22,14 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Events\" />
     <Folder Include="Application\Queries\" />
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\building blocks\NSE.Core\NSE.Core.csproj" />
-    <ProjectReference Include="..\NSE.Identidade.API\NSE.Identidade.API.csproj" />
+    <ProjectReference Include="..\..\building blocks\NSE.WebApi.Core\NSE.WebApi.Core.csproj" />
   </ItemGroup>
 
 </Project>

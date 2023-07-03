@@ -22,7 +22,7 @@ namespace NSE.WebApp.MVC.Configuration
                 //    policy => policy.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(
-                    policy => policy.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))
+                    policy => policy.CircuitBreakerAsync(20, TimeSpan.FromSeconds(30))
                 );
 
             services

@@ -1,7 +1,7 @@
 using NSE.Clientes.API.Configuration;
 using NSE.WebApi.Core.Identidade;
 
-namespace NSE.CLientes.API
+namespace NSE.Clientes.API
 {
     public class Program
     {
@@ -17,9 +17,9 @@ namespace NSE.CLientes.API
 
             builder.Services.AddJwtConfiguration(builder.Configuration);
 
-            builder.Services.AddSwaggerConfiguration();
-
             builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
+            builder.Services.AddSwaggerConfiguration();
 
             builder.Services.RegisterServices();
 
