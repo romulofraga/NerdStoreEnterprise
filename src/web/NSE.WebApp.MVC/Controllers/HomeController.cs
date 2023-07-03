@@ -16,8 +16,8 @@ namespace NSE.WebApp.MVC.Controllers
             return View();
         }
 
-        [Route("erro/{id:length(3,3)}")]
-        public IActionResult SistemaIndisponivel(int id)
+        [Route("sistema-indisponivel")]
+        public IActionResult SistemaIndisponivel()
         {
             var modelErro = new ErrorViewModel
             {
