@@ -1,6 +1,4 @@
-﻿using NSE.Catalogo.API;
-
-namespace NSE.Identidade.API.Configuration
+﻿namespace NSE.Catalogo.API.Configuration
 {
     public static class BuilderConfig
     {
