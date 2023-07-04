@@ -13,6 +13,16 @@
 
             <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                 <div class="mb-3">
+                    <label for="Nome" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="Nome" name="Nome" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Nome" class="form-label">Cpf</label>
+                    <input type="number" class="form-control" id="Cpf" name="Cpf" />
+                    <span asp-validation-for="Cpf" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
                     <label for="Email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="Email" name="Email" />
                     <span asp-validation-for="Email" class="text-danger"></span>
@@ -23,7 +33,7 @@
                     <span asp-validation-for="Senha" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="SenhaConfirmacao" class="form-label">Confirme a Senha</label>
+                    <label for="SenhaConfirmacao" class="form-label">Confirme sua Senha</label>
                     <input type="password" class="form-control" id="SenhaConfirmacao" name="SenhaConfirmacao" />
                     <span asp-validation-for="SenhaConfirmacao" class="text-danger"></span>
                 </div>
