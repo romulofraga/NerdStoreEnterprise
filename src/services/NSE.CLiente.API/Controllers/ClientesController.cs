@@ -5,6 +5,7 @@ using NSE.WebApi.Core.Controllers;
 
 namespace NSE.Clientes.API.Controllers
 {
+    [Route("api/clientes")]
     public class ClientesController : MainController
     {
         private readonly IMediatorHandler _mediatorHandler;
@@ -14,7 +15,7 @@ namespace NSE.Clientes.API.Controllers
             _mediatorHandler = mediatorHandler;
         }
 
-        [HttpGet("clientes")]
+        [HttpGet("")]
         public async Task<IActionResult> Index()
         {
             var resultado = await _mediatorHandler.EnviarComando(new RegistrarClienteCommand(Guid.NewGuid(), "Thais Fraga", "thais@fraga.com", "36436615091"));

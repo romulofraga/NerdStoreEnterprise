@@ -1,3 +1,4 @@
+using NSE.Clientes.API.Configurarion;
 using NSE.Clientes.API.Configuration;
 using NSE.WebApi.Core.Identidade;
 
@@ -22,6 +23,8 @@ namespace NSE.Clientes.API
             builder.Services.AddSwaggerConfiguration();
 
             builder.Services.RegisterServices();
+
+            builder.Services.AddMessageBusConfiguration(builder.Configuration);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 

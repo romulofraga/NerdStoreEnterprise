@@ -1,3 +1,4 @@
+
 using NSE.Identidade.API.Configuration;
 
 namespace NSE.Identidade.API
@@ -71,6 +72,8 @@ namespace NSE.Identidade.API
             /* 
              * substitui -> builder.Services.AddControllers(); 
              */
+
+            builder.Services.AddMessageBusConfiguration(builder.Configuration);
 
             builder.Services.AddSwaggerConfiguration();
 
