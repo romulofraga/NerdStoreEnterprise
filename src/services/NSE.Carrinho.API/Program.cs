@@ -1,3 +1,6 @@
+using NSE.Carrinho.API.Configuration;
+using NSE.WebApi.Core.Identidade;
+
 namespace NSE.Carrinho.API
 {
     public class Program
@@ -6,12 +9,19 @@ namespace NSE.Carrinho.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Configuration.ConfigureDevelopmentEnvironment(builder.Environment);
+
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddApiConfiguration(builder.Configuration);
+
+            builder.Services.AddJwtConfiguration(builder.Configuration);
+
+            builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
+            builder.Services.AddSwaggerConfiguration();
+
+            builder.Services.RegisterServices();
 
             var app = builder.Build();
 
