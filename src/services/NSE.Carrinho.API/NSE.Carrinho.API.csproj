@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<Nullable>enable</Nullable>
+		<Nullable>disable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>fbd84fb6-39b3-456b-9cf2-be7aafd81cd6</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -17,11 +17,6 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Data\" />
-		<Folder Include="Model\" />
 	</ItemGroup>
 
 	<ItemGroup>
