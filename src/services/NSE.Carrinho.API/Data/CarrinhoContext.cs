@@ -3,7 +3,7 @@ using NSE.Carrinho.API.Model;
 
 namespace NSE.Carrinho.API.Data
 {
-    public class CarrinhoContext : DbContext
+    public sealed class CarrinhoContext : DbContext
     {
         public CarrinhoContext(DbContextOptions<CarrinhoContext> options) : base(options)
         {
@@ -29,7 +29,7 @@ namespace NSE.Carrinho.API.Data
                 .HasDatabaseName("IDX_Cliente");
 
             modelBuilder.Entity<CarrinhoCliente>()
-                .HasMany(c => c.Items)
+                .HasMany(c => c.Itens)
                 .WithOne(i => i.CarrinhoCliente)
                 .HasForeignKey(c => c.CarrinhoId);
 

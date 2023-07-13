@@ -9,7 +9,7 @@ namespace NSE.Clientes.API.Services
 {
     public class RegistroClienteIntegrationHandler : BackgroundService
     {
-        private IBus _bus;
+        // private IBus _bus;
         private readonly IMessageBus _messageBus;
         private readonly IServiceProvider _serviceProvider;
 
