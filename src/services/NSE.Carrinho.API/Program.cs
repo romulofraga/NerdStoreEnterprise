@@ -19,9 +19,9 @@ namespace NSE.Carrinho.API
 
             builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
+            builder.Services.RegisterServices(builder.Configuration);
+            
             builder.Services.AddSwaggerConfiguration();
-
-            builder.Services.RegisterServices();
 
             var app = builder.Build();
 
