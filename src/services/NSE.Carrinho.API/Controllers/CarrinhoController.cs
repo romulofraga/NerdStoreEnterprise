@@ -24,7 +24,7 @@ namespace NSE.Carrinho.API.Controllers
         public async Task<CarrinhoCliente> ObterCarrinho()
         {
 
-            return await ObterCarrinho() ?? new CarrinhoCliente();
+            return await ObterCarrinhoCliente() ?? new CarrinhoCliente();
         }
 
         [HttpPost("")]
