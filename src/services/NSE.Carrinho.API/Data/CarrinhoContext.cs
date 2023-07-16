@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using NSE.Carrinho.API.Model;
 
 namespace NSE.Carrinho.API.Data
@@ -23,6 +24,8 @@ namespace NSE.Carrinho.API.Data
             //modelBuilder.Entity<CarrinhoCliente>()
             //    .HasIndex(c => c.ClienteId)
             //    .HasName("IDX_Cliente");
+
+            modelBuilder.Ignore<ValidationResult>();
 
             modelBuilder.Entity<CarrinhoCliente>()
                 .HasIndex(c => c.ClienteId)
