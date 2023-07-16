@@ -17,10 +17,8 @@ namespace NSE.Carrinho.API
 
             builder.Services.AddJwtConfiguration(builder.Configuration);
 
-            builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(Program).Assembly));
-
             builder.Services.RegisterServices(builder.Configuration);
-            
+
             builder.Services.AddSwaggerConfiguration();
 
             var app = builder.Build();

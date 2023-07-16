@@ -76,7 +76,7 @@ namespace NSE.Carrinho.API.Migrations
             modelBuilder.Entity("NSE.Carrinho.API.Model.CarrinhoItem", b =>
                 {
                     b.HasOne("NSE.Carrinho.API.Model.CarrinhoCliente", "CarrinhoCliente")
-                        .WithMany("Items")
+                        .WithMany("Itens")
                         .HasForeignKey("CarrinhoId")
                         .IsRequired();
 
@@ -85,7 +85,7 @@ namespace NSE.Carrinho.API.Migrations
 
             modelBuilder.Entity("NSE.Carrinho.API.Model.CarrinhoCliente", b =>
                 {
-                    b.Navigation("Items");
+                    b.Navigation("Itens");
                 });
 #pragma warning restore 612, 618
         }
