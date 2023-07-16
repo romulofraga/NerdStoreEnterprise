@@ -14,31 +14,35 @@ namespace NSE.WebApp.MVC.Configuration
         public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<IValidationAttributeAdapterProvider, CpfValidationAttributeAdapterProvider>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAspnetUser, AspnetUser>();
+
+            #region  HttpServices
 
             services.AddTransient<HttpClientAuthorizationDelegateHandler>();
 
-            services.AddHttpClient<IAutenticacaoService, AutenticacaoService>();
+            services.AddHttpClient<IAutenticacaoService, AutenticacaoService>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(
+                    p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
 
             services
                 .AddHttpClient<ICatalogoService, CatalogoService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>()
-                //.AddTransientHttpErrorPolicy(
-                //    policy => policy.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(
                     policy => policy.CircuitBreakerAsync(20, TimeSpan.FromSeconds(30))
                 );
-
+            
             services
-                .AddHttpClient("Refit", options =>
-                {
-                    options.BaseAddress = new Uri(configuration.GetSection("CatalogoUrl").Value);
-                })
+                .AddHttpClient<ICarrinhoService, CarrinhoService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>()
-                .AddTypedClient(Refit.RestService.For<ICatalogoServiceRefit>);
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IAspnetUser, AspnetUser>();
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(
+                    policy => policy.CircuitBreakerAsync(20, TimeSpan.FromSeconds(30))
+                );
+            
+            #endregion
         }
 
         private static class PollyExtensions
@@ -55,7 +59,7 @@ namespace NSE.WebApp.MVC.Configuration
                         }, (outcome, timespan, retryCount, context) =>
                         {
                             Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine($"Tentando pela {retryCount} vez!");
+                            Console.WriteLine($@"Tentando pela {retryCount} vez!");
                             Console.ForegroundColor = ConsoleColor.White;
                         });
                 return retry;

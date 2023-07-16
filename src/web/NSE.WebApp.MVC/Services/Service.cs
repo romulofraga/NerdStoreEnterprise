@@ -1,6 +1,7 @@
 ﻿using NSE.WebApp.MVC.Extensions;
 using System.Text;
 using System.Text.Json;
+using NSE.WebApp.MVC.Models;
 
 namespace NSE.WebApp.MVC.Services
 {
@@ -40,6 +41,11 @@ namespace NSE.WebApp.MVC.Services
 
             response.EnsureSuccessStatusCode();
             return true;
+        }
+
+        protected ResponseResult RetornoOK()
+        {
+            return new ResponseResult();
         }
     }
 }
