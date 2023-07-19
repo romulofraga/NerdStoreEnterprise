@@ -1,7 +1,6 @@
-﻿namespace NSE.Core.Data
+﻿namespace NSE.Core.Data;
+
+public interface IUnityOfWork
 {
-    public interface IUnityOfWork
-    {
-        Task<bool> Commit();
-    }
+    Task<bool> Commit();
 }

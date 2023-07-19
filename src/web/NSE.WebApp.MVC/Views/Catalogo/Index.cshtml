@@ -1,5 +1,5 @@
 ﻿@using NSE.WebApp.MVC.Extensions
-@model IEnumerable<NSE.WebApp.MVC.Models.ProdutoViewModel>
+@model IEnumerable<ProdutoViewModel>
 
 @{
     ViewData["Title"] = "Todos os produtos";
@@ -9,7 +9,7 @@
     <div>
         <div style="background-image: url(images/banners/Template.jpg); height: 100%; background-position: center; background-repeat: no-repeat; background-size: cover">
             <div class="text-center">
-                <img src="~/images/banners/nerdstore.png" />
+                <img src="~/images/banners/nerdstore.png"/>
             </div>
         </div>
         <div class="container" style="padding-top: 20px">
@@ -22,24 +22,23 @@
                                 <img src="~/images/produtos/@produto.Imagem" alt="@produto.Nome" class="card-img-top">
                             </a>
                             <div class="card-body">
-                                    <h5 class="card-title">
-                                        <a asp-controller="Catalogo" asp-action="ProdutoDetalhe" asp-route-id="@produto.Id">
-                                            <b>@produto.Nome</b>
-                                        </a>
-                                    </h5>
+                                <h5 class="card-title">
+                                    <a asp-controller="Catalogo" asp-action="ProdutoDetalhe" asp-route-id="@produto.Id">
+                                        <b>@produto.Nome</b>
+                                    </a>
+                                </h5>
                                 <p class="card-text">
-                                    @produto.QuantidadeEstoque<br /><br />
+                                    @produto.QuantidadeEstoque<br/><br/>
                                     @produto.Descricao
                                 </p>
                             </div>
                             <div class="card-footer">
-                                <h3>@this.FormatoMoeda(produto.Valor)</h3>
+                                <h3>@(this.FormatoMoeda(produto.Valor))</h3>
                             </div>
                         </div>
                     </div>
                 }
             </div>
         </div>
-     </div>
+    </div>
 </section>
-

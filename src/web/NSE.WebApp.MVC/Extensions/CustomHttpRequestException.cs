@@ -1,26 +1,25 @@
 ﻿using System.Net;
 
-namespace NSE.WebApp.MVC.Extensions
+namespace NSE.WebApp.MVC.Extensions;
+
+public class CustomHttpRequestException : Exception
 {
-    public class CustomHttpRequestException : Exception
+    public CustomHttpRequestException()
     {
-        public HttpStatusCode StatusCode { get; private set; }
-
-        public CustomHttpRequestException()
-        {
-        }
-
-        public CustomHttpRequestException(string message) : base(message)
-        {
-        }
-
-        public CustomHttpRequestException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        public CustomHttpRequestException(HttpStatusCode statusCode)
-        {
-            StatusCode = statusCode;
-        }
     }
+
+    public CustomHttpRequestException(string message) : base(message)
+    {
+    }
+
+    public CustomHttpRequestException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+
+    public CustomHttpRequestException(HttpStatusCode statusCode)
+    {
+        StatusCode = statusCode;
+    }
+
+    public HttpStatusCode StatusCode { get; private set; }
 }

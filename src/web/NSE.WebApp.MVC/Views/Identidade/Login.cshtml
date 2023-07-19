@@ -1,4 +1,4 @@
-﻿@model NSE.WebApp.MVC.Models.UsuarioLogin
+﻿@model UsuarioLogin
 
 @{
     ViewData["Title"] = "Login";
@@ -13,12 +13,12 @@
             <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                 <div class="mb-3">
                     <label for="Email" class="form-label">Email</label>
-                    <input type="email" id="Email" name="Email" class="form-control" />
+                    <input type="email" id="Email" name="Email" class="form-control"/>
                     <span class="text-danger">@(Html.ValidationMessageFor(model => model.Email))</span>
                 </div>
                 <div class="mb-3">
                     <label for="Senha" class="form-label">Senha</label>
-                    <input type="password" id="Senha" name="Senha" class="form-control" />
+                    <input type="password" id="Senha" name="Senha" class="form-control"/>
                     <span class="text-danger">@(Html.ValidationMessageFor(model => model.Senha))</span>
                 </div>
                 <div class="mb-3">
@@ -31,5 +31,5 @@
 </section>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }

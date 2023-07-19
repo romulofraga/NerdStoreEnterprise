@@ -1,56 +1,55 @@
-﻿using Polly.CircuitBreaker;
+﻿using System.Net;
+using Polly.CircuitBreaker;
 using Refit;
-using System.Net;
 
-namespace NSE.WebApp.MVC.Extensions
+namespace NSE.WebApp.MVC.Extensions;
+
+public class ExceptionMiddleware
 {
-    public class ExceptionMiddleware
+    private readonly RequestDelegate _next;
+
+    public ExceptionMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
+        _next = next;
+    }
 
-        public ExceptionMiddleware(RequestDelegate next)
+    public async Task InvokeAsync(HttpContext httpContext)
+    {
+        try
         {
-            _next = next;
+            await _next(httpContext);
+        }
+        catch (CustomHttpRequestException ex)
+        {
+            HandleRequestExceptionAsync(httpContext, ex.StatusCode);
+        }
+        catch (ValidationApiException ex)
+        {
+            HandleRequestExceptionAsync(httpContext, ex.StatusCode);
+        }
+        catch (ApiException ex)
+        {
+            HandleRequestExceptionAsync(httpContext, ex.StatusCode);
+        }
+        catch (BrokenCircuitException)
+        {
+            HandleCircuitBreakerExceptionAsync(httpContext);
+        }
+    }
+
+    private static void HandleCircuitBreakerExceptionAsync(HttpContext httpContext)
+    {
+        httpContext.Response.Redirect("sistema-indisponivel");
+    }
+
+    private static void HandleRequestExceptionAsync(HttpContext httpContext, HttpStatusCode statusCode)
+    {
+        if (statusCode == HttpStatusCode.Unauthorized)
+        {
+            httpContext.Response.Redirect($"/login?ReturnUrl={httpContext.Request.Path}");
+            return;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext)
-        {
-            try
-            {
-                await _next(httpContext);
-            }
-            catch (CustomHttpRequestException ex)
-            {
-                HandleRequestExceptionAsync(httpContext, ex.StatusCode);
-            }
-            catch (ValidationApiException ex)
-            {
-                HandleRequestExceptionAsync(httpContext, ex.StatusCode);
-            }
-            catch (ApiException ex)
-            {
-                HandleRequestExceptionAsync(httpContext, ex.StatusCode);
-            }
-            catch (BrokenCircuitException)
-            {
-                HandleCircuitBreakerExceptionAsync(httpContext);
-            }
-        }
-
-        private static void HandleCircuitBreakerExceptionAsync(HttpContext httpContext)
-        {
-            httpContext.Response.Redirect("sistema-indisponivel");
-        }
-
-        private static void HandleRequestExceptionAsync(HttpContext httpContext, HttpStatusCode statusCode)
-        {
-            if (statusCode == HttpStatusCode.Unauthorized)
-            {
-                httpContext.Response.Redirect($"/login?ReturnUrl={httpContext.Request.Path}");
-                return;
-            }
-
-            httpContext.Response.StatusCode = (int)statusCode;
-        }
+        httpContext.Response.StatusCode = (int)statusCode;
     }
 }

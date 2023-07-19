@@ -1,5 +1,5 @@
 ﻿@using NSE.WebApp.MVC.Extensions
-@model NSE.WebApp.MVC.Models.CarrinhoViewModel
+@model CarrinhoViewModel
 
 @{
     ViewData["Title"] = "Meu carrinho de compras";
@@ -20,75 +20,77 @@
 
                             <table class="table table-borderless table-shopping-cart">
                                 <thead class="text-muted">
-                                    <tr class="small text-uppercase">
-                                        <th scope="col">Produto</th>
-                                        <th scope="col">Valor</th>
-                                        <th scope="col">Quantidade</th>
-                                        <th scope="col"></th>
-                                        <th scope="col"></th>
-                                    </tr>
+                                <tr class="small text-uppercase">
+                                    <th scope="col">Produto</th>
+                                    <th scope="col">Valor</th>
+                                    <th scope="col">Quantidade</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    @{
-                                        foreach (var item in Model.Itens)
-                                        {
-                                            <tr>
+                                @{
+                                    foreach (var item in Model.Itens)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <figure class="itemside">
+                                                    <div class="aside">
+                                                        <img src="~/images/produtos/@item.Imagem" alt="@item.Nome" class="img-sm">
+                                                    </div>
+                                                    <figcaption class="info">
+                                                        <a asp-controller="Catalogo" asp-action="ProdutoDetalhe" asp-route-id="@item.ProdutoId">
+                                                            <h6 style="padding-top: 10px" class="title text-dark">@item.Nome</h6>
+                                                        </a>
+                                                        <p class="text-muted small">@(this.UnidadesPorProduto(item.Quantidade))</p>
+                                                    </figcaption>
+                                                </figure>
+                                            </td>
+                                            <td>
+                                                <div class="price-wrap">
+                                                    <var class="price"> @(this.FormatoMoeda(item.Valor * item.Quantidade))</var>
+                                                    <small class="text-muted"> @(this.FormatoMoeda(item.Valor)) cada</small>
+                                                </div>
+                                            </td>
+                                            <form method="post" asp-controller="Carrinho" asp-action="AtualizarItemCarrinho">
                                                 <td>
-                                                    <figure class="itemside">
-                                                        <div class="aside">
-                                                            <img src="~/images/produtos/@item.Imagem" alt="@item.Nome" class="img-sm">
-                                                        </div>
-                                                        <figcaption class="info">
-                                                            <a asp-controller="Catalogo" asp-action="ProdutoDetalhe" asp-route-id="@item.ProdutoId"><h6 style="padding-top: 10px" class="title text-dark">@item.Nome</h6></a>
-                                                            <p class="text-muted small">@this.UnidadesPorProduto(item.Quantidade)</p>
-                                                        </figcaption>
-                                                    </figure>
+
+                                                    <input type="hidden" id="ProdutoId" name="ProdutoId" value="@item.ProdutoId"/>
+
+                                                    <div class="text-left">
+                                                        <select id="Quantidade" name="Quantidade" style="width: 80px" class="form-control">
+                                                            @{
+                                                                @Html.Raw(this.SelectOptionsPorQuantidade(5, item.Quantidade))
+                                                            }
+                                                        </select>
+                                                    </div>
+
+
                                                 </td>
                                                 <td>
-                                                    <div class="price-wrap">
-                                                        <var class="price"> @this.FormatoMoeda(item.Valor * item.Quantidade)</var>
-                                                        <small class="text-muted"> @this.FormatoMoeda(item.Valor) cada</small>
+                                                    <div class="text-right">
+                                                        <button type="submit" class="btn btn-success">
+                                                            <i class="fas fa-sync"></i>
+                                                        </button>
                                                     </div>
                                                 </td>
-                                                <form method="post" asp-controller="Carrinho" asp-action="AtualizarItemCarrinho">
-                                                    <td>
+                                            </form>
+                                            <td>
+                                                <form method="post" asp-controller="Carrinho" asp-action="RemoverItemCarrinho">
+                                                    <div>
 
-                                                        <input type="hidden" id="ProdutoId" name="ProdutoId" value="@item.ProdutoId" />
+                                                        <input type="hidden" id="ProdutoId" name="ProdutoId" value="@item.ProdutoId"/>
 
-                                                        <div class="text-left">
-                                                            <select id="Quantidade" name="Quantidade" style="width: 80px" class="form-control">
-                                                                @{
-                                                                    @Html.Raw(this.SelectOptionsPorQuantidade(5, item.Quantidade))
-                                                                }
-                                                            </select>
-                                                        </div>
+                                                        <button type="submit" class="btn btn-danger">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
 
-
-                                                    </td>
-                                                    <td>
-                                                        <div class="text-right">
-                                                            <button type="submit" class="btn btn-success">
-                                                                <i class="fas fa-sync"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
+                                                    </div>
                                                 </form>
-                                                <td>
-                                                    <form method="post" asp-controller="Carrinho" asp-action="RemoverItemCarrinho">
-                                                        <div>
-
-                                                            <input type="hidden" id="ProdutoId" name="ProdutoId" value="@item.ProdutoId" />
-
-                                                            <button type="submit" class="btn btn-danger">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                            </button>
-
-                                                        </div>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        }
+                                            </td>
+                                        </tr>
                                     }
+                                }
 
                                 </tbody>
                             </table>
@@ -121,7 +123,7 @@
                             <div class="card-body">
                                 <dl class="dlist-align">
                                     <dt>Valor Total:</dt>
-                                    <dd class="text-right">@this.FormatoMoeda(Model.ValorTotal)</dd>
+                                    <dd class="text-right">@(this.FormatoMoeda(Model.ValorTotal))</dd>
                                 </dl>
                                 <dl class="dlist-align">
                                     <dt>Desconto:</dt>
@@ -130,7 +132,7 @@
                                 <dl class="dlist-align">
                                     <dt>Total:</dt>
                                     <dd class="text-right  h5">
-                                        <strong>@this.FormatoMoeda(Model.ValorTotal)</strong>
+                                        <strong>@(this.FormatoMoeda(Model.ValorTotal))</strong>
                                     </dd>
                                 </dl>
                                 <hr>
@@ -181,9 +183,9 @@
                                     <path d="M61.565 37.654l-1.082 3.206h-3.5a.98.98 0 00-.935.655.927.927 0 00.357 1.057l2.832 1.983-1.082 3.206a.927.927 0 00.357 1.058 1.009 1.009 0 001.155 0l2.832-1.982 2.833 1.982a1.009 1.009 0 001.155 0 .927.927 0 00.357-1.058l-1.082-3.206 2.833-1.982a.926.926 0 00.357-1.058.98.98 0 00-.935-.654h-3.501l-1.082-3.207a.981.981 0 00-.935-.654.98.98 0 00-.934.654zm4 71l-1.082 3.206h-3.5a.98.98 0 00-.935.655.927.927 0 00.357 1.057l2.832 1.983-1.082 3.206a.927.927 0 00.357 1.058 1.009 1.009 0 001.155 0l2.832-1.982 2.833 1.982a1.009 1.009 0 001.155 0 .927.927 0 00.357-1.058l-1.082-3.206 2.833-1.982a.926.926 0 00.357-1.058.98.98 0 00-.935-.654h-3.501l-1.082-3.207a.981.981 0 00-.935-.654.98.98 0 00-.934.654zm139-35l-1.082 3.206h-3.5a.98.98 0 00-.935.655.927.927 0 00.357 1.057l2.832 1.983-1.082 3.206a.927.927 0 00.357 1.058 1.009 1.009 0 001.155 0l2.832-1.982 2.833 1.982a1.009 1.009 0 001.155 0 .927.927 0 00.357-1.058l-1.082-3.206 2.833-1.982a.926.926 0 00.357-1.058.98.98 0 00-.935-.654h-3.501l-1.082-3.207a.981.981 0 00-.935-.654.98.98 0 00-.934.654z" fill="#FCD320"></path>
                                 </g>
                             </svg>
-                            <br /><br />
+                            <br/><br/>
                             <h4>Seu carrinho está vazio</h4>
-                            <h5>Vá para a <a asp-controller="Catalogo">página inicial</a> e confira nossos produtos. <br />Quando encontrar um que goste clique no botão adicionar ao carrinho ;)</h5>
+                            <h5>Vá para a <a asp-controller="Catalogo">página inicial</a> e confira nossos produtos. <br/>Quando encontrar um que goste clique no botão adicionar ao carrinho ;)</h5>
                         </div>
                     </div>
                 </div>

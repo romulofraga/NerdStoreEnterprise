@@ -2,25 +2,24 @@
 using MediatR;
 using NSE.Core.Messages;
 
-namespace NSE.Core.Mediator
+namespace NSE.Core.Mediator;
+
+public class MediatorHandler : IMediatorHandler
 {
-    public class MediatorHandler : IMediatorHandler
+    private readonly IMediator _mediator;
+
+    public MediatorHandler(IMediator mediator)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+    }
 
-        public MediatorHandler(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+    public async Task<ValidationResult> EnviarComando<T>(T comando) where T : Command
+    {
+        return await _mediator.Send(comando);
+    }
 
-        public async Task<ValidationResult> EnviarComando<T>(T comando) where T : Command
-        {
-            return await _mediator.Send(comando);
-        }
-
-        public async Task PublicarEvento<T>(T evento) where T : Event
-        {
-            await _mediator.Publish(evento);
-        }
+    public async Task PublicarEvento<T>(T evento) where T : Event
+    {
+        await _mediator.Publish(evento);
     }
 }

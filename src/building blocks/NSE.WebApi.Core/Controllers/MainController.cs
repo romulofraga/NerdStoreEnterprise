@@ -2,62 +2,50 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace NSE.WebApi.Core.Controllers
+namespace NSE.WebApi.Core.Controllers;
+
+[ApiController]
+public abstract class MainController : ControllerBase
 {
-    [ApiController]
-    public abstract class MainController : ControllerBase
+    protected ICollection<string> Erros = new List<string>();
+
+    protected ActionResult CustomResponse(object result = null)
     {
-        protected ICollection<string> Erros = new List<string>();
+        if (OperacaoValida()) return Ok(result);
 
-        protected ActionResult CustomResponse(object result = null)
+        return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]>
         {
-            if (OperacaoValida())
-            {
-                return Ok(result);
-            }
+            { "Mensagens", Erros.ToArray() }
+        }));
+    }
 
-            return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]>
-            {
-                {"Mensagens", Erros.ToArray() }
-            }));
+    protected ActionResult CustomResponse(ModelStateDictionary modelstate)
+    {
+        var errors = modelstate.Values.SelectMany(error => error.Errors);
+        foreach (var error in errors) AdicionarErroProcessamento(error.ErrorMessage);
 
-        }
+        return CustomResponse();
+    }
 
-        protected ActionResult CustomResponse(ModelStateDictionary modelstate)
-        {
-            var errors = modelstate.Values.SelectMany(error => error.Errors);
-            foreach (var error in errors)
-            {
-                AdicionarErroProcessamento(error.ErrorMessage);
-            }
+    protected ActionResult CustomResponse(ValidationResult validationResult)
+    {
+        foreach (var error in validationResult.Errors) AdicionarErroProcessamento(error.ErrorMessage);
 
-            return CustomResponse();
-        }
+        return CustomResponse();
+    }
 
-        protected ActionResult CustomResponse(ValidationResult validationResult)
-        {
-            foreach (var error in validationResult.Errors)
-            {
-                AdicionarErroProcessamento(error.ErrorMessage);
-            }
+    protected bool OperacaoValida()
+    {
+        return !Erros.Any();
+    }
 
-            return CustomResponse();
-        }
+    protected void AdicionarErroProcessamento(string erro)
+    {
+        Erros.Add(erro);
+    }
 
-        protected bool OperacaoValida()
-        {
-            return !Erros.Any();
-        }
-
-        protected void AdicionarErroProcessamento(string erro)
-        {
-            Erros.Add(erro);
-        }
-
-        protected void LimparerrosProcessamento()
-        {
-            Erros.Clear();
-        }
+    protected void LimparerrosProcessamento()
+    {
+        Erros.Clear();
     }
 }
-

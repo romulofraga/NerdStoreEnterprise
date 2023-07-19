@@ -1,23 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NSE.WebApp.MVC.Models;
 
-namespace NSE.WebApp.MVC.Controllers
+namespace NSE.WebApp.MVC.Controllers;
+
+public class MainController : Controller
 {
-    public class MainController : Controller
+    protected bool ResponsePossuiErros(ResponseResult response)
     {
-        protected bool ResponsePossuiErros(ResponseResult response)
+        if (response != null && response.Errors.Mensagens.Any())
         {
-            if (response != null && response.Errors.Mensagens.Any())
-            {
-                foreach (var mensagem in response.Errors.Mensagens)
-                {
-                    ModelState.AddModelError(string.Empty, mensagem);
-                }
-
-                return true;
-            }
-
-            return false;
+            foreach (var mensagem in response.Errors.Mensagens) ModelState.AddModelError(string.Empty, mensagem);
+            return true;
         }
+
+        return false;
+    }
+
+    protected void AdicionarErrosResponse(string mensagem)
+    {
+        ModelState.AddModelError(string.Empty, mensagem);
+    }
+
+    protected bool OperacaoValida()
+    {
+        return ModelState.ErrorCount == 0;
     }
 }
