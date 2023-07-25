@@ -16,7 +16,7 @@ public class MainController : Controller
         return false;
     }
 
-    protected void AdicionarErrosResponse(string mensagem)
+    protected void AdicionarErrosValidacao(string mensagem)
     {
         ModelState.AddModelError(string.Empty, mensagem);
     }

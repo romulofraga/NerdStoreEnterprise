@@ -1,10 +1,11 @@
-﻿using NSE.Core.Messages;
+﻿#nullable enable
+using NSE.Core.Messages;
 
 namespace NSE.Core.DomainObjects;
 
 public abstract class Entity
 {
-    private List<Event> _notificacoes;
+    private List<Event> _notificacoes = null!;
 
     protected Entity()
     {
@@ -13,23 +14,21 @@ public abstract class Entity
 
     public Guid Id { get; set; }
 
-    public IReadOnlyCollection<Event> Notificacoes => _notificacoes?.AsReadOnly();
+    public IReadOnlyCollection<Event> Notificacoes => _notificacoes.AsReadOnly();
 
     public void AdicionaEvento(Event evento)
     {
-        _notificacoes ??= new List<Event>();
-
         _notificacoes.Add(evento);
     }
 
     public void RemoverEvento(Event evento)
     {
-        _notificacoes?.Remove(evento);
+        _notificacoes.Remove(evento);
     }
 
     public void LimparEventos()
     {
-        _notificacoes?.Clear();
+        _notificacoes.Clear();
     }
 
     #region Comparações
