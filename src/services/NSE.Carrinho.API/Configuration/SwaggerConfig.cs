@@ -47,7 +47,7 @@ public static class SwaggerConfig
         });
     }
 
-    public static IApplicationBuilder UseSwaggerConfiguration(this IApplicationBuilder app,
+    public static void UseSwaggerConfiguration(this IApplicationBuilder app,
         IWebHostEnvironment Environment)
     {
         if (Environment.IsDevelopment())
@@ -55,7 +55,5 @@ public static class SwaggerConfig
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1"); });
         }
-
-        return app;
     }
 }

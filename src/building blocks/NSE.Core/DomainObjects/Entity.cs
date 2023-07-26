@@ -1,21 +1,19 @@
-﻿#nullable enable
+﻿#nullable disable
 using NSE.Core.Messages;
 
 namespace NSE.Core.DomainObjects;
 
 public abstract class Entity
 {
-    private List<Event> _notificacoes = null!;
+    public Guid Id { get; protected set; }
 
-    protected Entity()
-    {
-        Id = Guid.NewGuid();
-    }
+    protected Entity() => Id = Guid.NewGuid();
 
-    public Guid Id { get; set; }
+    private List<Event> _notificacoes;
 
-    public IReadOnlyCollection<Event> Notificacoes => _notificacoes.AsReadOnly();
+    public IReadOnlyCollection<Event> Notificacoes => _notificacoes?.AsReadOnly();
 
+    #region Eventos
     public void AdicionaEvento(Event evento)
     {
         _notificacoes.Add(evento);
@@ -30,6 +28,8 @@ public abstract class Entity
     {
         _notificacoes.Clear();
     }
+    #endregion
+
 
     #region Comparações
 

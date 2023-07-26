@@ -4,7 +4,7 @@ namespace NSE.Carrinho.API.Configuration;
 
 public static class ApiConfig
 {
-    public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
+    public static void AddApiConfiguration(this IServiceCollection services)
     {
         services.AddControllers();
 
@@ -21,11 +21,9 @@ public static class ApiConfig
                             .AllowAnyHeader();
                     });
             });
-
-        return services;
     }
 
-    public static IApplicationBuilder UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment Environment)
+    public static void UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment Environment)
     {
         if (Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 
@@ -38,7 +36,5 @@ public static class ApiConfig
         app.UseAuthConfiguration();
 
         app.UseEndpoints(endpoints => endpoints.MapControllers());
-
-        return app;
     }
 }

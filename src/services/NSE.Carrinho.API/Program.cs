@@ -13,7 +13,7 @@ public class Program
 
         // Add services to the container.
 
-        builder.Services.AddApiConfiguration(builder.Configuration);
+        builder.Services.AddApiConfiguration();
 
         builder.Services.AddJwtConfiguration(builder.Configuration);
 
@@ -24,18 +24,10 @@ public class Program
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
 
-        app.UseHttpsRedirection();
+        app.UseSwaggerConfiguration(app.Environment);
 
-        app.UseAuthorization();
-
-
-        app.MapControllers();
+        app.UseSwaggerConfiguration(app.Environment);
 
         app.Run();
     }
