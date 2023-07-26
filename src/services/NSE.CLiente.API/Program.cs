@@ -2,41 +2,41 @@ using NSE.Clientes.API.Configurarion;
 using NSE.Clientes.API.Configuration;
 using NSE.WebApi.Core.Identidade;
 
-namespace NSE.Clientes.API;
-
-public class Program
+namespace NSE.Clientes.API
 {
-    public static void Main(string[] args)
+    public class Program
     {
-        var builder = WebApplication.CreateBuilder(args);
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-        builder.Configuration.ConfigureDevelopmentEnvironment(builder.Environment);
+            builder.Configuration.ConfigureDevelopmentEnvironment(builder.Environment);
 
-        // Add services to the container.
+            // Add services to the container.
 
-        builder.Services.AddApiConfiguration(builder.Configuration);
+            builder.Services.AddApiConfiguration(builder.Configuration);
 
-        builder.Services.AddJwtConfiguration(builder.Configuration);
+            builder.Services.AddJwtConfiguration(builder.Configuration);
 
-        builder.Services.AddMediatR(configuration =>
-            configuration.RegisterServicesFromAssembly(typeof(Program).Assembly));
+            builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-        builder.Services.AddSwaggerConfiguration();
+            builder.Services.AddSwaggerConfiguration();
 
-        builder.Services.RegisterServices();
+            builder.Services.RegisterServices();
 
-        builder.Services.AddMessageBusConfiguration(builder.Configuration);
+            builder.Services.AddMessageBusConfiguration(builder.Configuration);
 
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-        var app = builder.Build();
+            var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
+            // Configure the HTTP request pipeline.
 
-        app.UseSwaggerConfiguration(app.Environment);
+            app.UseSwaggerConfiguration(app.Environment);
 
-        app.UseApiConfiguration(app.Environment);
+            app.UseApiConfiguration(app.Environment);
 
-        app.Run();
+            app.Run();
+        }
     }
 }

@@ -1,12 +1,14 @@
-﻿namespace NSE.Core.Messages;
-
-public abstract class Message
+﻿namespace NSE.Core.Messages
 {
-    protected Message()
+    public abstract class Message
     {
-        MessageType = GetType().Name;
+        public string MessageType { get; protected set; }
+        public Guid AggregateId { get; protected set; }
+
+        protected Message()
+        {
+            MessageType = GetType().Name;
+        }
     }
 
-    public string MessageType { get; protected set; }
-    public Guid AggregateId { get; protected set; }
 }

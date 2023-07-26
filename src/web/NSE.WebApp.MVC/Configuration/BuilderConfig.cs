@@ -1,17 +1,20 @@
-﻿namespace NSE.WebApp.MVC.Configuration;
-
-public static class BuilderConfig
+﻿namespace NSE.WebApp.MVC.Configuration
 {
-    public static IConfigurationBuilder ConfigureDevelopmentEnvironment(this IConfigurationBuilder configuration,
-        IWebHostEnvironment Environment)
+    public static class BuilderConfig
     {
-        configuration.SetBasePath(Environment.ContentRootPath)
-            .AddJsonFile("appsettings.json", true, true)
-            .AddJsonFile($"appsettings.{Environment}.json", true, true)
-            .AddEnvironmentVariables();
+        public static IConfigurationBuilder ConfigureDevelopmentEnvironment(this IConfigurationBuilder configuration, IWebHostEnvironment Environment)
+        {
+            configuration.SetBasePath(Environment.ContentRootPath)
+               .AddJsonFile("appsettings.json", true, true)
+               .AddJsonFile($"appsettings.{Environment}.json", true, true)
+               .AddEnvironmentVariables();
 
-        if (Environment.IsDevelopment()) configuration.AddUserSecrets<Program>();
+            if (Environment.IsDevelopment())
+            {
+                configuration.AddUserSecrets<Program>();
+            }
 
-        return configuration;
+            return configuration;
+        }
     }
 }

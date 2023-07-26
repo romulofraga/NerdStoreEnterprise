@@ -2,33 +2,34 @@
 using NSE.WebApp.MVC.Extensions;
 using NSE.WebApp.MVC.Models;
 
-namespace NSE.WebApp.MVC.Services;
-
-public class CatalogoService : Service, ICatalogoService
+namespace NSE.WebApp.MVC.Services
 {
-    private readonly HttpClient _httpClient;
-
-    public CatalogoService(HttpClient httpClient, IOptions<AppSettings> settings)
+    public class CatalogoService : Service, ICatalogoService
     {
-        httpClient.BaseAddress = new Uri(settings.Value.CatalogoUrl);
-        _httpClient = httpClient;
-    }
+        private readonly HttpClient _httpClient;
 
-    public async Task<ProdutoViewModel> ObterPorId(Guid id)
-    {
-        var response = await _httpClient.GetAsync($"/catalogo/produtos/{id}");
+        public CatalogoService(HttpClient httpClient, IOptions<AppSettings> settings)
+        {
+            httpClient.BaseAddress = new Uri(settings.Value.CatalogoUrl);
+            _httpClient = httpClient;
+        }
 
-        TratarErrosResponse(response);
+        public async Task<ProdutoViewModel> ObterPorId(Guid id)
+        {
+            var response = await _httpClient.GetAsync($"/catalogo/produtos/{id}");
 
-        return await DeserializarObjetoResponse<ProdutoViewModel>(response);
-    }
+            TratarErrosResponse(response);
 
-    public async Task<IEnumerable<ProdutoViewModel>> ObterTodos()
-    {
-        var response = await _httpClient.GetAsync("/catalogo/produtos");
+            return await DeserializarObjetoResponse<ProdutoViewModel>(response);
+        }
 
-        TratarErrosResponse(response);
+        public async Task<IEnumerable<ProdutoViewModel>> ObterTodos()
+        {
+            var response = await _httpClient.GetAsync("/catalogo/produtos");
 
-        return await DeserializarObjetoResponse<IEnumerable<ProdutoViewModel>>(response);
+            TratarErrosResponse(response);
+
+            return await DeserializarObjetoResponse<IEnumerable<ProdutoViewModel>>(response);
+        }
     }
 }

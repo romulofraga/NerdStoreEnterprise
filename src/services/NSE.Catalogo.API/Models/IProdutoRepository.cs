@@ -1,14 +1,15 @@
 ﻿using NSE.Core.Data;
 
-namespace NSE.Catalogo.API.Models;
-
-public interface IProdutoRepository : IRepository<Produto>
+namespace NSE.Catalogo.API.Models
 {
-    Task<IEnumerable<Produto>> ObterTodos();
+    public interface IProdutoRepository : IRepository<Produto>
+    {
+        Task<IEnumerable<Produto>> ObterTodos();
 
-    Task<Produto> ObterPorId(Guid id);
+        Task<Produto> ObterPorId(Guid id);
 
-    void Adicionar(Produto produto);
+        void Adicionar(Produto produto);
 
-    void Atualizar(Produto produto);
+        void Atualizar(Produto produto);
+    }
 }

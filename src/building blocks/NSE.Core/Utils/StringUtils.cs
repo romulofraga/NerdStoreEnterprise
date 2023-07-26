@@ -1,9 +1,8 @@
-﻿namespace NSE.Core.Utils;
-
-public static class StringUtils
+﻿namespace NSE.Core.Utils
 {
-    public static string ApenasNumeros(this string str, string input)
+    public static class StringUtils
     {
-        return new string(input.Where(char.IsDigit).ToArray());
+        public static string ApenasNumeros(this string str, string input)
+            => new(input.Where(char.IsDigit).ToArray());
     }
 }

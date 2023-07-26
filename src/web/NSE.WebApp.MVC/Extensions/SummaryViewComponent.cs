@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace NSE.WebApp.MVC.Extensions;
-
-public class SummaryViewComponent : ViewComponent
+namespace NSE.WebApp.MVC.Extensions
 {
-    public Task<IViewComponentResult> InvokeAsync()
+    public class SummaryViewComponent : ViewComponent
     {
-        return Task.FromResult<IViewComponentResult>(View());
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            return View();
+        }
     }
 }

@@ -1,60 +1,60 @@
 ﻿using FluentValidation;
 using NSE.Core.Messages;
 
-namespace NSE.Clientes.API.Application.Commands;
-
-public class RegistrarClienteCommand : Command
+namespace NSE.Clientes.API.Application.Commands
 {
-    public RegistrarClienteCommand(Guid id, string nome, string email, string cpf)
+    public class RegistrarClienteCommand : Command
     {
-        AggregateId = id;
-        Id = id;
-        Nome = nome;
-        Email = email;
-        Cpf = cpf;
-    }
+        public Guid Id { get; private set; }
+        public string Nome { get; private set; }
+        public string Email { get; private set; }
+        public string Cpf { get; private set; }
 
-    public Guid Id { get; }
-    public string Nome { get; }
-    public string Email { get; }
-    public string Cpf { get; }
-
-    public override bool IsValid()
-    {
-        ValidationResult = new RegistrarClienteValidation().Validate(this);
-
-        return ValidationResult.IsValid;
-    }
-
-    public class RegistrarClienteValidation : AbstractValidator<RegistrarClienteCommand>
-    {
-        public RegistrarClienteValidation()
+        public RegistrarClienteCommand(Guid id, string nome, string email, string cpf)
         {
-            RuleFor(c => c.Nome)
-                .NotEmpty()
-                .WithMessage("O nome não foi informado.");
-
-            RuleFor(c => c.Id)
-                .NotEqual(Guid.Empty)
-                .WithMessage("Id do cliente inválido");
-
-            RuleFor(c => c.Email)
-                .Must(TerEmailValido)
-                .WithMessage("O endereço de e-mail não é válido.");
-
-            RuleFor(c => c.Cpf)
-                .Must(TerCpfValido)
-                .WithMessage("O CPF não é válido.");
+            AggregateId = id;
+            Id = id;
+            Nome = nome;
+            Email = email;
+            Cpf = cpf;
         }
 
-        protected static bool TerCpfValido(string cpf)
+        public override bool IsValid()
         {
-            return Core.DomainObjects.Cpf.Validar(cpf);
+            ValidationResult = new RegistrarClienteValidation().Validate(this);
+
+            return ValidationResult.IsValid;
         }
 
-        protected static bool TerEmailValido(string email)
+        public class RegistrarClienteValidation : AbstractValidator<RegistrarClienteCommand>
         {
-            return Core.DomainObjects.Email.Validar(email);
+            public RegistrarClienteValidation()
+            {
+                RuleFor(c => c.Nome)
+                   .NotEmpty()
+                   .WithMessage("O nome não foi informado.");
+
+                RuleFor(c => c.Id)
+                    .NotEqual(Guid.Empty)
+                    .WithMessage("Id do cliente inválido");
+
+                RuleFor(c => c.Email)
+                    .Must(TerEmailValido)
+                    .WithMessage("O endereço de e-mail não é válido.");
+
+                RuleFor(c => c.Cpf)
+                    .Must(TerCpfValido)
+                    .WithMessage("O CPF não é válido.");
+            }
+
+            protected static bool TerCpfValido(string cpf)
+            {
+                return Core.DomainObjects.Cpf.Validar(cpf);
+            }
+            protected static bool TerEmailValido(string email)
+            {
+                return Core.DomainObjects.Email.Validar(email);
+            }
         }
     }
 }

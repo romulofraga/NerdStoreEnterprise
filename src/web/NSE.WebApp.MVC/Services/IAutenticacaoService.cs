@@ -1,9 +1,10 @@
 ﻿using NSE.WebApp.MVC.Models;
 
-namespace NSE.WebApp.MVC.Services;
-
-public interface IAutenticacaoService
+namespace NSE.WebApp.MVC.Services
 {
-    Task<UsuarioResponse> Login(UsuarioLogin usuarioLogin);
-    Task<UsuarioResponse> Registro(UsuarioRegistro usuarioRegistro);
+    public interface IAutenticacaoService
+    {
+        Task<UsuarioResponse> Login(UsuarioLogin usuarioLogin);
+        Task<UsuarioResponse> Registro(UsuarioRegistro usuarioRegistro);
+    }
 }

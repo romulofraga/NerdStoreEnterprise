@@ -2,15 +2,16 @@
 using NSE.Catalogo.API.Data.Repository;
 using NSE.Catalogo.API.Models;
 
-namespace NSE.Catalogo.API.Configuration;
-
-public static class DependencyInjectionConfig
+namespace NSE.Catalogo.API.Configuration
 {
-    public static IServiceCollection RegisterServices(this IServiceCollection services)
+    public static class DependencyInjectionConfig
     {
-        services.AddScoped<IProdutoRepository, ProdutoRepository>();
-        services.AddScoped<CatalogoContext>();
+        public static IServiceCollection RegisterServices(this IServiceCollection services)
+        {
+            services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<CatalogoContext>();
 
-        return services;
+            return services;
+        }
     }
 }

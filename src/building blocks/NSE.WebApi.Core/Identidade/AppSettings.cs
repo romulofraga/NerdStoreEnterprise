@@ -1,9 +1,10 @@
-namespace NSE.WebApi.Core.Identidade;
-
-public class AppSettings
+namespace NSE.WebApi.Core.Identidade
 {
-    public string Secret { get; set; }
-    public int ExpiracaoHoras { get; set; }
-    public string Emissor { get; set; }
-    public string ValidoEm { get; set; }
+    public class AppSettings
+    {
+        public string Secret { get; set; }
+        public int ExpiracaoHoras { get; set; }
+        public string Emissor { get; set; }
+        public string ValidoEm { get; set; }
+    }
 }

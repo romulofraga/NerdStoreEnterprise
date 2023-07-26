@@ -1,31 +1,36 @@
-﻿using System.Net.Http.Headers;
-using NSE.WebApi.Core.Usuario;
+﻿using NSE.WebApp.MVC.Extensions;
+using System.Net.Http.Headers;
 
-namespace NSE.WebApp.MVC.Services.Handlers;
-
-public class HttpClientAuthorizationDelegateHandler : DelegatingHandler
+namespace NSE.WebApp.MVC.Services.Handlers
 {
-    private readonly IAspnetUser _user;
-
-    public HttpClientAuthorizationDelegateHandler(IAspnetUser user)
+    public class HttpClientAuthorizationDelegateHandler : DelegatingHandler
     {
-        _user = user;
-    }
+        private readonly IUser _user;
 
-    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
-        CancellationToken cancellationToken)
-    {
-        // Faço o que quiser com o conteudo da request 
-        var authorizationHeader = _user.ObterHttpContext().Request.Headers["Authorization"];
+        public HttpClientAuthorizationDelegateHandler(IUser user)
+        {
+            _user = user;
+        }
 
-        if (!string.IsNullOrEmpty(authorizationHeader))
-            request.Headers.Add("Authorization", new List<string> { authorizationHeader });
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            // Faço o que quiser com o conteudo da request 
+            var authorizationHeader = _user.ObterHttpContext().Request.Headers["Authorization"];
 
-        var token = _user.ObterUserToken();
+            if (!string.IsNullOrEmpty(authorizationHeader))
+            {
+                request.Headers.Add("Authorization", new List<string> { authorizationHeader });
+            }
 
-        if (token != null) request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var token = _user.ObterUserToken();
 
-        // Retorno ao fluxo anterior novamente
-        return base.SendAsync(request, cancellationToken);
+            if (token != null)
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+
+            // Retorno ao fluxo anterior novamente
+            return base.SendAsync(request, cancellationToken);
+        }
     }
 }

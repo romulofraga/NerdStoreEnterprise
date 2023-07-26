@@ -1,4 +1,4 @@
-﻿@model UsuarioRegistro
+﻿@model NSE.WebApp.MVC.Models.UsuarioRegistro
 
 @{
     ViewData["Title"] = "Registro";
@@ -14,27 +14,27 @@
             <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                 <div class="mb-3">
                     <label for="Nome" class="form-label">Nome</label>
-                    <input type="text" class="form-control" id="Nome" name="Nome"/>
+                    <input type="text" class="form-control" id="Nome" name="Nome" />
                     <span asp-validation-for="Nome" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="Nome" class="form-label">Cpf</label>
-                    <input type="number" class="form-control" id="Cpf" name="Cpf"/>
+                    <input type="number" class="form-control" id="Cpf" name="Cpf" />
                     <span asp-validation-for="Cpf" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="Email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="Email" name="Email"/>
+                    <input type="email" class="form-control" id="Email" name="Email" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="Senha" class="form-label">Senha</label>
-                    <input type="password" class="form-control" id="Senha" name="Senha"/>
+                    <input type="password" class="form-control" id="Senha" name="Senha" />
                     <span asp-validation-for="Senha" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="SenhaConfirmacao" class="form-label">Confirme sua Senha</label>
-                    <input type="password" class="form-control" id="SenhaConfirmacao" name="SenhaConfirmacao"/>
+                    <input type="password" class="form-control" id="SenhaConfirmacao" name="SenhaConfirmacao" />
                     <span asp-validation-for="SenhaConfirmacao" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
@@ -48,5 +48,5 @@
 </section>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial" />
 }

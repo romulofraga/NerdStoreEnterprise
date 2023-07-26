@@ -4,27 +4,27 @@ using NSE.Identidade.API.Data;
 using NSE.Identidade.API.Extensions;
 using NSE.WebApi.Core.Identidade;
 
-namespace NSE.Identidade.API.Configuration;
-
-public static class IdentityConfig
+namespace NSE.Identidade.API.Configuration
 {
-    public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services,
-        IConfiguration configuration)
+    public static class IdentityConfig
     {
-        // Add services to the container.
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            // Add services to the container.
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-        services.AddDefaultIdentity<IdentityUser>()
-            .AddRoles<IdentityRole>()
-            .AddErrorDescriber<IdentityMensagensPortugues>()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
+                .AddErrorDescriber<IdentityMensagensPortugues>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
-        //JWT CONFIGURATION
-        services.AddJwtConfiguration(configuration);
-        // END JWT CONFIGURATION
+            //JWT CONFIGURATION
+            services.AddJwtConfiguration(configuration);
+            // END JWT CONFIGURATION
 
-        return services;
+            return services;
+        }
     }
 }

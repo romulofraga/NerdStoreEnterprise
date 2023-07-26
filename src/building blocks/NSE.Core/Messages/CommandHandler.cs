@@ -1,26 +1,27 @@
 ﻿using FluentValidation.Results;
 using NSE.Core.Data;
 
-namespace NSE.Core.Messages;
-
-public abstract class CommandHandler
+namespace NSE.Core.Messages
 {
-    protected ValidationResult ValidationResult;
-
-    protected CommandHandler()
+    public abstract class CommandHandler
     {
-        ValidationResult = new ValidationResult();
-    }
+        protected ValidationResult ValidationResult;
 
-    protected void AdicionarErro(string mensagemDeErro)
-    {
-        ValidationResult.Errors.Add(new ValidationFailure(string.Empty, mensagemDeErro));
-    }
+        protected CommandHandler()
+        {
+            ValidationResult = new ValidationResult();
+        }
 
-    protected async Task<ValidationResult> PersistirDados(IUnityOfWork uow)
-    {
-        if (!await uow.Commit()) AdicionarErro("Um erro ocorreu ao persistir os dados.");
+        protected void AdicionarErro(string mensagemDeErro)
+        {
+            ValidationResult.Errors.Add(new ValidationFailure(string.Empty, mensagemDeErro));
+        }
 
-        return ValidationResult;
+        protected async Task<ValidationResult> PersistirDados(IUnityOfWork uow)
+        {
+            if (!await uow.Commit()) AdicionarErro("Um erro ocorreu ao persistir os dados.");
+
+            return ValidationResult;
+        }
     }
 }

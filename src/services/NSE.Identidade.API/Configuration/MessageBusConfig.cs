@@ -1,12 +1,13 @@
 ﻿using NSE.Core.Utils;
 using NSE.MessageBus;
 
-namespace NSE.Identidade.API.Configuration;
-
-public static class MessageBusConfig
+namespace NSE.Identidade.API.Configuration
 {
-    public static void AddMessageBusConfiguration(this IServiceCollection services, IConfiguration configuration)
+    public static class MessageBusConfig
     {
-        services.AddMessageBus(configuration.GetMessageQeueConnection("MessageBus"));
+        public static void AddMessageBusConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddMessageBus(configuration.GetMessageQeueConnection("MessageBus"));
+        }
     }
 }

@@ -6,9 +6,11 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "sqlDebugging": true,
+      "nativeDebugging": true
     },
-    "IIS Express - Staging": {
+    "IIS - Staging": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -16,7 +18,7 @@
         "ASPNETCORE_ENVIRONMENT": "Staging"
       }
     },
-    "IIS Express - Production": {
+    "IIS - Prod": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -24,14 +26,13 @@
         "ASPNETCORE_ENVIRONMENT": "Production"
       }
     },
-    "Self Host - Development": {
+    "SelfHosting": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:5301;http://localhost:5302"
     },
     "Docker": {

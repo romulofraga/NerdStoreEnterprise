@@ -1,15 +1,18 @@
-﻿namespace NSE.Identidade.API.Configuration;
-
-public static class BuilderConfig
+﻿namespace NSE.Identidade.API.Configuration
 {
-    public static void ConfigureDevelopmentEnvironment(this IConfigurationBuilder configuration,
-        IWebHostEnvironment Environment)
+    public static class BuilderConfig
     {
-        configuration.SetBasePath(Environment.ContentRootPath)
-            .AddJsonFile("appsettings.json", true, true)
-            .AddJsonFile($"appsettings.{Environment}.json", true, true)
-            .AddEnvironmentVariables();
+        public static void ConfigureDevelopmentEnvironment(this IConfigurationBuilder configuration, IWebHostEnvironment Environment)
+        {
+            configuration.SetBasePath(Environment.ContentRootPath)
+               .AddJsonFile("appsettings.json", true, true)
+               .AddJsonFile($"appsettings.{Environment}.json", true, true)
+               .AddEnvironmentVariables();
 
-        if (Environment.IsDevelopment()) configuration.AddUserSecrets<Program>();
+            if (Environment.IsDevelopment())
+            {
+                configuration.AddUserSecrets<Program>();
+            }
+        }
     }
 }

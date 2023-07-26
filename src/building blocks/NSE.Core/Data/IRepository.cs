@@ -1,8 +1,9 @@
 ﻿using NSE.Core.DomainObjects;
 
-namespace NSE.Core.Data;
-
-public interface IRepository<T> : IDisposable where T : IAggregateRoot
+namespace NSE.Core.Data
 {
-    IUnityOfWork UnityOfWork { get; }
+    public interface IRepository<T> : IDisposable where T : IAggregateRoot
+    {
+        IUnityOfWork UnityOfWork { get; }
+    }
 }

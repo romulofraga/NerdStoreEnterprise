@@ -1,48 +1,52 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Localization;
 using NSE.Core.DomainObjects;
+using System.ComponentModel.DataAnnotations;
 
-namespace NSE.WebApp.MVC.Extensions;
-
-public class CpfAttribute : ValidationAttribute
+namespace NSE.WebApp.MVC.Extensions
 {
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    public class CpfAttribute : ValidationAttribute
     {
-        return Cpf.Validar(value.ToString()) ? ValidationResult.Success : new ValidationResult("CPF invalido");
-    }
-}
-
-public class CpfAttributeAdapter : AttributeAdapterBase<CpfAttribute>
-{
-    public CpfAttributeAdapter(CpfAttribute attribute, IStringLocalizer stringLocalizer) : base(attribute,
-        stringLocalizer)
-    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            return Cpf.Validar(value.ToString()) ? ValidationResult.Success : new ValidationResult("CPF invalido");
+        }
     }
 
-    public override void AddValidation(ClientModelValidationContext context)
+    public class CpfAttributeAdapter : AttributeAdapterBase<CpfAttribute>
     {
-        if (context == null) throw new ArgumentException(null, nameof(context));
+        public CpfAttributeAdapter(CpfAttribute attribute, IStringLocalizer stringLocalizer) : base(attribute, stringLocalizer)
+        {
 
-        MergeAttribute(context.Attributes, "data-val", "true");
-        MergeAttribute(context.Attributes, "data-val-cpf", GetErrorMessage(context));
+        }
+
+        public override void AddValidation(ClientModelValidationContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentException(null, nameof(context));
+            }
+
+            MergeAttribute(context.Attributes, "data-val", "true");
+            MergeAttribute(context.Attributes, "data-val-cpf", GetErrorMessage(context));
+        }
+
+        public override string GetErrorMessage(ModelValidationContextBase validationContext)
+        {
+            return "CPF em formato invalido";
+        }
     }
 
-    public override string GetErrorMessage(ModelValidationContextBase validationContext)
+    public class CpfValidationAttributeAdapterProvider : IValidationAttributeAdapterProvider
     {
-        return "CPF em formato invalido";
-    }
-}
+        private readonly IValidationAttributeAdapterProvider _baseProvider = new ValidationAttributeAdapterProvider();
 
-public class CpfValidationAttributeAdapterProvider : IValidationAttributeAdapterProvider
-{
-    private readonly IValidationAttributeAdapterProvider _baseProvider = new ValidationAttributeAdapterProvider();
+        public IAttributeAdapter GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer stringLocalizer)
+        {
+            if (attribute is CpfAttribute CpfAttribute) return new CpfAttributeAdapter(CpfAttribute, stringLocalizer);
 
-    public IAttributeAdapter GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer stringLocalizer)
-    {
-        if (attribute is CpfAttribute CpfAttribute) return new CpfAttributeAdapter(CpfAttribute, stringLocalizer);
-
-        return _baseProvider.GetAttributeAdapter(attribute, stringLocalizer);
+            return _baseProvider.GetAttributeAdapter(attribute, stringLocalizer);
+        }
     }
 }

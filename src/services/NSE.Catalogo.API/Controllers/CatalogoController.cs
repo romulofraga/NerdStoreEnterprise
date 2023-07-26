@@ -4,30 +4,31 @@ using NSE.Catalogo.API.Models;
 using NSE.WebApi.Core.Controllers;
 using NSE.WebApi.Core.Identidade;
 
-namespace NSE.Catalogo.API.Controllers;
-
-[ApiController]
-[Authorize]
-public class CatalogoController : MainController
+namespace NSE.Catalogo.API.Controllers
 {
-    private readonly IProdutoRepository _produtoRepository;
-
-    public CatalogoController(IProdutoRepository produtoRepository)
+    [ApiController]
+    [Authorize]
+    public class CatalogoController : MainController
     {
-        _produtoRepository = produtoRepository;
-    }
+        private readonly IProdutoRepository _produtoRepository;
 
-    [AllowAnonymous]
-    [HttpGet("catalogo/produtos")]
-    public async Task<IEnumerable<Produto>> Index()
-    {
-        return await _produtoRepository.ObterTodos();
-    }
+        public CatalogoController(IProdutoRepository produtoRepository)
+        {
+            _produtoRepository = produtoRepository;
+        }
 
-    [ClaimsAuthorize("Catalogo", "Ler")]
-    [HttpGet("catalogo/produtos/{id}")]
-    public async Task<Produto> ProdutoDetalhe(Guid id)
-    {
-        return await _produtoRepository.ObterPorId(id);
+        [AllowAnonymous]
+        [HttpGet("catalogo/produtos")]
+        public async Task<IEnumerable<Produto>> Index()
+        {
+            return await _produtoRepository.ObterTodos();
+        }
+
+        [ClaimsAuthorize("Catalogo", "Ler")]
+        [HttpGet("catalogo/produtos/{id}")]
+        public async Task<Produto> ProdutoDetalhe(Guid id)
+        {
+            return await _produtoRepository.ObterPorId(id);
+        }
     }
 }

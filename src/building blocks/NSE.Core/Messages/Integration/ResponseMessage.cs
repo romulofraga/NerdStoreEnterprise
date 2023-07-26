@@ -1,13 +1,14 @@
 ﻿using FluentValidation.Results;
 
-namespace NSE.Core.Messages.Integration;
-
-public class ResponseMessage : Message
+namespace NSE.Core.Messages.Integration
 {
-    public ResponseMessage(ValidationResult validationResult)
+    public class ResponseMessage : Message
     {
-        ValidationResult = validationResult;
-    }
+        public ValidationResult ValidationResult { get; set; }
 
-    public ValidationResult ValidationResult { get; set; }
+        public ResponseMessage(ValidationResult validationResult)
+        {
+            ValidationResult = validationResult;
+        }
+    }
 }

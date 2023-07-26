@@ -2,13 +2,14 @@
 using NSE.Core.Utils;
 using NSE.MessageBus;
 
-namespace NSE.Clientes.API.Configurarion;
-
-public static class MessageBusConfig
+namespace NSE.Clientes.API.Configurarion
 {
-    public static void AddMessageBusConfiguration(this IServiceCollection services, IConfiguration configuration)
+    public static class MessageBusConfig
     {
-        services.AddMessageBus(configuration.GetMessageQeueConnection("MessageBus"));
-        services.AddHostedService<RegistroClienteIntegrationHandler>();
+        public static void AddMessageBusConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddMessageBus(configuration.GetMessageQeueConnection("MessageBus"));
+            services.AddHostedService<RegistroClienteIntegrationHandler>();
+        }
     }
 }

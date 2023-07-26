@@ -2,48 +2,51 @@
 using NSE.WebApp.MVC.Extensions;
 using NSE.WebApp.MVC.Models;
 
-namespace NSE.WebApp.MVC.Services;
-
-public class AutenticacaoService : Service, IAutenticacaoService
+namespace NSE.WebApp.MVC.Services
 {
-    private readonly HttpClient _httpClient;
-    private readonly AppSettings _settings;
-
-    public AutenticacaoService(HttpClient httpClient, IOptions<AppSettings> settings)
+    public class AutenticacaoService : Service, IAutenticacaoService
     {
-        _httpClient = httpClient;
-        _settings = settings.Value;
-    }
+        private readonly HttpClient _httpClient;
+        private readonly AppSettings _settings;
 
-    public async Task<UsuarioResponse> Login(UsuarioLogin usuarioLogin)
-    {
-        var loginContent = ObterConteudo(usuarioLogin);
+        public AutenticacaoService(HttpClient httpClient, IOptions<AppSettings> settings)
+        {
+            _httpClient = httpClient;
+            _settings = settings.Value;
+        }
 
-        var response =
-            await _httpClient.PostAsync($"{_settings.AutenticacaoUrl}/api/identidade/autenticar", loginContent);
+        public async Task<UsuarioResponse> Login(UsuarioLogin usuarioLogin)
+        {
+            var loginContent = ObterConteudo(usuarioLogin);
 
-        if (!TratarErrosResponse(response))
-            return new UsuarioResponse
+            var response = await _httpClient.PostAsync($"{_settings.AutenticacaoUrl}/api/identidade/autenticar", loginContent);
+
+            if (!TratarErrosResponse(response))
             {
-                ResponseResult = await DeserializarObjetoResponse<ResponseResult>(response)
-            };
+                return new UsuarioResponse
+                {
+                    ResponseResult = await DeserializarObjetoResponse<ResponseResult>(response)
+                };
+            }
 
-        return await DeserializarObjetoResponse<UsuarioResponse>(response);
-    }
+            return await DeserializarObjetoResponse<UsuarioResponse>(response);
+        }
 
-    public async Task<UsuarioResponse> Registro(UsuarioRegistro usuarioRegistro)
-    {
-        var registroContent = ObterConteudo(usuarioRegistro);
+        public async Task<UsuarioResponse> Registro(UsuarioRegistro usuarioRegistro)
+        {
+            var registroContent = ObterConteudo(usuarioRegistro);
 
-        var response =
-            await _httpClient.PostAsync($"{_settings.AutenticacaoUrl}/api/identidade/nova-conta", registroContent);
+            var response = await _httpClient.PostAsync($"{_settings.AutenticacaoUrl}/api/identidade/nova-conta", registroContent);
 
-        if (!TratarErrosResponse(response))
-            return new UsuarioResponse
+            if (!TratarErrosResponse(response))
             {
-                ResponseResult = await DeserializarObjetoResponse<ResponseResult>(response)
-            };
+                return new UsuarioResponse
+                {
+                    ResponseResult = await DeserializarObjetoResponse<ResponseResult>(response)
+                };
+            }
 
-        return await DeserializarObjetoResponse<UsuarioResponse>(response);
+            return await DeserializarObjetoResponse<UsuarioResponse>(response);
+        }
     }
 }

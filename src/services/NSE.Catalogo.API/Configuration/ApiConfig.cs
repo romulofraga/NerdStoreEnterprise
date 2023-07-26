@@ -2,46 +2,54 @@
 using NSE.Catalogo.API.Data;
 using NSE.WebApi.Core.Identidade;
 
-namespace NSE.Catalogo.API.Configuration;
-
-public static class ApiConfig
+namespace NSE.Catalogo.API.Configuration
 {
-    public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
+    public static class ApiConfig
     {
-        services.AddDbContext<CatalogoContext>(options =>
+        public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-        });
-
-        services.AddControllers();
-
-        services.AddCors(
-            options =>
+            services.AddDbContext<CatalogoContext>(options =>
             {
-                options.AddPolicy(
-                    "Total",
-                    builder =>
-                    {
-                        builder
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            services.AddControllers();
+
+            services.AddCors(
+                options =>
+                {
+                    options.AddPolicy(
+                        "Total",
+                        builder =>
+                        {
+                            builder
                             .AllowAnyOrigin()
                             .AllowAnyMethod()
                             .AllowAnyHeader();
-                    });
-            });
-    }
+                        });
+                });
 
-    public static void UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment Environment)
-    {
-        if (Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
+            return services;
+        }
 
-        app.UseHttpsRedirection();
+        public static IApplicationBuilder UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment Environment)
+        {
+            if (Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
-        app.UseRouting();
+            app.UseHttpsRedirection();
 
-        app.UseCors("Total");
+            app.UseRouting();
 
-        app.UseAuthConfiguration();
+            app.UseCors("Total");
 
-        app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseAuthConfiguration();
+
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
+
+            return app;
+        }
     }
 }

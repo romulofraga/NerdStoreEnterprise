@@ -3,40 +3,42 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NSE.Clientes.API.Models;
 using NSE.Core.DomainObjects;
 
-namespace NSE.Clientes.API.Data.Mappings;
-
-public class ClienteMapping : IEntityTypeConfiguration<Cliente>
+namespace NSE.Clientes.API.Data.Mappings
 {
-    public void Configure(EntityTypeBuilder<Cliente> builder)
+
+    public class ClienteMapping : IEntityTypeConfiguration<Cliente>
     {
-        builder.HasKey(c => c.Id);
-
-        builder.Property(c => c.Nome)
-            .IsRequired()
-            .HasColumnType("varchar(200)");
-
-        builder.OwnsOne(c => c.Cpf, tf =>
+        public void Configure(EntityTypeBuilder<Cliente> builder)
         {
-            tf.Property(c => c.Numero)
+            builder.HasKey(c => c.Id);
+
+            builder.Property(c => c.Nome)
                 .IsRequired()
-                .HasMaxLength(Cpf.CpfMaxLength)
-                .HasColumnName("Cpf")
-                .HasColumnType($"varchar({Cpf.CpfMaxLength})");
-        });
+                .HasColumnType("varchar(200)");
 
-        builder.OwnsOne(c => c.Email, tf =>
-        {
-            tf.Property(c => c.Endereco)
-                .IsRequired()
-                .HasColumnName("Email")
-                .HasColumnType($"varchar({Email.EmailMaxLength})");
-        });
+            builder.OwnsOne(c => c.Cpf, tf =>
+            {
+                tf.Property(c => c.Numero)
+                    .IsRequired()
+                    .HasMaxLength(Cpf.CpfMaxLength)
+                    .HasColumnName("Cpf")
+                    .HasColumnType($"varchar({Cpf.CpfMaxLength})");
+            });
 
-        // 1 : 1 => Cliente : Endereco
-        builder.HasOne(c => c.Endereco)
-            .WithOne(c => c.Cliente)
-            .HasForeignKey<Endereco>(c => c.ClientId);
+            builder.OwnsOne(c => c.Email, tf =>
+            {
+                tf.Property(c => c.Endereco)
+                    .IsRequired()
+                    .HasColumnName("Email")
+                    .HasColumnType($"varchar({Email.EmailMaxLength})");
+            });
 
-        builder.ToTable("Clientes");
+            // 1 : 1 => Cliente : Endereco
+            builder.HasOne(c => c.Endereco)
+                .WithOne(c => c.Cliente)
+                .HasForeignKey<Endereco>(c => c.ClientId);
+
+            builder.ToTable("Clientes");
+        }
     }
 }

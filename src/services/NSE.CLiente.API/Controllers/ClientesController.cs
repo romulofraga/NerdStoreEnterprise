@@ -3,25 +3,24 @@ using NSE.Clientes.API.Application.Commands;
 using NSE.Core.Mediator;
 using NSE.WebApi.Core.Controllers;
 
-namespace NSE.Clientes.API.Controllers;
-
-[Route("api/clientes")]
-public class ClientesController : MainController
+namespace NSE.Clientes.API.Controllers
 {
-    private readonly IMediatorHandler _mediatorHandler;
-
-    public ClientesController(IMediatorHandler mediatorHandler)
+    [Route("api/clientes")]
+    public class ClientesController : MainController
     {
-        _mediatorHandler = mediatorHandler;
-    }
+        private readonly IMediatorHandler _mediatorHandler;
 
-    [HttpGet("")]
-    public async Task<IActionResult> Index()
-    {
-        var resultado =
-            await _mediatorHandler.EnviarComando(new RegistrarClienteCommand(Guid.NewGuid(), "Thais Fraga",
-                "thais@fraga.com", "36436615091"));
+        public ClientesController(IMediatorHandler mediatorHandler)
+        {
+            _mediatorHandler = mediatorHandler;
+        }
 
-        return CustomResponse(resultado);
+        [HttpGet("")]
+        public async Task<IActionResult> Index()
+        {
+            var resultado = await _mediatorHandler.EnviarComando(new RegistrarClienteCommand(Guid.NewGuid(), "Thais Fraga", "thais@fraga.com", "36436615091"));
+
+            return CustomResponse(resultado);
+        }
     }
 }

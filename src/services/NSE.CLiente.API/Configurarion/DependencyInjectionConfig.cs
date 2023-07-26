@@ -7,20 +7,21 @@ using NSE.Clientes.API.Data.ClienteRepository;
 using NSE.Clientes.API.Models;
 using NSE.Core.Mediator;
 
-namespace NSE.Clientes.API.Configuration;
-
-public static class DependencyInjectionConfig
+namespace NSE.Clientes.API.Configuration
 {
-    public static IServiceCollection RegisterServices(this IServiceCollection services)
+    public static class DependencyInjectionConfig
     {
-        services.AddScoped<IMediatorHandler, MediatorHandler>();
-        services.AddScoped<IRequestHandler<RegistrarClienteCommand, ValidationResult>, ClienteCommandHandler>();
+        public static IServiceCollection RegisterServices(this IServiceCollection services)
+        {
+            services.AddScoped<IMediatorHandler, MediatorHandler>();
+            services.AddScoped<IRequestHandler<RegistrarClienteCommand, ValidationResult>, ClienteCommandHandler>();
 
-        services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClienteEventHandler>();
+            services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClienteEventHandler>();
 
-        services.AddScoped<IClienteRepository, ClienteRepository>();
-        services.AddScoped<ClientesContext>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<ClientesContext>();
 
-        return services;
+            return services;
+        }
     }
 }

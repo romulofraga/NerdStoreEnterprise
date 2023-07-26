@@ -5,49 +5,51 @@ using NSE.Core.Mediator;
 using NSE.Core.Messages.Integration;
 using NSE.MessageBus;
 
-namespace NSE.Clientes.API.Services;
-
-public class RegistroClienteIntegrationHandler : BackgroundService
+namespace NSE.Clientes.API.Services
 {
-    // private IBus _bus;
-    private readonly IMessageBus _messageBus;
-    private readonly IServiceProvider _serviceProvider;
-
-    public RegistroClienteIntegrationHandler(IServiceProvider serviceProvider, IMessageBus messageBus)
+    public class RegistroClienteIntegrationHandler : BackgroundService
     {
-        _serviceProvider = serviceProvider;
-        _messageBus = messageBus;
-    }
+        private IBus _bus;
+        private readonly IMessageBus _messageBus;
+        private readonly IServiceProvider _serviceProvider;
 
-    private void SetResponder()
-    {
-        _messageBus.RespondAsync<UsuarioRegistradoIntegradoEvent, ResponseMessage>(async request =>
-            await RegistrarCliente(request));
+        public RegistroClienteIntegrationHandler(IServiceProvider serviceProvider, IMessageBus messageBus)
+        {
+            _serviceProvider = serviceProvider;
+            _messageBus = messageBus;
+        }
 
-        _messageBus.AdvancedBus.Connected += OnConnect;
-    }
+        private void SetResponder()
+        {
+            _messageBus.RespondAsync<UsuarioRegistradoIntegradoEvent, ResponseMessage>(async request =>
+              await RegistrarCliente(request));
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        SetResponder();
+            _messageBus.AdvancedBus.Connected += OnConnect;
+        }
 
-        return Task.CompletedTask;
-    }
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
 
-    private void OnConnect(object sender, ConnectedEventArgs e)
-    {
-        SetResponder();
-    }
+            SetResponder();
 
-    private async Task<ResponseMessage> RegistrarCliente(UsuarioRegistradoIntegradoEvent message)
-    {
-        var clienteCommand = new RegistrarClienteCommand(message.Id, message.Nome, message.Email, message.Cpf);
-        ValidationResult sucesso;
+            return Task.CompletedTask;
+        }
 
-        using var scope = _serviceProvider.CreateScope();
-        var mediator = scope.ServiceProvider.GetRequiredService<IMediatorHandler>();
-        sucesso = await mediator.EnviarComando(clienteCommand);
+        private void OnConnect(object sender, ConnectedEventArgs e)
+        {
+            SetResponder();
+        }
 
-        return new ResponseMessage(sucesso);
+        private async Task<ResponseMessage> RegistrarCliente(UsuarioRegistradoIntegradoEvent message)
+        {
+            var clienteCommand = new RegistrarClienteCommand(message.Id, message.Nome, message.Email, message.Cpf);
+            ValidationResult sucesso;
+
+            using var scope = _serviceProvider.CreateScope();
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediatorHandler>();
+            sucesso = await mediator.EnviarComando(clienteCommand);
+
+            return new ResponseMessage(sucesso);
+        }
     }
 }
