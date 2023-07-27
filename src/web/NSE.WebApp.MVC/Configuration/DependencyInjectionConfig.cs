@@ -17,27 +17,35 @@ namespace NSE.WebApp.MVC.Configuration
 
             services.AddTransient<HttpClientAuthorizationDelegateHandler>();
 
-            services.AddHttpClient<IAutenticacaoService, AutenticacaoService>();
-
-            services
-                .AddHttpClient<ICatalogoService, CatalogoService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>()
-                //.AddTransientHttpErrorPolicy(
-                //    policy => policy.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
+            services.AddHttpClient<IAutenticacaoService, AutenticacaoService>()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(
                     policy => policy.CircuitBreakerAsync(20, TimeSpan.FromSeconds(30))
                 );
 
-            services
-                .AddHttpClient("Refit", options =>
-                {
-                    options.BaseAddress = new Uri(configuration.GetSection("CatalogoUrl").Value);
-                })
+            services.AddHttpClient<ICatalogoService, CatalogoService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>()
-                .AddTypedClient(Refit.RestService.For<ICatalogoServiceRefit>);
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(
+                    policy => policy.CircuitBreakerAsync(20, TimeSpan.FromSeconds(30))
+                );
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpClient<ICarrinhoService, CarrinhoService>()
+               .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(
+                    policy => policy.CircuitBreakerAsync(20, TimeSpan.FromSeconds(30))
+                );
+
+            //services
+            //    .AddHttpClient("Refit", options =>
+            //    {
+            //        options.BaseAddress = new Uri(configuration.GetSection("CatalogoUrl").Value);
+            //    })
+            //    .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>()
+            //    .AddTypedClient(Refit.RestService.For<ICatalogoServiceRefit>);
+
+            services.AddHttpContextAccessor();
             services.AddScoped<IAspnetUser, AspNetUser>();
         }
 
