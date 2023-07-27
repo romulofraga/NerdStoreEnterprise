@@ -14,7 +14,7 @@ namespace NSE.Carrinho.API.Configuration
             });
 
             services.AddHttpContextAccessor();
-            services.AddScoped<IAspnetUser, AspnetUser>();
+            services.AddScoped<IAspnetUser, AspNetUser>();
             return services;
         }
     }

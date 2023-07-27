@@ -1,58 +1,57 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
-namespace NSE.WebApi.Core.Usuario;
-
-public class AspnetUser : IAspnetUser
+namespace NSE.WebApi.Core.Usuario
 {
-    private readonly IHttpContextAccessor _accessor;
-
-    public AspnetUser(IHttpContextAccessor accessor)
+    public class AspNetUser : IAspnetUser
     {
-        _accessor = accessor;
-    }
+        private readonly IHttpContextAccessor _accessor;
 
-    public string Name => _accessor.HttpContext?.User.Identity?.Name;
+        public AspNetUser(IHttpContextAccessor accessor)
+        {
+            _accessor = accessor;
+        }
 
-    public Guid ObterUserId()
-    {
-        return EstaAutenticado()
-            ? Guid.Parse(_accessor.HttpContext?.User.GetUserId() ?? throw new InvalidOperationException())
-            : Guid.Empty;
-    }
+        public string Name => _accessor.HttpContext.User.Identity.Name;
 
-    public string ObterUserEmail()
-    {
-        return EstaAutenticado() ? _accessor.HttpContext?.User.GetUserEmail() : string.Empty;
-    }
+        public Guid ObterUserId()
+        {
+            return EstaAutenticado() ? Guid.Parse(_accessor.HttpContext.User.GetUserId()) : Guid.Empty;
+        }
 
-    public string ObterUserToken()
-    {
-        return EstaAutenticado() ? _accessor.HttpContext?.User.GetUserToken() : string.Empty;
-    }
+        public string ObterUserEmail()
+        {
+            return EstaAutenticado() ? _accessor.HttpContext.User.GetUserEmail() : string.Empty;
+        }
 
-    public bool EstaAutenticado()
-    {
-        return _accessor.HttpContext is { User.Identity.IsAuthenticated: true };
-    }
+        public string ObterUserToken()
+        {
+            return EstaAutenticado() ? _accessor.HttpContext.User.GetUserToken() : string.Empty;
+        }
 
-    public bool PossuiRole(string role)
-    {
-        return _accessor.HttpContext != null && _accessor.HttpContext.User.IsInRole(role);
-    }
+        public bool EstaAutenticado()
+        {
+            return _accessor.HttpContext.User.Identity.IsAuthenticated;
+        }
 
-    public IEnumerable<Claim> ObterClaims()
-    {
-        return _accessor.HttpContext?.User.Claims;
-    }
+        public bool PossuiRole(string role)
+        {
+            return _accessor.HttpContext.User.IsInRole(role);
+        }
 
-    public HttpContext ObterHttpContext()
-    {
-        return _accessor.HttpContext;
-    }
+        public IEnumerable<Claim> ObterClaims()
+        {
+            return _accessor.HttpContext.User.Claims;
+        }
 
-    public string ObterUserRefreshToken()
-    {
-        return _accessor.HttpContext?.User.GetUserRefreshToken();
+        public HttpContext ObterHttpContext()
+        {
+            return _accessor.HttpContext;
+        }
+
+        public string ObterUserRefreshToken()
+        {
+            return _accessor.HttpContext.User.GetUserRefreshToken();
+        }
     }
 }
