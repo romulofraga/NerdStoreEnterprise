@@ -19,7 +19,7 @@ namespace NSE.Carrinho.API
 
             builder.Services.AddSwaggerConfiguration();
 
-            builder.Services.RegisterServices();
+            builder.Services.RegisterServices(builder.Configuration);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
