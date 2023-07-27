@@ -23,6 +23,8 @@ namespace NSE.WebApp.MVC
 
             app.UseMvcConfiguration(app.Environment);
 
+            app.UseGlobalizationConfiguration();
+
             app.Run();
         }
     }
