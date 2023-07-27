@@ -1,3 +1,6 @@
+using NSE.Carrinho.API.Configuration;
+using NSE.WebApi.Core.Identidade;
+
 namespace NSE.Carrinho.API
 {
     public class Program
@@ -6,28 +9,27 @@ namespace NSE.Carrinho.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Configuration.ConfigureDevelopmentEnvironment(builder.Environment);
+
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddApiConfiguration(builder.Configuration);
+
+            builder.Services.AddJwtConfiguration(builder.Configuration);
+
+            builder.Services.AddSwaggerConfiguration();
+
+            builder.Services.RegisterServices();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
 
-            app.UseHttpsRedirection();
+            app.UseSwaggerConfiguration(app.Environment);
 
-            app.UseAuthorization();
-
-
-            app.MapControllers();
+            app.UseApiConfiguration(app.Environment);
 
             app.Run();
         }

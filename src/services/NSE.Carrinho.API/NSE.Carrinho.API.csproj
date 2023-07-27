@@ -4,14 +4,33 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>fbd84fb6-39b3-456b-9cf2-be7aafd81cd6</UserSecretsId>
+    <UserSecretsId>664b5457-5c7d-42fa-8dfa-7b71df8ed6e6</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="FluentValidation" Version="11.5.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.16" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.16" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.16" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.16" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16" />
+	<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\building blocks\NSE.Core\NSE.Core.csproj" />
+    <ProjectReference Include="..\..\building blocks\NSE.MessageBus\NSE.MessageBus.csproj" />
+    <ProjectReference Include="..\..\building blocks\NSE.WebApi.Core\NSE.WebApi.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
