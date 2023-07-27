@@ -9,7 +9,7 @@ namespace NSE.WebApi.Core.Usuario
             if (principal == null)
                 throw new ArgumentException(nameof(principal));
 
-            var claim = principal.FindFirst("sub");
+            var claim = principal.FindFirst(ClaimTypes.NameIdentifier) ?? principal.FindFirst("sub");
             return claim?.Value;
         }
 
@@ -18,7 +18,7 @@ namespace NSE.WebApi.Core.Usuario
             if (principal == null)
                 throw new ArgumentException(nameof(principal));
 
-            var claim = principal.FindFirst("email");
+            var claim = principal.FindFirst(ClaimTypes.Email) ?? principal.FindFirst("email");
             return claim?.Value;
         }
 

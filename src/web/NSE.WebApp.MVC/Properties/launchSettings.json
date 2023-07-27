@@ -1,13 +1,13 @@
 {
   "profiles": {
-    "IIS Express": {
+    "IIS Express - Development": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "NSE.WebApp.MVC": {
+    "SelfHost - Development": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

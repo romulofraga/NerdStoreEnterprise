@@ -13,7 +13,7 @@ namespace NSE.Carrinho.API.Configuration
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAspnetUser, AspNetUser>();
             return services;
         }

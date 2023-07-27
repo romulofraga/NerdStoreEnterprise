@@ -26,7 +26,7 @@ namespace NSE.WebApp.MVC.Services
         {
             var itemContent = ObterConteudo(produto);
 
-            var response = await _httpClient.PostAsync($"/carrinho/{produto.ProdutoId}", itemContent);
+            var response = await _httpClient.PostAsync("/carrinho/", itemContent);
 
             if (!TratarErrosResponse(response))
                 return await DeserializarObjetoResponse<ResponseResult>(response);
@@ -48,7 +48,7 @@ namespace NSE.WebApp.MVC.Services
 
         public async Task<ResponseResult> RemoverItemCarrinho(Guid produtoId)
         {
-            var response = await _httpClient.DeleteAsync($"/carrinho/{ProdutoId}");
+            var response = await _httpClient.DeleteAsync($"/carrinho/{produtoId}");
 
             if (!TratarErrosResponse(response))
                 return await DeserializarObjetoResponse<ResponseResult>(response);

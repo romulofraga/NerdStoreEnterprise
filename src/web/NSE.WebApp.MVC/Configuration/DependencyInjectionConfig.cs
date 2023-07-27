@@ -45,7 +45,7 @@ namespace NSE.WebApp.MVC.Configuration
             //    .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>()
             //    .AddTypedClient(Refit.RestService.For<ICatalogoServiceRefit>);
 
-            services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAspnetUser, AspNetUser>();
         }
 
