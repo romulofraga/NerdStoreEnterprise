@@ -4,13 +4,8 @@ namespace NSE.Carrinho.API.Configuration
 {
     public static class ApiConfig
     {
-        public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddApiConfiguration(this IServiceCollection services)
         {
-            //services.AddDbContext<CarrinhoContext>(options =>
-            //{
-            //    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            //});
-
             services.AddControllers();
 
             services.AddCors(

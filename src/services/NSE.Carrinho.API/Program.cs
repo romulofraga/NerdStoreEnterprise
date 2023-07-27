@@ -13,7 +13,7 @@ namespace NSE.Carrinho.API
 
             // Add services to the container.
 
-            builder.Services.AddApiConfiguration(builder.Configuration);
+            builder.Services.AddApiConfiguration();
 
             builder.Services.AddJwtConfiguration(builder.Configuration);
 

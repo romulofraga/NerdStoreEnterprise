@@ -49,6 +49,11 @@ namespace NSE.WebApi.Core.Controllers
             return !Erros.Any();
         }
 
+        protected bool OperacaoInvalida()
+        {
+            return !OperacaoValida();
+        }
+
         protected void AdicionarErroProcessamento(string erro)
         {
             Erros.Add(erro);

@@ -6,7 +6,6 @@ using NSE.WebApi.Core.Identidade;
 
 namespace NSE.Catalogo.API.Controllers
 {
-    [ApiController]
     [Authorize]
     public class CatalogoController : MainController
     {
