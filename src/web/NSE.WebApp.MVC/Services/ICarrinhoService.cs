@@ -1,4 +1,5 @@
-﻿using NSE.WebApp.MVC.Models;
+﻿using NSE.Core.Comunication;
+using NSE.WebApp.MVC.Models;
 
 namespace NSE.WebApp.MVC.Services
 {
