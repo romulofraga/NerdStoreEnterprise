@@ -7,7 +7,7 @@ namespace NSE.Bff.Compras.Services
     {
 
     }
-    public class PedidoService : Service, ICarrinhoService
+    public class PedidoService : Service, IPedidoService
     {
         private readonly HttpClient _httpClient;
 

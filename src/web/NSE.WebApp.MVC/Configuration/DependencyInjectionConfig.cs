@@ -49,7 +49,7 @@ namespace NSE.WebApp.MVC.Configuration
             services.AddScoped<IAspnetUser, AspNetUser>();
         }
 
-        public class PollyExtensions
+        public static class PollyExtensions
         {
             public static AsyncRetryPolicy<HttpResponseMessage> EsperarTentar()
             {
