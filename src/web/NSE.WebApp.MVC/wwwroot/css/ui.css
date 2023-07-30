@@ -13,6 +13,10 @@ INCLUDE STYLES AND COMPONENTS
 
 /* ================== HELPERS  =================== */
 
+a {
+    text-decoration: none;
+}
+
 a:hover {
     text-decoration: none;
 }

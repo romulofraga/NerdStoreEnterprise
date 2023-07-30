@@ -30,7 +30,7 @@ namespace NSE.WebApp.MVC.Configuration
                     policy => policy.CircuitBreakerAsync(20, TimeSpan.FromSeconds(30))
                 );
 
-            services.AddHttpClient<ICarrinhoService, CarrinhoService>()
+            services.AddHttpClient<IComprasBffService, ComprasBffService>()
                .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(
