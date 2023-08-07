@@ -1,16 +1,12 @@
 ﻿using NSE.WebApi.Core.Identidade;
 
+
 namespace NSE.Pedidos.API.Configuration
 {
     public static class ApiConfig
     {
         public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddDbContext<ClientesContext>(options =>
-            //{
-            //    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            //});
-
             services.AddControllers();
 
             services.AddCors(

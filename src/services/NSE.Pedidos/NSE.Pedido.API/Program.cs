@@ -21,7 +21,7 @@ namespace NSE.Pedidos.API
 
             builder.Services.AddSwaggerConfiguration();
 
-            builder.Services.RegisterServices();
+            builder.Services.RegisterServices(builder.Configuration);
 
             builder.Services.AddMessageBusConfiguration(builder.Configuration);
 
