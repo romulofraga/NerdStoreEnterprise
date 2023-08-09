@@ -11,18 +11,15 @@ namespace NSE.Pedidos.Infra.Data.Repository
         {
             _context = context;
         }
-        public IUnityOfWork UnityOfWork => _context;
 
+        public IUnityOfWork UnityOfWork => _context;
 
         public async Task<Voucher> ObterVoucherPorCodigo(string codigo)
         {
             return await _context.Vouchers.FirstOrDefaultAsync(v => v.Codigo == codigo);
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
+        public void Dispose() => _context.Dispose();
 
     }
 }
