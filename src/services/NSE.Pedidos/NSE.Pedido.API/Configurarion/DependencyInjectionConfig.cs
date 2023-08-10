@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NSE.Core.Mediator;
+using NSE.Pedidos.API.Application.Queries;
+using NSE.Pedidos.Domain.Vouchers;
 using NSE.Pedidos.Infra.Data;
+using NSE.WebApi.Core.Usuario;
 
 namespace NSE.Pedidos.API.Configuration
 {
@@ -8,18 +11,20 @@ namespace NSE.Pedidos.API.Configuration
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
+            //API
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAspnetUser, AspNetUser>();
+            //Application
+            services.AddScoped<IMediatorHandler, MediatorHandler>();
+            services.AddScoped<IVoucherQueries, VoucherQueries>();
+            //Data
             services.AddDbContext<PedidosContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddScoped<IVoucherRepository, IVoucherRepository>();
 
-            services.AddScoped<IMediatorHandler, MediatorHandler>();
-            //services.AddScoped<IRequestHandler<RegistrarClienteCommand, ValidationResult>, ClienteCommandHandler>();
 
-            //services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClienteEventHandler>();
-
-            //services.AddScoped<IClienteRepository, ClienteRepository>();
-            //services.AddScoped<ClientesContext>();
 
             return services;
         }
