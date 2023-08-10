@@ -34,7 +34,7 @@ namespace NSE.Carrinho.API.Models
             Itens = new List<CarrinhoItem>();
         }
 
-        internal void AplicarVoucher(Voucher voucher)
+        public void AplicarVoucher(Voucher voucher)
         {
             Voucher = voucher;
             VoucherUtilizado = true;

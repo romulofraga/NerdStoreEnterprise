@@ -16,7 +16,7 @@ namespace NSE.Bff.Compras.Services
         public PedidoService(HttpClient httpClient, IOptions<AppServicesSettings> settings)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri(settings.Value.CarrinhoUrl);
+            _httpClient.BaseAddress = new Uri(settings.Value.PedidoUrl);
         }
 
         public async Task<VoucherDTO> ObterVoucherPorCodigo(string codigo)
