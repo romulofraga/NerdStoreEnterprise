@@ -24,6 +24,11 @@ namespace NSE.Bff.Compras.Configuration
                .AddPolicyHandler(PollyExtensions.EsperarTentar())
                .AddTransientHttpErrorPolicy(PollyExtensions.CircuitBreakerConfig);
 
+            services.AddHttpClient<IPedidoService, PedidoService>()
+              .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>()
+              .AddPolicyHandler(PollyExtensions.EsperarTentar())
+              .AddTransientHttpErrorPolicy(PollyExtensions.CircuitBreakerConfig);
+
 
             //services.AddHttpClient<ICarrinhoService, CarrinhoService>()
             //   .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>()

@@ -43,7 +43,7 @@ namespace NSE.Carrinho.API.Controllers
             return CustomResponse();
         }
 
-        [HttpPut("carrinho/{produtoId:guid}")]
+        [HttpPut("carrinho/{produtoId}")]
         public async Task<IActionResult> AtualizarItemCarrinho(Guid produtoId, CarrinhoItem item)
         {
             var carrinho = await ObterCarrinhoCliente();
@@ -64,7 +64,7 @@ namespace NSE.Carrinho.API.Controllers
             return CustomResponse();
         }
 
-        [HttpDelete("carrinho/{produtoId:guid}")]
+        [HttpDelete("carrinho/{produtoId}")]
         public async Task<IActionResult> RemoverItemCarrinho(Guid produtoId)
         {
             var carrinho = await ObterCarrinhoCliente();

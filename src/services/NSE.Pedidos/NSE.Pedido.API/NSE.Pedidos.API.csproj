@@ -25,7 +25,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\building blocks\NSE.Core\NSE.Core.csproj" />
 		<ProjectReference Include="..\..\..\building blocks\NSE.MessageBus\NSE.MessageBus.csproj" />
-		<ProjectReference Include="..\..\..\web\NSE.WebApp.MVC\NSE.WebApp.MVC.csproj" />
+		<ProjectReference Include="..\..\..\building blocks\NSE.WebApi.Core\NSE.WebApi.Core.csproj" />
 		<ProjectReference Include="..\NSE.Pedidos.Infra\NSE.Pedidos.Infra.csproj" />
 	</ItemGroup>
 
