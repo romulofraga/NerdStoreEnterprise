@@ -19,7 +19,7 @@ namespace NSE.Bff.Compras
 
             builder.Services.AddSwaggerConfiguration();
 
-            builder.Services.RegisterServices(builder.Configuration);
+            builder.Services.RegisterServices();
 
             builder.Services.AddMessageBusConfiguration(builder.Configuration);
 

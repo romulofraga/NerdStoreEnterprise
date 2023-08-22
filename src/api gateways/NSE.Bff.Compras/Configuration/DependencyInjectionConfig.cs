@@ -7,7 +7,7 @@ namespace NSE.Bff.Compras.Configuration
 {
     public static class DependencyInjectionConfig
     {
-        public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAspnetUser, AspNetUser>();

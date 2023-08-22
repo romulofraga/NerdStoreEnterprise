@@ -19,7 +19,10 @@ namespace NSE.Pedidos.Infra.Data.Repository
             return await _context.Vouchers.FirstOrDefaultAsync(v => v.Codigo == codigo);
         }
 
-        public void Dispose() => _context.Dispose();
-
+        public void Dispose()
+        {
+            _context.Dispose();
+            GC.SuppressFinalize(this);
+        }
     }
 }
