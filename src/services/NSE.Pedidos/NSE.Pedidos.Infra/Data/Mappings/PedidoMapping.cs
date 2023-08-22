@@ -4,17 +4,30 @@ using NSE.Pedidos.Domain.Pedidos;
 
 namespace NSE.Pedidos.Infra.Data.Mappings
 {
-    public class PedidoItemMapping : IEntityTypeConfiguration<PedidoItem>
+    public class PedidoMapping : IEntityTypeConfiguration<Pedido>
     {
-        public void Configure(EntityTypeBuilder<PedidoItem> builder)
+        public void Configure(EntityTypeBuilder<Pedido> builder)
         {
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.ProdutoNome).IsRequired().HasColumnType("varchar(250)");
+            builder.OwnsOne(p => p.Endereco, e =>
+            {
+                e.Property(pe => pe.Logradouro).HasColumnName("Logradouro");
+                e.Property(pe => pe.Numero).HasColumnName("Numero");
+                e.Property(pe => pe.Complemento).HasColumnName("Complemento");
+                e.Property(pe => pe.Bairro).HasColumnName("Bairro");
+                e.Property(pe => pe.Cep).HasColumnName("Cep");
+                e.Property(pe => pe.Cidade).HasColumnName("Cidade");
+                e.Property(pe => pe.Estado).HasColumnName("Estado");
+            });
 
-            builder.HasOne(c => c.Pedido).WithMany(c => c.PedidoItems);
+            builder.Property(c => c.Codigo).HasDefaultValueSql("NEXT VALUE FOR MinhaSequencia");
 
-            builder.ToTable("PedidoItems");
+            builder.HasMany(c => c.PedidoItems)
+                .WithOne(c => c.Pedido)
+                .HasForeignKey(c => c.PedidoId);
+
+            builder.ToTable("Pedidos");
         }
     }
 }
