@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NSE.Core.Data;
 using NSE.Pedidos.Domain.Pedidos;
+using System.Data.Common;
 
 namespace NSE.Pedidos.Infra.Data.Repository
 {
@@ -52,6 +53,11 @@ namespace NSE.Pedidos.Infra.Data.Repository
         {
             _context.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+        public DbConnection ObterDBConnection()
+        {
+            return _context.Database.GetDbConnection();
         }
     }
 }

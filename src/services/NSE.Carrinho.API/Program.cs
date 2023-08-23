@@ -21,6 +21,8 @@ namespace NSE.Carrinho.API
 
             builder.Services.RegisterServices(builder.Configuration);
 
+            builder.Services.AddMessageBusConfiguration(builder.Configuration);
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
             var app = builder.Build();

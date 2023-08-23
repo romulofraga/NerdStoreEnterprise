@@ -8,7 +8,6 @@ namespace NSE.Pedidos.API.Configuration
         public static void AddMessageBusConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMessageBus(configuration.GetMessageQeueConnection("MessageBus"));
-            //services.AddHostedService<RegistroClienteIntegrationHandler>();
         }
     }
 }

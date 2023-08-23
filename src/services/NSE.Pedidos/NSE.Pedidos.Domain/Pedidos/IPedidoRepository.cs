@@ -1,4 +1,5 @@
 ﻿using NSE.Core.Data;
+using System.Data.Common;
 
 namespace NSE.Pedidos.Domain.Pedidos
 {
@@ -11,5 +12,7 @@ namespace NSE.Pedidos.Domain.Pedidos
 
         Task<PedidoItem> ObterItemPorId(Guid itemId);
         Task<PedidoItem> ObterItemPorPedido(Guid PedidoId, Guid produtoId);
+
+        DbConnection ObterDBConnection();
     }
 }

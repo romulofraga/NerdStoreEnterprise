@@ -52,7 +52,7 @@ namespace NSE.Carrinho.API.Data
                     .SelectMany(e => e.GetForeignKeys());
 
                 foreach (var relationship in foreignKeys)
-                    relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+                    relationship.DeleteBehavior = DeleteBehavior.Cascade;
             }
 
             void SetModelConfiguration(ModelBuilder modelBuilder)
