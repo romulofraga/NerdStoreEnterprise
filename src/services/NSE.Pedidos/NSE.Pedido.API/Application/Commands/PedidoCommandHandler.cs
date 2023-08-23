@@ -2,6 +2,7 @@
 using MediatR;
 using NSE.Core.Messages;
 using NSE.Pedidos.API.Application.DTO;
+using NSE.Pedidos.API.Application.Events;
 using NSE.Pedidos.Domain.Pedidos;
 using NSE.Pedidos.Domain.Vouchers;
 using NSE.Pedidos.Domain.Vouchers.Specs;
@@ -11,10 +12,12 @@ namespace NSE.Pedidos.API.Application.Commands
     public class PedidoCommandHandler : CommandHandler, IRequestHandler<AdicionarPedidoCommand, ValidationResult>
     {
         private readonly IVoucherRepository _voucherRepository;
+        private readonly IPedidoRepository _pedidoRepository;
 
-        public PedidoCommandHandler(IVoucherRepository voucherRepository)
+        public PedidoCommandHandler(IVoucherRepository voucherRepository, IPedidoRepository pedidoRepository)
         {
             _voucherRepository = voucherRepository;
+            _pedidoRepository = pedidoRepository;
         }
 
         public async Task<ValidationResult> Handle(AdicionarPedidoCommand message, CancellationToken cancellationToken)
@@ -24,6 +27,45 @@ namespace NSE.Pedidos.API.Application.Commands
             var pedido = MapearPedido(message);
 
             if (!await AplicarVoucher(message, pedido)) return ValidationResult;
+
+            if (!ValidarPedido(pedido)) return ValidationResult;
+
+            if (!ProcessarPagamento(pedido)) return ValidationResult;
+
+            pedido.AutorizarPedido();
+
+            pedido.AdicionaEvento(new PedidoRealizadoEvent(pedido.Id, pedido.ClienteId));
+
+            _pedidoRepository.Adicionar(pedido);
+
+            return await PersistirDados(_pedidoRepository.UnityOfWork);
+        }
+
+        private static bool ProcessarPagamento(Pedido pedido)
+        {
+            return true;
+        }
+
+        private bool ValidarPedido(Pedido pedido)
+        {
+            var pedidoValorOriginal = pedido.ValorTotal;
+            var pedidoDesconto = pedido.Desconto;
+
+            pedido.CalcularValorPedido();
+
+            if (pedido.ValorTotal != pedidoValorOriginal)
+            {
+                AdicionarErro("O valor do pedido nao confere com o calculo do pedido");
+                return false;
+            }
+
+            if (pedido.Desconto != pedidoDesconto)
+            {
+                AdicionarErro("O valor do pedido nao confere com o calculo do pedido");
+                return false;
+            }
+
+            return true;
         }
 
         private async Task<bool> AplicarVoucher(AdicionarPedidoCommand message, Pedido pedido)
@@ -53,7 +95,7 @@ namespace NSE.Pedidos.API.Application.Commands
             return true;
         }
 
-        private Pedido MapearPedido(AdicionarPedidoCommand message)
+        private static Pedido MapearPedido(AdicionarPedidoCommand message)
         {
             var endereco = new Endereco
             {

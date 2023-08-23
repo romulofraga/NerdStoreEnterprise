@@ -35,6 +35,10 @@ namespace NSE.Catalogo.API.Data.Repository
             _context.Produtos.Update(produto);
         }
 
-        public void Dispose() => _context?.Dispose();
+        public void Dispose()
+        {
+            _context.Dispose();
+            GC.SuppressFinalize(this);
+        }
     }
 }
