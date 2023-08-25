@@ -31,6 +31,17 @@ namespace NSE.Clientes.API.Data.ClienteRepository
         public void Dispose()
         {
             _context.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        public async Task<Endereco> ObterEnderecoPorId(Guid id)
+        {
+            return await _context.Enderecos.FirstOrDefaultAsync(e => e.ClientId == id);
+        }
+
+        public void AdicionarEndereco(Endereco endereco)
+        {
+            _context.Enderecos.Add(endereco);
         }
     }
 }
