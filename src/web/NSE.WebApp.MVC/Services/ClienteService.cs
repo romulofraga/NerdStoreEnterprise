@@ -29,7 +29,7 @@ namespace NSE.WebApp.MVC.Services
 
             if (!TratarErrosResponse(response)) return await DeserializarObjetoResponse<ResponseResult>(response);
 
-            return RetornoOk();
+            return RetornoOK();
         }
 
         public async Task<EnderecoViewModel> ObterEndereco()
