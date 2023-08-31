@@ -6,15 +6,16 @@ namespace NSE.Pedidos.API.Application.Events
 {
     public class PedidoEventHandler : INotificationHandler<PedidoRealizadoEvent>
     {
-        private readonly IMessageBus _messageBus;
+        private readonly IMessageBus _bus;
 
         public PedidoEventHandler(IMessageBus messageBus)
         {
-            _messageBus = messageBus;
+            _bus = messageBus;
         }
+
         public async Task Handle(PedidoRealizadoEvent message, CancellationToken cancellationToken)
         {
-            await _messageBus.PublishAsync(new PedidoRealizadoIntegrationEvent(message.ClienteId));
+            await _bus.PublishAsync(new PedidoRealizadoIntegrationEvent(message.ClienteId));
         }
     }
 }

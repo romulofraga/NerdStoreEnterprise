@@ -14,8 +14,6 @@ namespace NSE.Pedidos.Infra.Data
 
         public PedidosContext(DbContextOptions<PedidosContext> options, IMediatorHandler mediatorHandler) : base(options)
         {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-            ChangeTracker.AutoDetectChangesEnabled = false;
             _mediatorHandler = mediatorHandler;
         }
 

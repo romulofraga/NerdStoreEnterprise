@@ -7,12 +7,12 @@ namespace NSE.Carrinho.API.Services
 {
     public class CarrinhoIntegrationHandler : BackgroundService
     {
-        private readonly IMessageBus _messageBus;
+        private readonly IMessageBus _bus;
         private readonly IServiceProvider _serviceProvider;
 
         public CarrinhoIntegrationHandler(IMessageBus messageBus, IServiceProvider serviceProvider)
         {
-            _messageBus = messageBus;
+            _bus = messageBus;
             _serviceProvider = serviceProvider;
         }
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -23,7 +23,9 @@ namespace NSE.Carrinho.API.Services
 
         private void SetSubscribers()
         {
-            _messageBus.SubscribeAsync<PedidoRealizadoIntegrationEvent>("PedidoRealizado", ApagarCarrinho);
+            _bus.SubscribeAsync<PedidoRealizadoIntegrationEvent>("PedidoRealizado", ApagarCarrinho);
+
+            //(async request => await ApagarCarrinho(request));
         }
 
         private async Task ApagarCarrinho(PedidoRealizadoIntegrationEvent message)
@@ -33,7 +35,11 @@ namespace NSE.Carrinho.API.Services
 
             var carrinho = await context.CarrinhoClientes.FirstOrDefaultAsync(c => c.ClienteId == message.ClienteId);
 
-            if (carrinho != null) await context.SaveChangesAsync();
+            if (carrinho != null)
+            {
+                context.CarrinhoClientes.Remove(carrinho);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }
