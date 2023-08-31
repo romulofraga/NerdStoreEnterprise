@@ -22,18 +22,25 @@ namespace NSE.Pedidos.API.Application.Commands
 
         public async Task<ValidationResult> Handle(AdicionarPedidoCommand message, CancellationToken cancellationToken)
         {
+            //Validar comando
             if (!message.IsValid()) return message.ValidationResult;
 
+            //Mapear Pedido
             var pedido = MapearPedido(message);
 
+            //Aplicar voucher
             if (!await AplicarVoucher(message, pedido)) return ValidationResult;
 
+            //Validar Pedido
             if (!ValidarPedido(pedido)) return ValidationResult;
 
+            //Processar pagamento
             if (!ProcessarPagamento(pedido)) return ValidationResult;
 
+            //Se Pagamento ok
             pedido.AutorizarPedido();
 
+            //Adicionar Evento
             pedido.AdicionaEvento(new PedidoRealizadoEvent(pedido.Id, pedido.ClienteId));
 
             _pedidoRepository.Adicionar(pedido);
