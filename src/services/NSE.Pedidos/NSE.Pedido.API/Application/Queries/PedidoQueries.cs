@@ -34,29 +34,29 @@ namespace NSE.Pedidos.API.Application.Queries
                                  FROM PEDIDOS P 
                                  INNER JOIN PEDIDOITEMS PIT ON P.ID = PIT.PEDIDOID 
                                  WHERE P.CLIENTEID = @clienteId 
-                                 AND P.DATACADASTRO between DATEADD(minute, -3,  GETDATE()) and DATEADD(minute, 0,  GETDATE())
+                                 AND P.DATACADASTRO between DATEADD(minute, -5,  GETDATE()) and DATEADD(minute, 0,  GETDATE())
                                  AND P.PEDIDOSTATUS = 1 
                                  ORDER BY P.DATACADASTRO DESC";
 
             var pedido = await _pedidoRepository.ObterDBConnection()
                 .QueryAsync<dynamic>(sql, new { clienteId });
 
-            var lookup = new Dictionary<Guid, PedidoDTO>();
+            //var lookup = new Dictionary<Guid, PedidoDTO>();
 
 
-            var outrojeitoPedido = (await _pedidoRepository.ObterDBConnection()
-                .QueryAsync<PedidoDTO, PedidoItemDTO, EnderecoDTO, PedidoDTO>(sql, (p, pi, e) =>
-                {
-                    if (!lookup.TryGetValue(p.Id, out var pedido))
-                    {
-                        lookup.Add(p.Id, pedido = p);
-                        p.Endereco = e;
-                    }
+            //var outrojeitoPedido = (await _pedidoRepository.ObterDBConnection()
+            //    .QueryAsync<PedidoDTO, PedidoItemDTO, EnderecoDTO, PedidoDTO>(sql, (p, pi, e) =>
+            //    {
+            //        if (!lookup.TryGetValue(p.Id, out var pedidomultiquery))
+            //        {
+            //            lookup.Add(p.Id, pedidomultiquery = p);
+            //            p.Endereco = e;
+            //        }
 
-                    p.PedidoItems.Add(pi);
+            //        p.PedidoItems.Add(pi);
 
-                    return p;
-                }, new { clienteId })).FirstOrDefault();
+            //        return p;
+            //    }, new { clienteId })).FirstOrDefault();
 
             return MapearPedido(pedido);
         }
