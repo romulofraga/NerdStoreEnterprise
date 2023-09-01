@@ -33,6 +33,7 @@ namespace NSE.WebApp.MVC.Controllers
         [Route("pagamento")]
         public async Task<IActionResult> Pagamento()
         {
+
             var carrinho = await _comprasBffService.ObterCarrinho();
             if (carrinho.Itens.Count == 0) return RedirectToAction("Index", "Carrinho");
 

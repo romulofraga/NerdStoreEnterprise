@@ -7,7 +7,6 @@ using NSE.WebApi.Core.Usuario;
 
 namespace NSE.Clientes.API.Controllers
 {
-    [Route("api/clientes")]
     public class ClientesController : MainController
     {
         private readonly IClienteRepository _clienteRepository;

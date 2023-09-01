@@ -43,9 +43,9 @@
                                 foreach (var item in Model.Itens)
                                 {
                                     <div class="col-md-6">
-                                        <figure class="itemside mb-3">
+                                        <figure class="itemside  mb-3">
                                             <div class="aside">
-                                                <img src="~/images/produtos/@item.Imagem" alt="@item.Nome" class="border img-fluid">
+                                                <img src="~/images/produtos/@item.Imagem" alt="@item.Nome" class="border img-xs">
                                             </div>
                                             <figcaption class="info">
                                                 <p>
@@ -67,16 +67,19 @@
                         <partial name="_Endereco" model="Model" />
                     </div>
                     <div class="card-body border-top">
-                        @{
-                            if (Model.Endereco != null)
-                            {
-                                <div class="text-end">
-                                    <a asp-controller="Pedido" asp-action="Pagamento" class="btn btn-primary"> Pagamento <i class="fas fa-chevron-right"></i> </a>
-                                </div>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <a asp-controller="Carrinho" asp-action="Index" class="btn btn-light"> <i class="fas fa-chevron-left"></i> Voltar ao carrinho </a>
+                            </div>
+                            @{
+                                if (Model.Endereco != null)
+                                {
+                                    <div class="text-left">
+                                        <a asp-controller="Pedido" asp-action="Pagamento" class="btn btn-primary"> Pagamento <i class="fas fa-chevron-right"></i> </a>
+                                    </div>
+                                }
                             }
-                        }
-
-                        <a asp-controller="Carrinho" asp-action="Index" class="btn btn-light"> <i class="fas fa-chevron-left"></i> Voltar ao carrinho </a>
+                        </div>
                     </div>
                 </div>
             }
