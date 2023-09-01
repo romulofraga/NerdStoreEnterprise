@@ -23,9 +23,8 @@ namespace NSE.Carrinho.API.Services
 
         private void SetSubscribers()
         {
-            _bus.SubscribeAsync<PedidoRealizadoIntegrationEvent>("PedidoRealizado", ApagarCarrinho);
-
-            //(async request => await ApagarCarrinho(request));
+            _bus.SubscribeAsync<PedidoRealizadoIntegrationEvent>("PedidoRealizado", async request =>
+               await ApagarCarrinho(request));
         }
 
         private async Task ApagarCarrinho(PedidoRealizadoIntegrationEvent message)
