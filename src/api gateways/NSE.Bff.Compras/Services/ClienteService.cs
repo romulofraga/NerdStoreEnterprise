@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using NSE.Bff.Compras.Extensions;
 using NSE.Bff.Compras.Models;
-using NSE.Bff.Compras.Services;
 using System.Net;
 
-namespace NSE.BFF.Compras.Services
+namespace NSE.Bff.Compras.Services
 {
     public interface IClienteService
     {
