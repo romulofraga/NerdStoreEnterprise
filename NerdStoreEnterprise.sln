@@ -35,7 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pagamento", "Pagamento", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pedido", "Pedido", "{606F01F3-C3D4-4397-B4D6-77014DBD61C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.Pagamento.API", "src\services\NSE.Pagamento.API\NSE.Pagamento.API.csproj", "{00214A84-47F2-4D5D-8726-FBCA0A47FBBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.Pagamentos.API", "src\services\NSE.Pagamento.API\NSE.Pagamentos.API.csproj", "{00214A84-47F2-4D5D-8726-FBCA0A47FBBB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.WebApp.MVC", "src\web\NSE.WebApp.MVC\NSE.WebApp.MVC.csproj", "{1992C400-ED66-48D1-BAD6-8EC22D2DCE0D}"
 EndProject
@@ -60,6 +60,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.Pedidos.Domain", "src\services\NSE.Pedidos\NSE.Pedidos.Domain\NSE.Pedidos.Domain.csproj", "{A15DDBB9-4493-4AAF-9F93-65C809778EBF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.Pedidos.Infra", "src\services\NSE.Pedidos\NSE.Pedidos.Infra\NSE.Pedidos.Infra.csproj", "{EE3DC5EA-1700-4F76-8F74-85C7042A06F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSE.Pagamentos.NerdsPag", "src\services\NSE.Pagamentos.NerdsPag\NSE.Pagamentos.NerdsPag.csproj", "{7991425A-A86C-43F5-80FA-B920A31935A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +121,10 @@ Global
 		{EE3DC5EA-1700-4F76-8F74-85C7042A06F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE3DC5EA-1700-4F76-8F74-85C7042A06F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE3DC5EA-1700-4F76-8F74-85C7042A06F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7991425A-A86C-43F5-80FA-B920A31935A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7991425A-A86C-43F5-80FA-B920A31935A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7991425A-A86C-43F5-80FA-B920A31935A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7991425A-A86C-43F5-80FA-B920A31935A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -152,6 +158,7 @@ Global
 		{0EB2C19B-4BB2-4004-8CD3-A4BE4A964467} = {606F01F3-C3D4-4397-B4D6-77014DBD61C2}
 		{A15DDBB9-4493-4AAF-9F93-65C809778EBF} = {606F01F3-C3D4-4397-B4D6-77014DBD61C2}
 		{EE3DC5EA-1700-4F76-8F74-85C7042A06F3} = {606F01F3-C3D4-4397-B4D6-77014DBD61C2}
+		{7991425A-A86C-43F5-80FA-B920A31935A2} = {E1C02406-8B46-4C97-84B8-3848515A3BF9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C0E5CF76-F786-4FAF-A717-F074274647A0}
