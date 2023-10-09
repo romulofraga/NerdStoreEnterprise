@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "NSE.Pagamento.API": {
+    "NSE.Pagamentos.API": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
