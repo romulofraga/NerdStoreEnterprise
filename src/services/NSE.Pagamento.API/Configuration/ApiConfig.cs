@@ -1,4 +1,6 @@
-﻿using NSE.WebApi.Core.Identidade;
+﻿using Microsoft.EntityFrameworkCore;
+using NSE.Pagamentos.API.Data;
+using NSE.WebApi.Core.Identidade;
 
 namespace NSE.Pagamentos.API.Configuration
 {
@@ -6,6 +8,10 @@ namespace NSE.Pagamentos.API.Configuration
     {
         public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDbContext<PagamentosContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            });
 
             services.AddControllers();
 
