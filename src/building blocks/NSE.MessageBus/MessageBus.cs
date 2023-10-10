@@ -1,4 +1,5 @@
 ﻿using EasyNetQ;
+using EasyNetQ.Internals;
 using NSE.Core.Messages.Integration;
 using Polly;
 using RabbitMQ.Client.Exceptions;
@@ -24,7 +25,7 @@ namespace NSE.MessageBus
         public void Publish<T>(T message) where T : IntegrationEvent
         {
             TryConnect();
-            _bus.PubSub.Publish(message);
+            _bus.PubSub.PublishAsync(message);
         }
 
         public async Task PublishAsync<T>(T message) where T : IntegrationEvent
@@ -39,10 +40,11 @@ namespace NSE.MessageBus
             _bus.PubSub.Subscribe(subscriptionId, onMessage);
         }
 
-        public void SubscribeAsync<T>(string subscriptionId, Func<T, Task> onMessage) where T : class
+        public AwaitableDisposable<SubscriptionResult> SubscribeAsync<T>(string subscriptionId,
+            Func<T, Task> onMessage) where T : class
         {
             TryConnect();
-            _bus.PubSub.SubscribeAsync(subscriptionId, onMessage);
+            return _bus.PubSub.SubscribeAsync(subscriptionId, onMessage);
         }
 
         public TResponse Request<TRequest, TResponse>(TRequest request)
@@ -69,10 +71,12 @@ namespace NSE.MessageBus
             return _bus.Rpc.Respond(responder);
         }
 
-        public async Task<IDisposable> RespondAsync<TRequest, TResponse>(Func<TRequest, Task<TResponse>> responder)
+        public AwaitableDisposable<IDisposable> RespondAsync<TRequest, TResponse>(
+            Func<TRequest, Task<TResponse>> responder)
+            where TRequest : IntegrationEvent where TResponse : ResponseMessage
         {
             TryConnect();
-            return await _bus.Rpc.RespondAsync(responder);
+            return _bus.Rpc.RespondAsync(responder);
         }
 
         private void TryConnect()

@@ -1,6 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using Microsoft.AspNetCore.Mvc.Razor;
+using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace NSE.WebApp.MVC.Extensions;
 
@@ -54,8 +54,8 @@ public static class RazorHelpers
 
     public static string ExibeStatus(this RazorPage page, int status)
     {
-        var statusMensagem = "";
-        var statusClasse = "";
+        string statusMensagem;
+        string statusClasse;
 
         switch (status)
         {
@@ -79,9 +79,13 @@ public static class RazorHelpers
                 statusClasse = "warning";
                 statusMensagem = "Cancelado";
                 break;
+            default:
+                statusClasse = "dark";
+                statusMensagem = "Status desconhecido";
+                break;
         }
 
-        return $"<span class='badge badge-{statusClasse}'>{statusMensagem}</span>";
+        return $"<span class='badge rounded-pill bg-{statusClasse}'>{statusMensagem}</span>";
     }
 
     private static string FormatoMoeda(decimal valor)

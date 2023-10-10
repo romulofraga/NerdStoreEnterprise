@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NSE.Clientes.API.Facade;
 using NSE.Pagamentos.API.Data;
 using NSE.WebApi.Core.Identidade;
 
@@ -12,6 +13,8 @@ namespace NSE.Pagamentos.API.Configuration
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.Configure<PagamentoConfig>(configuration.GetSection("PagamentoConfig"));
 
             services.AddControllers();
 

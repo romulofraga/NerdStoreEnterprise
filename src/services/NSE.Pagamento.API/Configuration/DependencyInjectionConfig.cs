@@ -1,4 +1,7 @@
-﻿using NSE.Core.Mediator;
+﻿using NSE.Clientes.API.Facade;
+using NSE.Pagamentos.API.Data.Repository;
+using NSE.Pagamentos.API.Models;
+using NSE.Pagamentos.API.Services;
 using NSE.WebApi.Core.Usuario;
 
 namespace NSE.Pagamentos.API.Configuration
@@ -8,9 +11,12 @@ namespace NSE.Pagamentos.API.Configuration
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             services.AddScoped<IAspnetUser, AspNetUser>();
-            services.AddScoped<IMediatorHandler, MediatorHandler>();
+
+            services.AddScoped<IPagamentoService, PagamentoService>();
+            services.AddScoped<IPagamentoFacade, PagamentoCartaoCreditoFacade>();
+
+            services.AddScoped<IPagamentoRepository, PagamentoRepository>();
 
             return services;
         }
