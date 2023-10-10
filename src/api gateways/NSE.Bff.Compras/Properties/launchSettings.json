@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "IIS Express - Development": {
+    "IIS Bff - Development": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -50,7 +50,7 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:5546",
-      "sslPort": 44341
+      "sslPort": 44349
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "IIS Express - Development": {
+    "IIS Catalogo - Development": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",

@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "IIS Express - Development": {
+    "IIS MVC - Development": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
