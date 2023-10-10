@@ -8,6 +8,8 @@ namespace NSE.Pedidos.API.Application.Queries
     {
         Task<PedidoDTO> ObterUltimoPedido(Guid clienteId);
         Task<IEnumerable<PedidoDTO>> ObterListaPorCliente(Guid clientId);
+
+        Task<PedidoDTO> ObterPedidosAutorizados();
     }
     public class PedidoQueries : IPedidoQueries
     {
@@ -41,24 +43,28 @@ namespace NSE.Pedidos.API.Application.Queries
             var pedido = await _pedidoRepository.ObterDBConnection()
                 .QueryAsync<dynamic>(sql, new { clienteId });
 
-            //var lookup = new Dictionary<Guid, PedidoDTO>();
-
-
-            //var outrojeitoPedido = (await _pedidoRepository.ObterDBConnection()
-            //    .QueryAsync<PedidoDTO, PedidoItemDTO, EnderecoDTO, PedidoDTO>(sql, (p, pi, e) =>
-            //    {
-            //        if (!lookup.TryGetValue(p.Id, out var pedidomultiquery))
-            //        {
-            //            lookup.Add(p.Id, pedidomultiquery = p);
-            //            p.Endereco = e;
-            //        }
-
-            //        p.PedidoItems.Add(pi);
-
-            //        return p;
-            //    }, new { clienteId })).FirstOrDefault();
-
             return MapearPedido(pedido);
+        }
+
+        public async Task<PedidoDTO> ObterPedidosAutorizados()
+        {
+            const string sql = @"SELECT TOP 1
+                                P.ID as 'PedidoId', P.ID, P.CLIENTEID,
+                                PI.ID AS 'PedidoItemId', PI.ID, PI.PRODUTOID, PI.QUANTIDADE
+                                FROM PEDIDOS P
+                                INNER JOIN PEDIDOITEMS PI ON P.ID = PI.PEDIDOID
+                                WHERE P.PEDIDOSTATUS = 1
+                                ORDER BY P.DATACADASTRO";
+
+            var pedido = await _pedidoRepository.ObterDBConnection().QueryAsync<PedidoDTO, PedidoItemDTO, PedidoDTO>(sql, (p, pi) =>
+                {
+                    p.PedidoItems = new List<PedidoItemDTO>();
+                    p.PedidoItems.Add(pi);
+
+                    return p;
+                }, splitOn: "PedidoId,PedidoItemId");
+
+            return pedido.FirstOrDefault();
         }
 
         private static PedidoDTO MapearPedido(dynamic resultado)
