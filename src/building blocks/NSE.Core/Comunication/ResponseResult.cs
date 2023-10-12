@@ -10,13 +10,4 @@
         public int Status { get; set; }
         public ResponseErrorMessages Errors { get; set; }
     }
-
-    public class ResponseErrorMessages
-    {
-        public ResponseErrorMessages()
-        {
-            Mensagens = new List<string>();
-        }
-        public List<string> Mensagens { get; set; }
-    }
 }

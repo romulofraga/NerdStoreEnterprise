@@ -13,10 +13,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Identidade" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\NSE.Core\NSE.Core.csproj" />
 	</ItemGroup>
 

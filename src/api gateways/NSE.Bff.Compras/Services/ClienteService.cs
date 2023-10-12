@@ -5,11 +5,6 @@ using System.Net;
 
 namespace NSE.Bff.Compras.Services
 {
-    public interface IClienteService
-    {
-        Task<EnderecoDTO> ObterEndereco();
-    }
-
     public class ClienteService : Service, IClienteService
     {
         private readonly HttpClient _httpClient;

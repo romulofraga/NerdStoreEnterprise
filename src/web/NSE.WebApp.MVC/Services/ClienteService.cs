@@ -6,11 +6,6 @@ using System.Net;
 
 namespace NSE.WebApp.MVC.Services
 {
-    public interface IClienteService
-    {
-        Task<EnderecoViewModel> ObterEndereco();
-        Task<ResponseResult> AdicionarEndereco(EnderecoViewModel endereco);
-    }
     public class ClienteService : Service, IClienteService
     {
         private readonly HttpClient _httpClient;

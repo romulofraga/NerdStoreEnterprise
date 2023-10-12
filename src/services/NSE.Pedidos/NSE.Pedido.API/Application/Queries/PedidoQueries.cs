@@ -4,13 +4,6 @@ using NSE.Pedidos.Domain.Pedidos;
 
 namespace NSE.Pedidos.API.Application.Queries
 {
-    public interface IPedidoQueries
-    {
-        Task<PedidoDTO> ObterUltimoPedido(Guid clienteId);
-        Task<IEnumerable<PedidoDTO>> ObterListaPorCliente(Guid clientId);
-
-        Task<PedidoDTO> ObterPedidosAutorizados();
-    }
     public class PedidoQueries : IPedidoQueries
     {
         private readonly IPedidoRepository _pedidoRepository;

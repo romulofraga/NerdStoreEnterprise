@@ -3,11 +3,6 @@ using NSE.Pedidos.Domain.Vouchers;
 
 namespace NSE.Pedidos.API.Application.Queries
 {
-    public interface IVoucherQueries
-    {
-        Task<VoucherDTO> ObterPorCodigo(string codigo);
-    }
-
     public class VoucherQueries : IVoucherQueries
     {
         private readonly IVoucherRepository _voucherRepository;

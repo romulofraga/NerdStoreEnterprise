@@ -6,13 +6,6 @@ using System.Net;
 
 namespace NSE.Bff.Compras.Services
 {
-    public interface IPedidoService
-    {
-        Task<ResponseResult> FinalizarPedido(PedidoDTO pedido);
-        Task<PedidoDTO> ObterUltimoPedido();
-        Task<IEnumerable<PedidoDTO>> ObterListaPorClienteId();
-        Task<VoucherDTO> ObterVoucherPorCodigo(string codigo);
-    }
     public class PedidoService : Service, IPedidoService
     {
         private readonly HttpClient _httpClient;

@@ -1,11 +1,5 @@
 ﻿namespace NSE.Carrinho.API.Models
 {
-    public enum TipoDescontoVoucher
-    {
-        Porcentagem,
-        Valor
-    }
-
     public class Voucher
     {
         public decimal? Percentual { get; set; }
