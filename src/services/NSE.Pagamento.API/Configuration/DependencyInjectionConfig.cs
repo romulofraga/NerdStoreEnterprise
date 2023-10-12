@@ -1,5 +1,4 @@
-﻿using NSE.Clientes.API.Facade;
-using NSE.Pagamentos.API.Data.Repository;
+﻿using NSE.Pagamentos.API.Data.Repository;
 using NSE.Pagamentos.API.Facade;
 using NSE.Pagamentos.API.Models;
 using NSE.Pagamentos.API.Services;

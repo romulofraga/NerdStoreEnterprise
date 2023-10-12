@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using NSE.Clientes.API.Facade;
 using NSE.Pagamentos.API.Models;
 using NSE.Pagamentos.NerdsPag;
 

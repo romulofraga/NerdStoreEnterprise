@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NSE.Bff.Compras.Models;
 using NSE.Bff.Compras.Services;
 using NSE.WebApi.Core.Controllers;
-using System.Globalization;
 
-namespace NSE.BFF.Compras.Controllers
+namespace NSE.Bff.Compras.Controllers
 {
     [Authorize]
     public class PedidoController : MainController

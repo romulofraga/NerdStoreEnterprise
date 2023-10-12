@@ -1,9 +1,9 @@
 ﻿using NSE.Core.DomainObjects;
+using NSE.Core.Messages.Integration;
 using NSE.MessageBus;
 using NSE.Pagamentos.API.Models;
-using NSE.Pagamentos.API.Services;
 
-namespace NSE.Core.Messages.Integration
+namespace NSE.Pagamentos.API.Services
 {
     public class PagamentoIntegrationHandler : BackgroundService
     {

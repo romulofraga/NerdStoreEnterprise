@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NSE.Clientes.API.Facade;
 using NSE.Pagamentos.API.Data;
+using NSE.Pagamentos.API.Facade;
 using NSE.WebApi.Core.Identidade;
 
 namespace NSE.Pagamentos.API.Configuration

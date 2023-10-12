@@ -1,6 +1,7 @@
 ﻿using NSE.Core.Messages.Integration;
 using NSE.Core.Utils;
 using NSE.MessageBus;
+using NSE.Pagamentos.API.Services;
 
 namespace NSE.Pagamentos.API.Configuration
 {
