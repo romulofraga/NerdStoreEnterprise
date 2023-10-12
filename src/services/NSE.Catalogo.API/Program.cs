@@ -13,13 +13,15 @@ namespace NSE.Catalogo.API
 
             // Add services to the container.
 
-            builder.Services.AddApiConfiguration(builder.Configuration);
+            builder.Services.AddApiConfiguration();
 
             builder.Services.AddJwtConfiguration(builder.Configuration);
 
             builder.Services.AddSwaggerConfiguration();
 
-            builder.Services.RegisterServices();
+            builder.Services.RegisterServices(builder.Configuration);
+            
+            builder.Services.AddMessageBusConfiguration(builder.Configuration);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 

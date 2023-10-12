@@ -2,7 +2,7 @@
 using NSE.Core.Utils;
 using NSE.MessageBus;
 
-namespace NSE.Clientes.API.Configurarion
+namespace NSE.Clientes.API.Configuration
 {
     public static class MessageBusConfig
     {
