@@ -44,7 +44,7 @@ namespace NSE.MessageBus
             Func<T, Task> onMessage) where T : class
         {
             TryConnect();
-            return _bus.PubSub.SubscribeAsync(subscriptionId, onMessage);
+           return _bus.PubSub.SubscribeAsync(subscriptionId, onMessage);
         }
 
         public TResponse Request<TRequest, TResponse>(TRequest request)
@@ -104,9 +104,6 @@ namespace NSE.MessageBus
             policy.Execute(TryConnect);
         }
 
-        public void Dispose()
-        {
-            _bus.Dispose();
-        }
+        public void Dispose() => _bus.Dispose();
     }
 }

@@ -2,13 +2,13 @@
 {
     public class PedidoBaixadoEstoqueIntegrationEvent : IntegrationEvent
     {
-        public Guid ClienteId;
-        public Guid PedidoId;
+        public Guid PedidoId { get; private set; }
+        //public Guid ClienteId { get; private set; }
 
-        public PedidoBaixadoEstoqueIntegrationEvent(Guid clienteId, Guid pedidoId)
+        public PedidoBaixadoEstoqueIntegrationEvent(Guid pedidoId)
         {
-            ClienteId = clienteId;
             PedidoId = pedidoId;
+            // ClienteId = clienteId;
         }
     }
 }
