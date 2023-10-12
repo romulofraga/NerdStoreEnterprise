@@ -1,4 +1,5 @@
-﻿using NSE.Catalogo.API.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using NSE.Catalogo.API.Data;
 using NSE.Catalogo.API.Data.Repository;
 using NSE.Catalogo.API.Models;
 
@@ -6,12 +7,13 @@ namespace NSE.Catalogo.API.Configuration
 {
     public static class DependencyInjectionConfig
     {
-        public static IServiceCollection RegisterServices(this IServiceCollection services)
+        public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
-            services.AddScoped<CatalogoContext>();
-
-            return services;
+            services.AddDbContext<CatalogoContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            });
         }
     }
 }

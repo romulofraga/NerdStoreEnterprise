@@ -1,5 +1,6 @@
 ﻿using NSE.Clientes.API.Facade;
 using NSE.Pagamentos.API.Data.Repository;
+using NSE.Pagamentos.API.Facade;
 using NSE.Pagamentos.API.Models;
 using NSE.Pagamentos.API.Services;
 using NSE.WebApi.Core.Usuario;
@@ -8,7 +9,7 @@ namespace NSE.Pagamentos.API.Configuration
 {
     public static class DependencyInjectionConfig
     {
-        public static IServiceCollection RegisterServices(this IServiceCollection services)
+        public static void RegisterServices(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAspnetUser, AspNetUser>();
@@ -17,8 +18,6 @@ namespace NSE.Pagamentos.API.Configuration
             services.AddScoped<IPagamentoFacade, PagamentoCartaoCreditoFacade>();
 
             services.AddScoped<IPagamentoRepository, PagamentoRepository>();
-
-            return services;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace NSE.Clientes.API.Configuration
 {
     public static class DependencyInjectionConfig
     {
-        public static IServiceCollection RegisterServices(this IServiceCollection services)
+        public static void RegisterServices(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -23,8 +23,6 @@ namespace NSE.Clientes.API.Configuration
             services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClienteEventHandler>();
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<ClientesContext>();
-
-            return services;
         }
     }
 }
