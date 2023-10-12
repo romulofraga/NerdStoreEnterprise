@@ -25,7 +25,7 @@ namespace NSE.Pagamentos.API.Data.Repository
             _context.Transacoes.Add(transacao);
         }
 
-        public async Task<Pagamento?> ObterPagamentoPorPedidoId(Guid pedidoId)
+        public async Task<Pagamento> ObterPagamentoPorPedidoId(Guid pedidoId)
         {
             return await _context.Pagamentos.AsNoTracking()
                 .FirstOrDefaultAsync(p => p.PedidoId == pedidoId);

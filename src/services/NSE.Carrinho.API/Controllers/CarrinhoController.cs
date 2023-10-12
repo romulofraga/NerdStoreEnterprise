@@ -99,7 +99,7 @@ namespace NSE.Carrinho.API.Controllers
             return CustomResponse();
         }
 
-        private async Task<CarrinhoCliente?> ObterCarrinhoCliente()
+        private async Task<CarrinhoCliente> ObterCarrinhoCliente()
         {
             return await _context.CarrinhoClientes
                 .Include(c => c.Itens)
@@ -131,7 +131,7 @@ namespace NSE.Carrinho.API.Controllers
             _context.CarrinhoClientes.Update(carrinho);
         }
 
-        private async Task<CarrinhoItem?> ObterItemCarrinhoValidado(Guid produtoId, CarrinhoCliente? carrinho, CarrinhoItem? item = null)
+        private async Task<CarrinhoItem> ObterItemCarrinhoValidado(Guid produtoId, CarrinhoCliente carrinho, CarrinhoItem item = null)
         {
             if (item is not null && produtoId != item?.ProdutoId)
             {

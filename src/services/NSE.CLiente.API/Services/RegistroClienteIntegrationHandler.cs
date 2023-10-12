@@ -21,7 +21,7 @@ namespace NSE.Clientes.API.Services
         private void SetResponder()
         {
             _messageBus.RespondAsync<UsuarioRegistradoIntegradoEvent, ResponseMessage>(async request =>
-              await RegistrarCliente(request));
+                await RegistrarCliente(request));
 
             _messageBus.AdvancedBus.Connected += OnConnect;
         }

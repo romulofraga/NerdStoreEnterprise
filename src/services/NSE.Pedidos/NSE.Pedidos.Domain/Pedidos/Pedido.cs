@@ -53,6 +53,16 @@ namespace NSE.Pedidos.Domain.Pedidos
             Endereco = endereco;
         }
 
+        public void CancelarPedido()
+        {
+            PedidoStatus = PedidoStatus.Cancelado;
+        }
+
+        public void FinalizarPedido()
+        {
+            PedidoStatus = PedidoStatus.Pago;
+        }
+
         public void CalcularValorPedido()
         {
             ValorTotal = PedidoItems.Sum(p => p.CalcularValor());

@@ -15,8 +15,6 @@ namespace NSE.Pedidos.API.Application.Events
 
         public async Task Handle(PedidoRealizadoEvent message, CancellationToken cancellationToken)
         {
-            await _bus.AdvancedBus.ConnectAsync(cancellationToken);
-            //>????? PORQUE ISSO ACONTECE?
             await _bus.PublishAsync(new PedidoRealizadoIntegrationEvent(message.ClienteId));
 
         }
