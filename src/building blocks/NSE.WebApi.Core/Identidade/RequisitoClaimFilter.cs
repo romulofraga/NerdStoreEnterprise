@@ -12,6 +12,7 @@ public class RequisitoClaimFilter : IAuthorizationFilter
     {
         _claim = claim;
     }
+
     public void OnAuthorization(AuthorizationFilterContext context)
     {
         if (!context.HttpContext.User.Identity.IsAuthenticated)
@@ -21,8 +22,6 @@ public class RequisitoClaimFilter : IAuthorizationFilter
         }
 
         if (!CustomAuthorize.ValidarClaimsUsuario(context.HttpContext, _claim.Type, _claim.Value))
-        {
             context.Result = new StatusCodeResult(403);
-        }
     }
 }

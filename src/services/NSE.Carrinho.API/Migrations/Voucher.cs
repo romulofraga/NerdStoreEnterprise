@@ -1,77 +1,76 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿#nullable disable
 
-#nullable disable
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace NSE.Carrinho.API.Migrations
+namespace NSE.Carrinho.API.Migrations;
+
+public partial class Voucher : Migration
 {
-    public partial class Voucher : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<decimal>(
-                name: "Desconto",
-                table: "CarrinhoClientes",
-                type: "decimal(18,2)",
-                nullable: false,
-                defaultValue: 0m);
+        migrationBuilder.AddColumn<decimal>(
+            "Desconto",
+            "CarrinhoClientes",
+            "decimal(18,2)",
+            nullable: false,
+            defaultValue: 0m);
 
-            migrationBuilder.AddColumn<decimal>(
-                name: "Percentual",
-                table: "CarrinhoClientes",
-                type: "decimal(18,2)",
-                nullable: true);
+        migrationBuilder.AddColumn<decimal>(
+            "Percentual",
+            "CarrinhoClientes",
+            "decimal(18,2)",
+            nullable: true);
 
-            migrationBuilder.AddColumn<int>(
-                name: "TipoDesconto",
-                table: "CarrinhoClientes",
-                type: "int",
-                nullable: true);
+        migrationBuilder.AddColumn<int>(
+            "TipoDesconto",
+            "CarrinhoClientes",
+            "int",
+            nullable: true);
 
-            migrationBuilder.AddColumn<decimal>(
-                name: "ValorDesconto",
-                table: "CarrinhoClientes",
-                type: "decimal(18,2)",
-                nullable: true);
+        migrationBuilder.AddColumn<decimal>(
+            "ValorDesconto",
+            "CarrinhoClientes",
+            "decimal(18,2)",
+            nullable: true);
 
-            migrationBuilder.AddColumn<string>(
-                name: "VoucherCodigo",
-                table: "CarrinhoClientes",
-                type: "varchar(50)",
-                nullable: true);
+        migrationBuilder.AddColumn<string>(
+            "VoucherCodigo",
+            "CarrinhoClientes",
+            "varchar(50)",
+            nullable: true);
 
-            migrationBuilder.AddColumn<bool>(
-                name: "VoucherUtilizado",
-                table: "CarrinhoClientes",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
-        }
+        migrationBuilder.AddColumn<bool>(
+            "VoucherUtilizado",
+            "CarrinhoClientes",
+            "bit",
+            nullable: false,
+            defaultValue: false);
+    }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Desconto",
-                table: "CarrinhoClientes");
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            "Desconto",
+            "CarrinhoClientes");
 
-            migrationBuilder.DropColumn(
-                name: "Percentual",
-                table: "CarrinhoClientes");
+        migrationBuilder.DropColumn(
+            "Percentual",
+            "CarrinhoClientes");
 
-            migrationBuilder.DropColumn(
-                name: "TipoDesconto",
-                table: "CarrinhoClientes");
+        migrationBuilder.DropColumn(
+            "TipoDesconto",
+            "CarrinhoClientes");
 
-            migrationBuilder.DropColumn(
-                name: "ValorDesconto",
-                table: "CarrinhoClientes");
+        migrationBuilder.DropColumn(
+            "ValorDesconto",
+            "CarrinhoClientes");
 
-            migrationBuilder.DropColumn(
-                name: "VoucherCodigo",
-                table: "CarrinhoClientes");
+        migrationBuilder.DropColumn(
+            "VoucherCodigo",
+            "CarrinhoClientes");
 
-            migrationBuilder.DropColumn(
-                name: "VoucherUtilizado",
-                table: "CarrinhoClientes");
-        }
+        migrationBuilder.DropColumn(
+            "VoucherUtilizado",
+            "CarrinhoClientes");
     }
 }

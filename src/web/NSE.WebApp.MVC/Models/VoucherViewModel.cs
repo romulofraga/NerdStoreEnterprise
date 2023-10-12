@@ -1,7 +1,6 @@
-﻿namespace NSE.WebApp.MVC.Models
+﻿namespace NSE.WebApp.MVC.Models;
+
+public class VoucherViewModel
 {
-    public class VoucherViewModel
-    {
-        public string Codigo { get; set; }
-    }
+    public string Codigo { get; set; }
 }

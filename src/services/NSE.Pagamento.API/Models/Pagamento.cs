@@ -1,26 +1,25 @@
 ﻿using NSE.Core.DomainObjects;
 
-namespace NSE.Pagamentos.API.Models
+namespace NSE.Pagamentos.API.Models;
+
+public class Pagamento : Entity, IAggregateRoot
 {
-    public class Pagamento : Entity, IAggregateRoot
+    public Pagamento()
     {
-        public Pagamento()
-        {
-            Transacoes = new List<Transacao>();
-        }
+        Transacoes = new List<Transacao>();
+    }
 
-        public Guid PedidoId { get; set; }
-        public TipoPagamento TipoPagamento { get; set; }
-        public decimal Valor { get; set; }
+    public Guid PedidoId { get; set; }
+    public TipoPagamento TipoPagamento { get; set; }
+    public decimal Valor { get; set; }
 
-        public CartaoCredito CartaoCredito { get; set; }
+    public CartaoCredito CartaoCredito { get; set; }
 
-        // EF Relation
-        public ICollection<Transacao> Transacoes { get; set; }
+    // EF Relation
+    public ICollection<Transacao> Transacoes { get; set; }
 
-        public void AdicionarTransacao(Transacao transacao)
-        {
-            Transacoes.Add(transacao);
-        }
+    public void AdicionarTransacao(Transacao transacao)
+    {
+        Transacoes.Add(transacao);
     }
 }

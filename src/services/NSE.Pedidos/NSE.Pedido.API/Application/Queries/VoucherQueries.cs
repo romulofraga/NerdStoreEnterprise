@@ -1,33 +1,32 @@
 ﻿using NSE.Pedidos.API.Application.DTO;
 using NSE.Pedidos.Domain.Vouchers;
 
-namespace NSE.Pedidos.API.Application.Queries
+namespace NSE.Pedidos.API.Application.Queries;
+
+public class VoucherQueries : IVoucherQueries
 {
-    public class VoucherQueries : IVoucherQueries
+    private readonly IVoucherRepository _voucherRepository;
+
+    public VoucherQueries(IVoucherRepository voucherRepository)
     {
-        private readonly IVoucherRepository _voucherRepository;
+        _voucherRepository = voucherRepository;
+    }
 
-        public VoucherQueries(IVoucherRepository voucherRepository)
+    public async Task<VoucherDTO> ObterPorCodigo(string codigo)
+    {
+        var voucher = await _voucherRepository.ObterVoucherPorCodigo(codigo);
+
+        if (voucher == null) return null;
+
+        // specification Pattern
+        if (!voucher.EstaValidoParaUtilizacao()) return null;
+
+        return new VoucherDTO
         {
-            _voucherRepository = voucherRepository;
-        }
-
-        public async Task<VoucherDTO> ObterPorCodigo(string codigo)
-        {
-            var voucher = await _voucherRepository.ObterVoucherPorCodigo(codigo);
-
-            if (voucher == null) return null;
-
-            // specification Pattern
-            if (!voucher.EstaValidoParaUtilizacao()) return null;
-
-            return new VoucherDTO
-            {
-                Codigo = voucher.Codigo,
-                TipoDesconto = (int)voucher.TipoDesconto,
-                Percentual = voucher.Percentual,
-                ValorDesconto = voucher.ValorDesconto,
-            };
-        }
+            Codigo = voucher.Codigo,
+            TipoDesconto = (int)voucher.TipoDesconto,
+            Percentual = voucher.Percentual,
+            ValorDesconto = voucher.ValorDesconto
+        };
     }
 }

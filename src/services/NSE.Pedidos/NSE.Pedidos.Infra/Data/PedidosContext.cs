@@ -6,62 +6,55 @@ using NSE.Core.Messages;
 using NSE.Pedidos.Domain.Pedidos;
 using NSE.Pedidos.Domain.Vouchers;
 
-namespace NSE.Pedidos.Infra.Data
+namespace NSE.Pedidos.Infra.Data;
+
+public class PedidosContext : DbContext, IUnityOfWork
 {
-    public class PedidosContext : DbContext, IUnityOfWork
+    private readonly IMediatorHandler _mediatorHandler;
+
+    public PedidosContext(DbContextOptions<PedidosContext> options, IMediatorHandler mediatorHandler) : base(options)
     {
-        private readonly IMediatorHandler _mediatorHandler;
+        _mediatorHandler = mediatorHandler;
+    }
 
-        public PedidosContext(DbContextOptions<PedidosContext> options, IMediatorHandler mediatorHandler) : base(options)
+    public DbSet<Voucher> Vouchers { get; set; }
+    public DbSet<Pedido> Pedidos { get; set; }
+    public DbSet<PedidoItem> PedidoItems { get; set; }
+
+    public async Task<bool> Commit()
+    {
+        foreach (var entry in ChangeTracker.Entries()
+                     .Where(entry => entry.Entity.GetType().GetProperty("DataCadastro") != null))
         {
-            _mediatorHandler = mediatorHandler;
+            if (entry.State == EntityState.Added) entry.Property("DataCadastro").CurrentValue = DateTime.Now;
+
+            if (entry.State == EntityState.Modified) entry.Property("DataCadastro").IsModified = false;
         }
 
-        public DbSet<Voucher> Vouchers { get; set; }
-        public DbSet<Pedido> Pedidos { get; set; }
-        public DbSet<PedidoItem> PedidoItems { get; set; }
+        var sucesso = await base.SaveChangesAsync() > 0;
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Ignore<ValidationResult>();
-            modelBuilder.Ignore<Event>();
+        if (sucesso) await _mediatorHandler.PublicarEventos(this);
 
-            foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
-          e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
-                property.SetColumnType("varchar(100)");
+        return sucesso;
+    }
 
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(
-                e => e.GetForeignKeys()))
-                relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Ignore<ValidationResult>();
+        modelBuilder.Ignore<Event>();
 
-            modelBuilder.HasSequence<int>("MinhaSequencia").StartsAt(1000).IncrementsBy(1);
+        foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
+                     e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
+            property.SetColumnType("varchar(100)");
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PedidosContext).Assembly);
+        foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(
+                     e => e.GetForeignKeys()))
+            relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
-            base.OnModelCreating(modelBuilder);
-        }
+        modelBuilder.HasSequence<int>("MinhaSequencia").StartsAt(1000).IncrementsBy(1);
 
-        public async Task<bool> Commit()
-        {
-            foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("DataCadastro") != null))
-            {
-                if (entry.State == EntityState.Added)
-                {
-                    entry.Property("DataCadastro").CurrentValue = DateTime.Now;
-                }
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PedidosContext).Assembly);
 
-                if (entry.State == EntityState.Modified)
-                {
-                    entry.Property("DataCadastro").IsModified = false;
-                }
-            }
-
-            var sucesso = await base.SaveChangesAsync() > 0;
-
-            if (sucesso) await _mediatorHandler.PublicarEventos(this);
-
-            return sucesso;
-        }
-
+        base.OnModelCreating(modelBuilder);
     }
 }

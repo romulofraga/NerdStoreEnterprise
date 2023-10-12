@@ -2,27 +2,27 @@
 using NSE.Pedidos.API.Application.DTO;
 using NSE.Pedidos.Domain.Pedidos;
 
-namespace NSE.Pedidos.API.Application.Queries
+namespace NSE.Pedidos.API.Application.Queries;
+
+public class PedidoQueries : IPedidoQueries
 {
-    public class PedidoQueries : IPedidoQueries
+    private readonly IPedidoRepository _pedidoRepository;
+
+    public PedidoQueries(IPedidoRepository pedidoRepository, IServiceProvider serviceProvider)
     {
-        private readonly IPedidoRepository _pedidoRepository;
+        _pedidoRepository = pedidoRepository;
+    }
 
-        public PedidoQueries(IPedidoRepository pedidoRepository, IServiceProvider serviceProvider)
-        {
-            _pedidoRepository = pedidoRepository;
-        }
+    public async Task<IEnumerable<PedidoDTO>> ObterListaPorCliente(Guid clienteId)
+    {
+        var pedidos = await _pedidoRepository.ObterListaPorClienteId(clienteId);
 
-        public async Task<IEnumerable<PedidoDTO>> ObterListaPorCliente(Guid clienteId)
-        {
-            var pedidos = await _pedidoRepository.ObterListaPorClienteId(clienteId);
+        return pedidos.Select(PedidoDTO.ParaPedidoDTO);
+    }
 
-            return pedidos.Select(PedidoDTO.ParaPedidoDTO);
-        }
-
-        public async Task<PedidoDTO> ObterUltimoPedido(Guid clienteId)
-        {
-            const string sql = @"SELECT
+    public async Task<PedidoDTO> ObterUltimoPedido(Guid clienteId)
+    {
+        const string sql = @"SELECT
                                  P.ID AS 'ProdutoId', P.CODIGO, P.VOUCHERUTILIZADO, P.DESCONTO, P.VALORTOTAL,P.PEDIDOSTATUS,
                                  P.LOGRADOURO,P.NUMERO, P.BAIRRO, P.CEP, P.COMPLEMENTO, P.CIDADE, P.ESTADO,
                                  PIT.ID AS 'ProdutoItemId',PIT.PRODUTONOME, PIT.QUANTIDADE, PIT.PRODUTOIMAGEM, PIT.VALORUNITARIO 
@@ -33,16 +33,16 @@ namespace NSE.Pedidos.API.Application.Queries
                                  AND P.PEDIDOSTATUS = 1 
                                  ORDER BY P.DATACADASTRO DESC";
 
-            var pedido = await _pedidoRepository.ObterDBConnection()
-                .QueryAsync<dynamic>(sql, new { clienteId });
+        var pedido = await _pedidoRepository.ObterDBConnection()
+            .QueryAsync<dynamic>(sql, new { clienteId });
 
-            return MapearPedido(pedido);
-        }
+        return MapearPedido(pedido);
+    }
 
-        public async Task<PedidoDTO> ObterPedidosAutorizados()
-        {
-            // Correção para pegar todos os itens do pedido e ordernar pelo pedido mais antigo
-            const string sql = @"SELECT 
+    public async Task<PedidoDTO> ObterPedidosAutorizados()
+    {
+        // Correção para pegar todos os itens do pedido e ordernar pelo pedido mais antigo
+        const string sql = @"SELECT 
                                 P.ID as 'PedidoId', P.ID, P.CLIENTEID, 
                                 PI.ID as 'PedidoItemId', PI.ID, PI.PRODUTOID, PI.QUANTIDADE 
                                 FROM PEDIDOS P 
@@ -50,64 +50,62 @@ namespace NSE.Pedidos.API.Application.Queries
                                 WHERE P.PEDIDOSTATUS = 1                                
                                 ORDER BY P.DATACADASTRO";
 
-            // Utilizacao do lookup para manter o estado a cada ciclo de registro retornado
-            var lookup = new Dictionary<Guid, PedidoDTO>();
+        // Utilizacao do lookup para manter o estado a cada ciclo de registro retornado
+        var lookup = new Dictionary<Guid, PedidoDTO>();
 
-            await _pedidoRepository.ObterDBConnection().QueryAsync<PedidoDTO, PedidoItemDTO, PedidoDTO>(sql,
-                (p, pi) =>
-                {
-                    if (!lookup.TryGetValue(p.Id, out var pedidoDTO))
-                        lookup.Add(p.Id, pedidoDTO = p);
-
-                    pedidoDTO.PedidoItems ??= new List<PedidoItemDTO>();
-                    pedidoDTO.PedidoItems.Add(pi);
-
-                    return pedidoDTO;
-
-                }, splitOn: "PedidoId,PedidoItemId");
-
-            // Obtendo dados o lookup
-            var pedido = lookup.Values.OrderBy(p => p.Data).FirstOrDefault();
-            return pedido;
-        }
-
-        private static PedidoDTO MapearPedido(dynamic resultado)
-        {
-            var pedido = new PedidoDTO
+        await _pedidoRepository.ObterDBConnection().QueryAsync<PedidoDTO, PedidoItemDTO, PedidoDTO>(sql,
+            (p, pi) =>
             {
-                Codigo = resultado[0].CODIGO,
-                Status = resultado[0].PEDIDOSTATUS,
-                ValorTotal = resultado[0].VALORTOTAL,
-                Desconto = resultado[0].DESCONTO,
-                VoucherUtilizado = resultado[0].VOUCHERUTILIZADO,
+                if (!lookup.TryGetValue(p.Id, out var pedidoDTO))
+                    lookup.Add(p.Id, pedidoDTO = p);
 
-                PedidoItems = new List<PedidoItemDTO>(),
-                Endereco = new EnderecoDTO
-                {
-                    Logradouro = resultado[0].LOGRADOURO,
-                    Bairro = resultado[0].BAIRRO,
-                    Cep = resultado[0].CEP,
-                    Cidade = resultado[0].CIDADE,
-                    Complemento = resultado[0].COMPLEMENTO,
-                    Estado = resultado[0].ESTADO,
-                    Numero = resultado[0].NUMERO
-                }
+                pedidoDTO.PedidoItems ??= new List<PedidoItemDTO>();
+                pedidoDTO.PedidoItems.Add(pi);
+
+                return pedidoDTO;
+            }, splitOn: "PedidoId,PedidoItemId");
+
+        // Obtendo dados o lookup
+        var pedido = lookup.Values.OrderBy(p => p.Data).FirstOrDefault();
+        return pedido;
+    }
+
+    private static PedidoDTO MapearPedido(dynamic resultado)
+    {
+        var pedido = new PedidoDTO
+        {
+            Codigo = resultado[0].CODIGO,
+            Status = resultado[0].PEDIDOSTATUS,
+            ValorTotal = resultado[0].VALORTOTAL,
+            Desconto = resultado[0].DESCONTO,
+            VoucherUtilizado = resultado[0].VOUCHERUTILIZADO,
+
+            PedidoItems = new List<PedidoItemDTO>(),
+            Endereco = new EnderecoDTO
+            {
+                Logradouro = resultado[0].LOGRADOURO,
+                Bairro = resultado[0].BAIRRO,
+                Cep = resultado[0].CEP,
+                Cidade = resultado[0].CIDADE,
+                Complemento = resultado[0].COMPLEMENTO,
+                Estado = resultado[0].ESTADO,
+                Numero = resultado[0].NUMERO
+            }
+        };
+
+        foreach (var item in resultado)
+        {
+            var pedidoItem = new PedidoItemDTO
+            {
+                Nome = item.PRODUTONOME,
+                Valor = item.VALORUNITARIO,
+                Quantidade = item.QUANTIDADE,
+                Imagem = item.PRODUTOIMAGEM
             };
 
-            foreach (var item in resultado)
-            {
-                var pedidoItem = new PedidoItemDTO
-                {
-                    Nome = item.PRODUTONOME,
-                    Valor = item.VALORUNITARIO,
-                    Quantidade = item.QUANTIDADE,
-                    Imagem = item.PRODUTOIMAGEM
-                };
-
-                pedido.PedidoItems.Add(pedidoItem);
-            }
-
-            return pedido;
+            pedido.PedidoItems.Add(pedidoItem);
         }
+
+        return pedido;
     }
 }

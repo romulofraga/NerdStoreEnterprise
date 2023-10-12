@@ -1,8 +1,7 @@
-﻿namespace NSE.Pagamentos.NerdsPag
+﻿namespace NSE.Pagamentos.NerdsPag;
+
+public enum PaymentMethod
 {
-    public enum PaymentMethod
-    {
-        CreditCard = 1,
-        Billet
-    }
+    CreditCard = 1,
+    Billet
 }

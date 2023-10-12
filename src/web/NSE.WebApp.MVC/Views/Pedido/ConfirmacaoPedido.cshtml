@@ -1,5 +1,5 @@
 ﻿@using NSE.WebApp.MVC.Extensions
-@model NSE.WebApp.MVC.Models.PedidoViewModel
+@model PedidoViewModel
 
 @{
     ViewData["Title"] = "Pedido confirmado!";
@@ -51,7 +51,7 @@
                                                 <p>
                                                     <b>@item.Nome</b>
                                                 </p>
-                                                <span>@this.UnidadesPorProdutoValorTotal(item.Quantidade, item.Valor) </span>
+                                                <span>@(this.UnidadesPorProdutoValorTotal(item.Quantidade, item.Valor)) </span>
                                             </figcaption>
                                         </figure>
                                     </div>
@@ -81,7 +81,7 @@
                                         Transação em cartão de crédito
                                     </span>
                                     <p>
-                                        <span class="font-weight-bold">Total:  @this.FormatoMoeda(Model.ValorTotal)</span>
+                                        <span class="font-weight-bold">Total: @(this.FormatoMoeda(Model.ValorTotal))</span>
                                     </p>
                                 </div>
                             </div>

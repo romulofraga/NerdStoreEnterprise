@@ -1,50 +1,44 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NSE.Catalogo.API.Data;
-using NSE.WebApi.Core.Identidade;
+﻿using NSE.WebApi.Core.Identidade;
 
-namespace NSE.Catalogo.API.Configuration
+namespace NSE.Catalogo.API.Configuration;
+
+public static class ApiConfig
 {
-    public static class ApiConfig
+    public static IServiceCollection AddApiConfiguration(this IServiceCollection services)
     {
-        public static IServiceCollection AddApiConfiguration(this IServiceCollection services)
-        {
-            services.AddControllers();
+        services.AddControllers();
 
-            services.AddCors(
-                options =>
-                {
-                    options.AddPolicy(
-                        "Total",
-                        builder =>
-                        {
-                            builder
+        services.AddCors(
+            options =>
+            {
+                options.AddPolicy(
+                    "Total",
+                    builder =>
+                    {
+                        builder
                             .AllowAnyOrigin()
                             .AllowAnyMethod()
                             .AllowAnyHeader();
-                        });
-                });
+                    });
+            });
 
-            return services;
-        }
+        return services;
+    }
 
-        public static IApplicationBuilder UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment Environment)
-        {
-            if (Environment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+    public static IApplicationBuilder UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment Environment)
+    {
+        if (Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 
-            app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
 
-            app.UseRouting();
+        app.UseRouting();
 
-            app.UseCors("Total");
+        app.UseCors("Total");
 
-            app.UseAuthConfiguration();
+        app.UseAuthConfiguration();
 
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+        app.UseEndpoints(endpoints => endpoints.MapControllers());
 
-            return app;
-        }
+        return app;
     }
 }

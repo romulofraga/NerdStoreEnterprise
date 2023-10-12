@@ -15,5 +15,4 @@ public interface IComprasBffService
     Task<PedidoViewModel> ObterUltimoPedido();
     Task<IEnumerable<PedidoViewModel>> ObterListaPorClienteId();
     PedidoTransacaoViewModel MapearParaPedido(CarrinhoViewModel carrinho, EnderecoViewModel endereco);
-
 }

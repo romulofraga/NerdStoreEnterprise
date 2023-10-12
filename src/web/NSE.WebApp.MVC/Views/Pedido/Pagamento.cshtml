@@ -1,5 +1,5 @@
 ﻿@using NSE.WebApp.MVC.Extensions
-@model NSE.WebApp.MVC.Models.PedidoTransacaoViewModel
+@model PedidoTransacaoViewModel
 
 @{
     ViewData["Title"] = "Confirme o seu pedido";
@@ -51,7 +51,7 @@
                                                 <p>
                                                     <b>@item.Nome</b>
                                                 </p>
-                                                <span>@this.UnidadesPorProdutoValorTotal(item.Quantidade, item.Valor) </span>
+                                                <span>@(this.UnidadesPorProdutoValorTotal(item.Quantidade, item.Valor)) </span>
                                             </figcaption>
                                         </figure>
                                     </div>
@@ -61,7 +61,7 @@
                         </div>
                     </article>
 
-                    <partial name="_ResumoFinanceiro" model="Model" />
+                    <partial name="_ResumoFinanceiro" model="Model"/>
 
                     <form asp-action="FinalizarPedido" asp-controller="Pedido">
                         <article class="card-body border-top">
@@ -70,7 +70,7 @@
                                     <div class="col-md-4 col-sm-12">
                                         <div class="mb-3">
                                             <label for="NomeCartao" class="form-label">Nome no Cartão</label>
-                                            <input type="text" value="romulo f fraga" asp-for="NomeCartao" class="form-control" />
+                                            <input type="text" value="romulo f fraga" asp-for="NomeCartao" class="form-control"/>
                                             <span asp-validation-for="NomeCartao" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -78,7 +78,7 @@
                                         <div class="mb-3">
                                             <label for="NumeroCartao" class="form-label">Número do Cartão</label>
                                             <div class="input-group">
-                                                <input type="text" value="4242424242424242" asp-for="NumeroCartao" class="form-control" />
+                                                <input type="text" value="4242424242424242" asp-for="NumeroCartao" class="form-control"/>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">
                                                         <i class="fab fa-cc-visa me-1"></i> &nbsp;
@@ -97,7 +97,7 @@
                                         <div class="mb-3">
                                             <label for="ExpiracaoCartao" class="form-label">Data de Expiração</label>
                                             <div class="input-group">
-                                                <input type="text" value="12/30" style="width: 190px" asp-for="ExpiracaoCartao" class="form-control" />
+                                                <input type="text" value="12/30" style="width: 190px" asp-for="ExpiracaoCartao" class="form-control"/>
                                                 <span asp-validation-for="ExpiracaoCartao" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -106,7 +106,7 @@
                                         <div class="mb-3">
                                             <label for="CvvCartao" class="form-label">CVV</label>
                                             <div class="input-group">
-                                                <input type="text" value="123" style="width: 160px" asp-for="CvvCartao" class="form-control" />
+                                                <input type="text" value="123" style="width: 160px" asp-for="CvvCartao" class="form-control"/>
                                                 <span asp-validation-for="CvvCartao" class="text-danger"></span>
                                             </div>
                                         </div>

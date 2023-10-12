@@ -1,9 +1,8 @@
-namespace NSE.WebApp.MVC.Models
+namespace NSE.WebApp.MVC.Models;
+
+public class ErrorViewModel
 {
-    public class ErrorViewModel
-    {
-        public int ErrorCode { get; set; }
-        public string Titulo { get; set; }
-        public string Mensagem { get; set; }
-    }
+    public int ErrorCode { get; set; }
+    public string Titulo { get; set; }
+    public string Mensagem { get; set; }
 }

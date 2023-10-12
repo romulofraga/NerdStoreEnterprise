@@ -6,5 +6,6 @@ public class ResponseErrorMessages
     {
         Mensagens = new List<string>();
     }
+
     public List<string> Mensagens { get; set; }
 }

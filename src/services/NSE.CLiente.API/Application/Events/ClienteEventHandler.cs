@@ -1,13 +1,12 @@
 ﻿using MediatR;
 
-namespace NSE.Clientes.API.Application.Events
+namespace NSE.Clientes.API.Application.Events;
+
+public class ClienteEventHandler : INotificationHandler<ClienteRegistradoEvent>
 {
-    public class ClienteEventHandler : INotificationHandler<ClienteRegistradoEvent>
+    public Task Handle(ClienteRegistradoEvent notification, CancellationToken cancellationToken)
     {
-        public Task Handle(ClienteRegistradoEvent notification, CancellationToken cancellationToken)
-        {
-            //Enviar evento de confirmação
-            return Task.CompletedTask;
-        }
+        //Enviar evento de confirmação
+        return Task.CompletedTask;
     }
 }

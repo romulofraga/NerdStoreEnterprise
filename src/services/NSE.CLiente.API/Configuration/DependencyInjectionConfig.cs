@@ -8,21 +8,20 @@ using NSE.Clientes.API.Models;
 using NSE.Core.Mediator;
 using NSE.WebApi.Core.Usuario;
 
-namespace NSE.Clientes.API.Configuration
-{
-    public static class DependencyInjectionConfig
-    {
-        public static void RegisterServices(this IServiceCollection services)
-        {
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+namespace NSE.Clientes.API.Configuration;
 
-            services.AddScoped<IAspnetUser, AspNetUser>();
-            services.AddScoped<IMediatorHandler, MediatorHandler>();
-            services.AddScoped<IRequestHandler<RegistrarClienteCommand, ValidationResult>, ClienteCommandHandler>();
-            services.AddScoped<IRequestHandler<AdicionarEnderecoCommand, ValidationResult>, ClienteCommandHandler>();
-            services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClienteEventHandler>();
-            services.AddScoped<IClienteRepository, ClienteRepository>();
-            services.AddScoped<ClientesContext>();
-        }
+public static class DependencyInjectionConfig
+{
+    public static void RegisterServices(this IServiceCollection services)
+    {
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+        services.AddScoped<IAspnetUser, AspNetUser>();
+        services.AddScoped<IMediatorHandler, MediatorHandler>();
+        services.AddScoped<IRequestHandler<RegistrarClienteCommand, ValidationResult>, ClienteCommandHandler>();
+        services.AddScoped<IRequestHandler<AdicionarEnderecoCommand, ValidationResult>, ClienteCommandHandler>();
+        services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClienteEventHandler>();
+        services.AddScoped<IClienteRepository, ClienteRepository>();
+        services.AddScoped<ClientesContext>();
     }
 }

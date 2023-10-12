@@ -1,39 +1,38 @@
 using NSE.Catalogo.API.Configuration;
 using NSE.WebApi.Core.Identidade;
 
-namespace NSE.Catalogo.API
+namespace NSE.Catalogo.API;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication.CreateBuilder(args);
 
-            builder.Configuration.ConfigureDevelopmentEnvironment(builder.Environment);
+        builder.Configuration.ConfigureDevelopmentEnvironment(builder.Environment);
 
-            // Add services to the container.
+        // Add services to the container.
 
-            builder.Services.AddApiConfiguration();
+        builder.Services.AddApiConfiguration();
 
-            builder.Services.AddJwtConfiguration(builder.Configuration);
+        builder.Services.AddJwtConfiguration(builder.Configuration);
 
-            builder.Services.AddSwaggerConfiguration();
+        builder.Services.AddSwaggerConfiguration();
 
-            builder.Services.RegisterServices(builder.Configuration);
-            
-            builder.Services.AddMessageBusConfiguration(builder.Configuration);
+        builder.Services.RegisterServices(builder.Configuration);
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddMessageBusConfiguration(builder.Configuration);
 
-            var app = builder.Build();
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-            // Configure the HTTP request pipeline.
+        var app = builder.Build();
 
-            app.UseSwaggerConfiguration(app.Environment);
+        // Configure the HTTP request pipeline.
 
-            app.UseApiConfiguration(app.Environment);
+        app.UseSwaggerConfiguration(app.Environment);
 
-            app.Run();
-        }
+        app.UseApiConfiguration(app.Environment);
+
+        app.Run();
     }
 }

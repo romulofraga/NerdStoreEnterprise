@@ -2,44 +2,43 @@
 using NSE.Core.Data;
 using NSE.Pagamentos.API.Models;
 
-namespace NSE.Pagamentos.API.Data.Repository
+namespace NSE.Pagamentos.API.Data.Repository;
+
+public class PagamentoRepository : IPagamentoRepository
 {
-    public class PagamentoRepository : IPagamentoRepository
+    private readonly PagamentosContext _context;
+
+    public PagamentoRepository(PagamentosContext context)
     {
-        private readonly PagamentosContext _context;
+        _context = context;
+    }
 
-        public PagamentoRepository(PagamentosContext context)
-        {
-            _context = context;
-        }
+    public IUnityOfWork UnityOfWork => _context;
 
-        public IUnityOfWork UnityOfWork => _context;
+    public void AdicionarPagamento(Pagamento pagamento)
+    {
+        _context.Pagamentos.Add(pagamento);
+    }
 
-        public void AdicionarPagamento(Pagamento pagamento)
-        {
-            _context.Pagamentos.Add(pagamento);
-        }
+    public void AdicionarTransacao(Transacao transacao)
+    {
+        _context.Transacoes.Add(transacao);
+    }
 
-        public void AdicionarTransacao(Transacao transacao)
-        {
-            _context.Transacoes.Add(transacao);
-        }
+    public async Task<Pagamento> ObterPagamentoPorPedidoId(Guid pedidoId)
+    {
+        return await _context.Pagamentos.AsNoTracking()
+            .FirstOrDefaultAsync(p => p.PedidoId == pedidoId);
+    }
 
-        public async Task<Pagamento> ObterPagamentoPorPedidoId(Guid pedidoId)
-        {
-            return await _context.Pagamentos.AsNoTracking()
-                .FirstOrDefaultAsync(p => p.PedidoId == pedidoId);
-        }
+    public async Task<IEnumerable<Transacao>> ObterTransacaoesPorPedidoId(Guid pedidoId)
+    {
+        return await _context.Transacoes.AsNoTracking()
+            .Where(t => t.Pagamento.PedidoId == pedidoId).ToListAsync();
+    }
 
-        public async Task<IEnumerable<Transacao>> ObterTransacaoesPorPedidoId(Guid pedidoId)
-        {
-            return await _context.Transacoes.AsNoTracking()
-                .Where(t => t.Pagamento.PedidoId == pedidoId).ToListAsync();
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
+    public void Dispose()
+    {
+        _context.Dispose();
     }
 }

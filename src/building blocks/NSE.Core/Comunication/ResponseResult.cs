@@ -1,13 +1,13 @@
-﻿namespace NSE.Core.Comunication
+﻿namespace NSE.Core.Comunication;
+
+public class ResponseResult
 {
-    public class ResponseResult
+    public ResponseResult()
     {
-        public ResponseResult()
-        {
-            Errors = new ResponseErrorMessages();
-        }
-        public string Title { get; set; }
-        public int Status { get; set; }
-        public ResponseErrorMessages Errors { get; set; }
+        Errors = new ResponseErrorMessages();
     }
+
+    public string Title { get; set; }
+    public int Status { get; set; }
+    public ResponseErrorMessages Errors { get; set; }
 }

@@ -1,31 +1,30 @@
 using NSE.WebApp.MVC.Configuration;
 
-namespace NSE.WebApp.MVC
+namespace NSE.WebApp.MVC;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication.CreateBuilder(args);
 
-            builder.Configuration.ConfigureDevelopmentEnvironment(builder.Environment);
+        builder.Configuration.ConfigureDevelopmentEnvironment(builder.Environment);
 
-            builder.Services.AddIdentityConfiguration();
+        builder.Services.AddIdentityConfiguration();
 
-            // Add services to the container.
-            builder.Services.AddMvcConfiguration(builder.Configuration);
+        // Add services to the container.
+        builder.Services.AddMvcConfiguration(builder.Configuration);
 
-            builder.Services.RegisterServices(builder.Configuration);
+        builder.Services.RegisterServices(builder.Configuration);
 
-            var app = builder.Build();
+        var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+        // Configure the HTTP request pipeline.
 
-            app.UseMvcConfiguration(app.Environment);
+        app.UseMvcConfiguration(app.Environment);
 
-            app.UseGlobalizationConfiguration();
+        app.UseGlobalizationConfiguration();
 
-            app.Run();
-        }
+        app.Run();
     }
 }

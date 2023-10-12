@@ -1,13 +1,12 @@
-﻿using NetDevPack.Specification;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
+using NetDevPack.Specification;
 
-namespace NSE.Pedidos.Domain.Vouchers.Specs
+namespace NSE.Pedidos.Domain.Vouchers.Specs;
+
+public class VoucherDataSpecification : Specification<Voucher>
 {
-    public class VoucherDataSpecification : Specification<Voucher>
+    public override Expression<Func<Voucher, bool>> ToExpression()
     {
-        public override Expression<Func<Voucher, bool>> ToExpression()
-        {
-            return Voucher => Voucher.DataValidade > DateTime.Now;
-        }
+        return Voucher => Voucher.DataValidade > DateTime.Now;
     }
 }

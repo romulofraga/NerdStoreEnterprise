@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace NSE.Core.Utils
+namespace NSE.Core.Utils;
+
+public static class ConfigurationExtensions
 {
-    public static class ConfigurationExtensions
+    public static string GetMessageQeueConnection(this IConfiguration configuration, string name)
     {
-        public static string GetMessageQeueConnection(this IConfiguration configuration, string name)
-        {
-            return configuration?.GetSection("MessageQeueConnection")?[name];
-        }
+        return configuration?.GetSection("MessageQeueConnection")?[name];
     }
 }

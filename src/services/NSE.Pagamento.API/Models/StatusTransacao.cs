@@ -1,11 +1,10 @@
-﻿namespace NSE.Pagamentos.API.Models
+﻿namespace NSE.Pagamentos.API.Models;
+
+public enum StatusTransacao
 {
-    public enum StatusTransacao
-    {
-        Autorizado = 1,
-        Pago,
-        Negado,
-        Estornado,
-        Cancelado
-    }
+    Autorizado = 1,
+    Pago,
+    Negado,
+    Estornado,
+    Cancelado
 }

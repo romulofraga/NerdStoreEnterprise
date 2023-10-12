@@ -1,16 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace NSE.MessageBus
+namespace NSE.MessageBus;
+
+public static class DependencyInjectionExtensions
 {
-    public static class DependencyInjectionExtensions
+    public static IServiceCollection AddMessageBus(this IServiceCollection services, string connection)
     {
-        public static IServiceCollection AddMessageBus(this IServiceCollection services, string connection)
-        {
-            if (string.IsNullOrWhiteSpace(connection)) throw new ArgumentNullException();
+        if (string.IsNullOrWhiteSpace(connection)) throw new ArgumentNullException();
 
-            services.AddSingleton<IMessageBus>(new MessageBus(connection));
+        services.AddSingleton<IMessageBus>(new MessageBus(connection));
 
-            return services;
-        }
+        return services;
     }
 }

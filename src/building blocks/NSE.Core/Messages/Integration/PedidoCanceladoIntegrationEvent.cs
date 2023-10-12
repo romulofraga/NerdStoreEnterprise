@@ -1,14 +1,13 @@
-﻿namespace NSE.Core.Messages.Integration
-{
-    public class PedidoCanceladoIntegrationEvent : IntegrationEvent
-    {
-        //public Guid ClienteId { get; private set; }
-        public Guid PedidoId { get; private set; }
+﻿namespace NSE.Core.Messages.Integration;
 
-        public PedidoCanceladoIntegrationEvent(Guid pedidoId)
-        {
-            //ClienteId = clienteId;
-            PedidoId = pedidoId;
-        }
+public class PedidoCanceladoIntegrationEvent : IntegrationEvent
+{
+    public PedidoCanceladoIntegrationEvent(Guid pedidoId)
+    {
+        //ClienteId = clienteId;
+        PedidoId = pedidoId;
     }
+
+    //public Guid ClienteId { get; private set; }
+    public Guid PedidoId { get; private set; }
 }

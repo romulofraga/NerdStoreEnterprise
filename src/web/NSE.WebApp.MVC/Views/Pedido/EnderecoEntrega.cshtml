@@ -1,5 +1,5 @@
 ﻿@using NSE.WebApp.MVC.Extensions
-@model NSE.WebApp.MVC.Models.PedidoTransacaoViewModel
+@model PedidoTransacaoViewModel
 
 @{
     ViewData["Title"] = "Confirme o seu pedido";
@@ -51,7 +51,7 @@
                                                 <p>
                                                     <b>@item.Nome</b>
                                                 </p>
-                                                <span>@this.UnidadesPorProdutoValorTotal(item.Quantidade, item.Valor) </span>
+                                                <span>@(this.UnidadesPorProdutoValorTotal(item.Quantidade, item.Valor)) </span>
                                             </figcaption>
                                         </figure>
                                     </div>
@@ -61,10 +61,10 @@
                         </div>
                     </article>
 
-                    <partial name="_ResumoFinanceiro" model="Model" />
+                    <partial name="_ResumoFinanceiro" model="Model"/>
 
                     <div class="card-body border-top">
-                        <partial name="_Endereco" model="Model" />
+                        <partial name="_Endereco" model="Model"/>
                     </div>
                     <div class="card-body border-top">
                         <div class="d-flex justify-content-between">
@@ -87,7 +87,7 @@
     </div>
 </section>
 
-<partial name="_NovoEndereco" />
+<partial name="_NovoEndereco"/>
 
 @section Scripts {
 

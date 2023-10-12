@@ -6,17 +6,14 @@ namespace NSE.WebApp.MVC.Extensions;
 
 public class CpfAttributeAdapter : AttributeAdapterBase<CpfAttribute>
 {
-    public CpfAttributeAdapter(CpfAttribute attribute, IStringLocalizer stringLocalizer) : base(attribute, stringLocalizer)
+    public CpfAttributeAdapter(CpfAttribute attribute, IStringLocalizer stringLocalizer) : base(attribute,
+        stringLocalizer)
     {
-
     }
 
     public override void AddValidation(ClientModelValidationContext context)
     {
-        if (context == null)
-        {
-            throw new ArgumentException(null, nameof(context));
-        }
+        if (context == null) throw new ArgumentException(null, nameof(context));
 
         MergeAttribute(context.Attributes, "data-val", "true");
         MergeAttribute(context.Attributes, "data-val-cpf", GetErrorMessage(context));

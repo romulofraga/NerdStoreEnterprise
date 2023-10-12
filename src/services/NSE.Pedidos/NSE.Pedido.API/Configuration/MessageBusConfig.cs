@@ -2,15 +2,14 @@
 using NSE.MessageBus;
 using NSE.Pedidos.API.Services;
 
-namespace NSE.Pedidos.API.Configuration
+namespace NSE.Pedidos.API.Configuration;
+
+public static class MessageBusConfig
 {
-    public static class MessageBusConfig
+    public static void AddMessageBusConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        public static void AddMessageBusConfiguration(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddMessageBus(configuration.GetMessageQeueConnection("MessageBus"))
-                .AddHostedService<PedidoOrquestradorIntegrationHandler>()
-                .AddHostedService<PedidoIntegrationHandler>();
-        }
+        services.AddMessageBus(configuration.GetMessageQeueConnection("MessageBus"))
+            .AddHostedService<PedidoOrquestradorIntegrationHandler>()
+            .AddHostedService<PedidoIntegrationHandler>();
     }
 }

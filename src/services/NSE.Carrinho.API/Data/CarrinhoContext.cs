@@ -1,100 +1,99 @@
-﻿using FluentValidation.Results;
+﻿#nullable disable
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using NSE.Carrinho.API.Models;
 
-#nullable disable
-namespace NSE.Carrinho.API.Data
+namespace NSE.Carrinho.API.Data;
+
+public sealed class CarrinhoContext : DbContext
 {
-    public sealed class CarrinhoContext : DbContext
+    public CarrinhoContext(DbContextOptions<CarrinhoContext> options) : base(options)
     {
-        public CarrinhoContext(DbContextOptions<CarrinhoContext> options) : base(options)
+        ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        ChangeTracker.AutoDetectChangesEnabled = false;
+    }
+
+    public DbSet<CarrinhoCliente> CarrinhoClientes { get; set; }
+    public DbSet<CarrinhoItem> CarrinhoItens { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        SetDefaultModelColumnsType(modelBuilder);
+        SetDefaultBehaviorForeignKeys(modelBuilder);
+        SetModelConfiguration(modelBuilder);
+
+        base.OnModelCreating(modelBuilder);
+
+        #region Método locais para setar tipo default e relacionamento das FK
+
+        void SetDefaultModelColumnsType(ModelBuilder modelBuilder)
         {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-            ChangeTracker.AutoDetectChangesEnabled = false;
+            // Todas colunas que são do tipo texto (string) terão como default o tamanho de varchar(100)
+            var stringColumnsType = GetAllPropertiesByType(modelBuilder, typeof(string));
+
+            foreach (var property in stringColumnsType) property.SetColumnType("varchar(100)");
+
+            // Todas colunas que são do tipo decimal (valor numérico) terão como default o tamanho de decimal(18,2)
+            var decimalColumnsType = GetAllPropertiesByType(modelBuilder, typeof(decimal));
+
+            foreach (var property in decimalColumnsType) property.SetColumnType("decimal(18,2)");
         }
 
-        public DbSet<CarrinhoCliente> CarrinhoClientes { get; set; }
-        public DbSet<CarrinhoItem> CarrinhoItens { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        IEnumerable<IMutableProperty> GetAllPropertiesByType(ModelBuilder modelBuilder, Type type)
         {
-            SetDefaultModelColumnsType(modelBuilder);
-            SetDefaultBehaviorForeignKeys(modelBuilder);
-            SetModelConfiguration(modelBuilder);
+            return modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetProperties().Where(p => p.ClrType == type));
+        }
 
-            base.OnModelCreating(modelBuilder);
+        void SetDefaultBehaviorForeignKeys(ModelBuilder modelBuilder)
+        {
+            var foreignKeys = modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys());
 
-            #region Método locais para setar tipo default e relacionamento das FK
+            foreach (var relationship in foreignKeys)
+                relationship.DeleteBehavior = DeleteBehavior.Cascade;
+        }
 
-            void SetDefaultModelColumnsType(ModelBuilder modelBuilder)
-            {
-                // Todas colunas que são do tipo texto (string) terão como default o tamanho de varchar(100)
-                IEnumerable<IMutableProperty> stringColumnsType = GetAllPropertiesByType(modelBuilder, typeof(string));
+        void SetModelConfiguration(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CarrinhoCliente>()
+                .HasIndex(c => c.ClienteId)
+                .HasDatabaseName("IDX_Cliente");
 
-                foreach (var property in stringColumnsType) property.SetColumnType("varchar(100)");
-
-                // Todas colunas que são do tipo decimal (valor numérico) terão como default o tamanho de decimal(18,2)
-                IEnumerable<IMutableProperty> decimalColumnsType = GetAllPropertiesByType(modelBuilder, typeof(decimal));
-
-                foreach (var property in decimalColumnsType) property.SetColumnType("decimal(18,2)");
-            }
-
-            IEnumerable<IMutableProperty> GetAllPropertiesByType(ModelBuilder modelBuilder, Type type)
-            {
-                return modelBuilder.Model.GetEntityTypes()
-                    .SelectMany(e => e.GetProperties().Where(p => p.ClrType == type));
-            }
-
-            void SetDefaultBehaviorForeignKeys(ModelBuilder modelBuilder)
-            {
-                var foreignKeys = modelBuilder.Model.GetEntityTypes()
-                    .SelectMany(e => e.GetForeignKeys());
-
-                foreach (var relationship in foreignKeys)
-                    relationship.DeleteBehavior = DeleteBehavior.Cascade;
-            }
-
-            void SetModelConfiguration(ModelBuilder modelBuilder)
-            {
-                modelBuilder.Entity<CarrinhoCliente>()
-                    .HasIndex(c => c.ClienteId)
-                    .HasDatabaseName("IDX_Cliente");
-
-                modelBuilder.Entity<CarrinhoCliente>()
-                    .Ignore(c => c.Voucher)
-                    .OwnsOne(c => c.Voucher, v =>
-                    {
-                        v.Property(vc => vc.Codigo)
+            modelBuilder.Entity<CarrinhoCliente>()
+                .Ignore(c => c.Voucher)
+                .OwnsOne(c => c.Voucher, v =>
+                {
+                    v.Property(vc => vc.Codigo)
                         .HasColumnName("VoucherCodigo")
                         .HasColumnType("varchar(50)");
 
-                        v.Property(vc => vc.TipoDesconto)
+                    v.Property(vc => vc.TipoDesconto)
                         .HasColumnName("TipoDesconto");
 
-                        v.Property(vc => vc.Percentual)
+                    v.Property(vc => vc.Percentual)
                         .HasColumnName("Percentual");
 
-                        v.Property(vc => vc.ValorDesconto)
+                    v.Property(vc => vc.ValorDesconto)
                         .HasColumnName("ValorDesconto");
-                    });
+                });
 
-                modelBuilder.Entity<CarrinhoCliente>()
-                    .HasMany(c => c.Itens)
-                    .WithOne(ci => ci.CarrinhoCliente)
-                    .HasForeignKey(c => c.CarrinhoClienteId);
+            modelBuilder.Entity<CarrinhoCliente>()
+                .HasMany(c => c.Itens)
+                .WithOne(ci => ci.CarrinhoCliente)
+                .HasForeignKey(c => c.CarrinhoClienteId);
 
-                modelBuilder.Ignore<ValidationResult>();
-            }
-
-            #endregion
+            modelBuilder.Ignore<ValidationResult>();
         }
 
-        public async Task<bool> Commit()
-        {
-            var sucesso = await base.SaveChangesAsync() > 0;
+        #endregion
+    }
 
-            return sucesso;
-        }
+    public async Task<bool> Commit()
+    {
+        var sucesso = await SaveChangesAsync() > 0;
+
+        return sucesso;
     }
 }

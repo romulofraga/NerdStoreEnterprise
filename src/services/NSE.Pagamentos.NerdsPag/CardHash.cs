@@ -1,40 +1,39 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace NSE.Pagamentos.NerdsPag
+namespace NSE.Pagamentos.NerdsPag;
+
+public class CardHash
 {
-    public class CardHash
+    private readonly NerdsPagService NerdsPagService;
+
+    public CardHash(NerdsPagService nerdsPagService)
     {
-        public CardHash(NerdsPagService nerdsPagService)
+        NerdsPagService = nerdsPagService;
+    }
+
+    public string CardHolderName { get; set; }
+    public string CardNumber { get; set; }
+    public string CardExpirationDate { get; set; }
+    public string CardCvv { get; set; }
+
+    public string Generate()
+    {
+        using var aesAlg = Aes.Create();
+
+        aesAlg.IV = Encoding.Default.GetBytes(NerdsPagService.EncryptionKey);
+        aesAlg.Key = Encoding.Default.GetBytes(NerdsPagService.ApiKey);
+
+        var encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+        using var msEncrypt = new MemoryStream();
+        using var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
+
+        using (var swEncrypt = new StreamWriter(csEncrypt))
         {
-            NerdsPagService = nerdsPagService;
+            swEncrypt.Write(CardHolderName + CardNumber + CardExpirationDate + CardCvv);
         }
 
-        private readonly NerdsPagService NerdsPagService;
-
-        public string CardHolderName { get; set; }
-        public string CardNumber { get; set; }
-        public string CardExpirationDate { get; set; }
-        public string CardCvv { get; set; }
-
-        public string Generate()
-        {
-            using var aesAlg = Aes.Create();
-
-            aesAlg.IV = Encoding.Default.GetBytes(NerdsPagService.EncryptionKey);
-            aesAlg.Key = Encoding.Default.GetBytes(NerdsPagService.ApiKey);
-
-            var encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
-
-            using var msEncrypt = new MemoryStream();
-            using var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
-
-            using (var swEncrypt = new StreamWriter(csEncrypt))
-            {
-                swEncrypt.Write(CardHolderName + CardNumber + CardExpirationDate + CardCvv);
-            }
-
-            return Encoding.ASCII.GetString(msEncrypt.ToArray());
-        }
+        return Encoding.ASCII.GetString(msEncrypt.ToArray());
     }
 }

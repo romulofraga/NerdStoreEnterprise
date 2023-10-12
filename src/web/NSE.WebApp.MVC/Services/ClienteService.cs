@@ -1,41 +1,40 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Net;
+using Microsoft.Extensions.Options;
 using NSE.Core.Comunication;
 using NSE.WebApp.MVC.Extensions;
 using NSE.WebApp.MVC.Models;
-using System.Net;
 
-namespace NSE.WebApp.MVC.Services
+namespace NSE.WebApp.MVC.Services;
+
+public class ClienteService : Service, IClienteService
 {
-    public class ClienteService : Service, IClienteService
+    private readonly HttpClient _httpClient;
+
+    public ClienteService(HttpClient httpClient, IOptions<AppSettings> settings)
     {
-        private readonly HttpClient _httpClient;
+        _httpClient = httpClient;
+        _httpClient.BaseAddress = new Uri(settings.Value.ClientesUrl);
+    }
 
-        public ClienteService(HttpClient httpClient, IOptions<AppSettings> settings)
-        {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri(settings.Value.ClientesUrl);
-        }
+    public async Task<ResponseResult> AdicionarEndereco(EnderecoViewModel endereco)
+    {
+        var enderecoContent = ObterConteudo(endereco);
 
-        public async Task<ResponseResult> AdicionarEndereco(EnderecoViewModel endereco)
-        {
-            var enderecoContent = ObterConteudo(endereco);
+        var response = await _httpClient.PostAsync("/cliente/endereco/", enderecoContent);
 
-            var response = await _httpClient.PostAsync("/cliente/endereco/", enderecoContent);
+        if (!TratarErrosResponse(response)) return await DeserializarObjetoResponse<ResponseResult>(response);
 
-            if (!TratarErrosResponse(response)) return await DeserializarObjetoResponse<ResponseResult>(response);
+        return RetornoOK();
+    }
 
-            return RetornoOK();
-        }
+    public async Task<EnderecoViewModel> ObterEndereco()
+    {
+        var response = await _httpClient.GetAsync("/cliente/endereco/");
 
-        public async Task<EnderecoViewModel> ObterEndereco()
-        {
-            var response = await _httpClient.GetAsync("/cliente/endereco/");
+        if (response.StatusCode == HttpStatusCode.NotFound) return null;
 
-            if (response.StatusCode == HttpStatusCode.NotFound) return null;
+        TratarErrosResponse(response);
 
-            TratarErrosResponse(response);
-
-            return await DeserializarObjetoResponse<EnderecoViewModel>(response);
-        }
+        return await DeserializarObjetoResponse<EnderecoViewModel>(response);
     }
 }

@@ -6,43 +6,42 @@ using NSE.Pedidos.API.Application.Queries;
 using NSE.WebApi.Core.Controllers;
 using NSE.WebApi.Core.Usuario;
 
-namespace NSE.Pedidos.API.Controllers
+namespace NSE.Pedidos.API.Controllers;
+
+[Authorize]
+public class PedidoController : MainController
 {
-    [Authorize]
-    public class PedidoController : MainController
+    private readonly IMediatorHandler _mediator;
+    private readonly IPedidoQueries _pedidoQueries;
+    private readonly IAspnetUser _user;
+
+    public PedidoController(IMediatorHandler mediator, IAspnetUser user, IPedidoQueries pedidoQueries)
     {
-        private readonly IMediatorHandler _mediator;
-        private readonly IAspnetUser _user;
-        private readonly IPedidoQueries _pedidoQueries;
+        _mediator = mediator;
+        _user = user;
+        _pedidoQueries = pedidoQueries;
+    }
 
-        public PedidoController(IMediatorHandler mediator, IAspnetUser user, IPedidoQueries pedidoQueries)
-        {
-            _mediator = mediator;
-            _user = user;
-            _pedidoQueries = pedidoQueries;
-        }
+    [HttpPost("pedido")]
+    public async Task<IActionResult> AdicionarPedido(AdicionarPedidoCommand pedido)
+    {
+        pedido.ClienteId = _user.ObterUserId();
+        return CustomResponse(await _mediator.EnviarComando(pedido));
+    }
 
-        [HttpPost("pedido")]
-        public async Task<IActionResult> AdicionarPedido(AdicionarPedidoCommand pedido)
-        {
-            pedido.ClienteId = _user.ObterUserId();
-            return CustomResponse(await _mediator.EnviarComando(pedido));
-        }
+    [HttpGet("pedido/ultimo")]
+    public async Task<IActionResult> UltimoPedido()
+    {
+        var pedido = await _pedidoQueries.ObterUltimoPedido(_user.ObterUserId());
 
-        [HttpGet("pedido/ultimo")]
-        public async Task<IActionResult> UltimoPedido()
-        {
-            var pedido = await _pedidoQueries.ObterUltimoPedido(_user.ObterUserId());
+        return pedido == null ? NotFound() : CustomResponse(pedido);
+    }
 
-            return pedido == null ? NotFound() : CustomResponse(pedido);
-        }
+    [HttpGet("pedido/lista-cliente")]
+    public async Task<IActionResult> ListaPorCliente()
+    {
+        var pedidos = await _pedidoQueries.ObterListaPorCliente(_user.ObterUserId());
 
-        [HttpGet("pedido/lista-cliente")]
-        public async Task<IActionResult> ListaPorCliente()
-        {
-            var pedidos = await _pedidoQueries.ObterListaPorCliente(_user.ObterUserId());
-
-            return pedidos == null ? NotFound() : CustomResponse(pedidos);
-        }
+        return pedidos == null ? NotFound() : CustomResponse(pedidos);
     }
 }

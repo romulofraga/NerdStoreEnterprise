@@ -1,13 +1,12 @@
 ﻿using NSE.Core.Utils;
 using NSE.MessageBus;
 
-namespace NSE.Bff.Compras.Configuration
+namespace NSE.Bff.Compras.Configuration;
+
+public static class MessageBusConfig
 {
-    public static class MessageBusConfig
+    public static void AddMessageBusConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        public static void AddMessageBusConfiguration(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddMessageBus(configuration.GetMessageQeueConnection("MessageBus"));
-        }
+        services.AddMessageBus(configuration.GetMessageQeueConnection("MessageBus"));
     }
 }

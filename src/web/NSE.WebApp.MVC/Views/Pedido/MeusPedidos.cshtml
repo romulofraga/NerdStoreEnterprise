@@ -1,5 +1,5 @@
 ﻿@using NSE.WebApp.MVC.Extensions
-@model IEnumerable<NSE.WebApp.MVC.Models.PedidoViewModel>
+@model IEnumerable<PedidoViewModel>
 
 @{
     ViewData["Title"] = "Meus Pedidos";
@@ -27,7 +27,7 @@
                                     </span>
 
                                     <p>
-                                        <span class="fw-bold">Total:  @this.FormatoMoeda(pedido.ValorTotal)</span>
+                                        <span class="fw-bold">Total: @(this.FormatoMoeda(pedido.ValorTotal))</span>
                                     </p>
 
                                 </div>
@@ -52,7 +52,7 @@
                                                     <p>
                                                         <b>@item.Nome</b>
                                                     </p>
-                                                    <span>@this.UnidadesPorProdutoValorTotal(item.Quantidade, item.Valor) </span>
+                                                    <span>@(this.UnidadesPorProdutoValorTotal(item.Quantidade, item.Valor)) </span>
                                                 </figcaption>
                                             </figure>
                                         </li>

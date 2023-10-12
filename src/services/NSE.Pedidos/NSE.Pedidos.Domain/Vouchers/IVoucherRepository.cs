@@ -1,10 +1,9 @@
 ﻿using NSE.Core.Data;
 
-namespace NSE.Pedidos.Domain.Vouchers
+namespace NSE.Pedidos.Domain.Vouchers;
+
+public interface IVoucherRepository : IRepository<Voucher>
 {
-    public interface IVoucherRepository : IRepository<Voucher>
-    {
-        void Atualizar(Voucher voucher);
-        Task<Voucher> ObterVoucherPorCodigo(string codigo);
-    }
+    void Atualizar(Voucher voucher);
+    Task<Voucher> ObterVoucherPorCodigo(string codigo);
 }

@@ -1,11 +1,10 @@
-﻿namespace NSE.Pagamentos.NerdsPag
+﻿namespace NSE.Pagamentos.NerdsPag;
+
+public enum TransactionStatus
 {
-    public enum TransactionStatus
-    {
-        Authorized = 1,
-        Paid,
-        Refused,
-        Chargedback,
-        Cancelled
-    }
+    Authorized = 1,
+    Paid,
+    Refused,
+    Chargedback,
+    Cancelled
 }

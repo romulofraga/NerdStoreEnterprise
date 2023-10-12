@@ -1,10 +1,9 @@
-﻿namespace NSE.WebApp.MVC.Extensions
+﻿namespace NSE.WebApp.MVC.Extensions;
+
+public class AppSettings
 {
-    public class AppSettings
-    {
-        public string AutenticacaoUrl { get; set; }
-        public string CatalogoUrl { get; set; }
-        public string ClientesUrl { get; set; }
-        public string ComprasBffUrl { get; set; }
-    }
+    public string AutenticacaoUrl { get; set; }
+    public string CatalogoUrl { get; set; }
+    public string ClientesUrl { get; set; }
+    public string ComprasBffUrl { get; set; }
 }

@@ -2,36 +2,35 @@
 using NSE.Bff.Compras.Extensions;
 using NSE.Bff.Compras.Models;
 
-namespace NSE.Bff.Compras.Services
+namespace NSE.Bff.Compras.Services;
+
+public class CatalogoService : Service, ICatalogoService
 {
-    public class CatalogoService : Service, ICatalogoService
+    private readonly HttpClient _httpClient;
+
+    public CatalogoService(HttpClient httpClient, IOptions<AppServicesSettings> settings)
     {
-        private readonly HttpClient _httpClient;
+        _httpClient = httpClient;
+        _httpClient.BaseAddress = new Uri(settings.Value.CatalogoUrl);
+    }
 
-        public CatalogoService(HttpClient httpClient, IOptions<AppServicesSettings> settings)
-        {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri(settings.Value.CatalogoUrl);
-        }
+    public async Task<ItemProdutoDTO> ObterPorId(Guid id)
+    {
+        var response = await _httpClient.GetAsync($"catalogo/produtos/{id}");
 
-        public async Task<ItemProdutoDTO> ObterPorId(Guid id)
-        {
-            var response = await _httpClient.GetAsync($"catalogo/produtos/{id}");
+        TratarErrosResponse(response);
 
-            TratarErrosResponse(response);
+        return await DeserializarObjetoResponse<ItemProdutoDTO>(response);
+    }
 
-            return await DeserializarObjetoResponse<ItemProdutoDTO>(response);
-        }
+    public async Task<IEnumerable<ItemProdutoDTO>> ObterItens(IEnumerable<Guid> ids)
+    {
+        var idsRequest = string.Join(",", ids);
 
-        public async Task<IEnumerable<ItemProdutoDTO>> ObterItens(IEnumerable<Guid> ids)
-        {
-            var idsRequest = string.Join(",", ids);
+        var response = await _httpClient.GetAsync($"/catalogo/produtos/lista/{idsRequest}/");
 
-            var response = await _httpClient.GetAsync($"/catalogo/produtos/lista/{idsRequest}/");
+        TratarErrosResponse(response);
 
-            TratarErrosResponse(response);
-
-            return await DeserializarObjetoResponse<IEnumerable<ItemProdutoDTO>>(response);
-        }
+        return await DeserializarObjetoResponse<IEnumerable<ItemProdutoDTO>>(response);
     }
 }

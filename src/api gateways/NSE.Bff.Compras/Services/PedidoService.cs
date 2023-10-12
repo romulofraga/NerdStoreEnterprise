@@ -1,63 +1,62 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Net;
+using Microsoft.Extensions.Options;
 using NSE.Bff.Compras.Extensions;
 using NSE.Bff.Compras.Models;
 using NSE.Core.Comunication;
-using System.Net;
 
-namespace NSE.Bff.Compras.Services
+namespace NSE.Bff.Compras.Services;
+
+public class PedidoService : Service, IPedidoService
 {
-    public class PedidoService : Service, IPedidoService
+    private readonly HttpClient _httpClient;
+
+    public PedidoService(HttpClient httpClient, IOptions<AppServicesSettings> settings)
     {
-        private readonly HttpClient _httpClient;
+        _httpClient = httpClient;
+        _httpClient.BaseAddress = new Uri(settings.Value.PedidoUrl);
+    }
 
-        public PedidoService(HttpClient httpClient, IOptions<AppServicesSettings> settings)
-        {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri(settings.Value.PedidoUrl);
-        }
+    public async Task<ResponseResult> FinalizarPedido(PedidoDTO pedido)
+    {
+        var pedidoContent = ObterConteudo(pedido);
 
-        public async Task<ResponseResult> FinalizarPedido(PedidoDTO pedido)
-        {
-            var pedidoContent = ObterConteudo(pedido);
+        var response = await _httpClient.PostAsync("/pedido/", pedidoContent);
 
-            var response = await _httpClient.PostAsync("/pedido/", pedidoContent);
+        if (!TratarErrosResponse(response)) return await DeserializarObjetoResponse<ResponseResult>(response);
 
-            if (!TratarErrosResponse(response)) return await DeserializarObjetoResponse<ResponseResult>(response);
+        return RetornoOK();
+    }
 
-            return RetornoOK();
-        }
+    public async Task<PedidoDTO> ObterUltimoPedido()
+    {
+        var response = await _httpClient.GetAsync("/pedido/ultimo/");
 
-        public async Task<PedidoDTO> ObterUltimoPedido()
-        {
-            var response = await _httpClient.GetAsync("/pedido/ultimo/");
+        if (response.StatusCode == HttpStatusCode.NotFound) return null;
 
-            if (response.StatusCode == HttpStatusCode.NotFound) return null;
+        TratarErrosResponse(response);
 
-            TratarErrosResponse(response);
+        return await DeserializarObjetoResponse<PedidoDTO>(response);
+    }
 
-            return await DeserializarObjetoResponse<PedidoDTO>(response);
-        }
+    public async Task<IEnumerable<PedidoDTO>> ObterListaPorClienteId()
+    {
+        var response = await _httpClient.GetAsync("/pedido/lista-cliente/");
 
-        public async Task<IEnumerable<PedidoDTO>> ObterListaPorClienteId()
-        {
-            var response = await _httpClient.GetAsync("/pedido/lista-cliente/");
+        if (response.StatusCode == HttpStatusCode.NotFound) return null;
 
-            if (response.StatusCode == HttpStatusCode.NotFound) return null;
+        TratarErrosResponse(response);
 
-            TratarErrosResponse(response);
+        return await DeserializarObjetoResponse<IEnumerable<PedidoDTO>>(response);
+    }
 
-            return await DeserializarObjetoResponse<IEnumerable<PedidoDTO>>(response);
-        }
+    public async Task<VoucherDTO> ObterVoucherPorCodigo(string codigo)
+    {
+        var response = await _httpClient.GetAsync($"/voucher/{codigo}/");
 
-        public async Task<VoucherDTO> ObterVoucherPorCodigo(string codigo)
-        {
-            var response = await _httpClient.GetAsync($"/voucher/{codigo}/");
+        if (response.StatusCode == HttpStatusCode.NotFound) return null;
 
-            if (response.StatusCode == HttpStatusCode.NotFound) return null;
+        TratarErrosResponse(response);
 
-            TratarErrosResponse(response);
-
-            return await DeserializarObjetoResponse<VoucherDTO>(response);
-        }
+        return await DeserializarObjetoResponse<VoucherDTO>(response);
     }
 }

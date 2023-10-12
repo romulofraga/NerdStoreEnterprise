@@ -1,20 +1,17 @@
-﻿namespace NSE.Pagamentos.API.Configuration
+﻿namespace NSE.Pagamentos.API.Configuration;
+
+public static class BuilderConfig
 {
-    public static class BuilderConfig
+    public static IConfigurationBuilder ConfigureDevelopmentEnvironment(this IConfigurationBuilder configuration,
+        IWebHostEnvironment Environment)
     {
-        public static IConfigurationBuilder ConfigureDevelopmentEnvironment(this IConfigurationBuilder configuration, IWebHostEnvironment Environment)
-        {
-            configuration.SetBasePath(Environment.ContentRootPath)
-               .AddJsonFile("appsettings.json", true, true)
-               .AddJsonFile($"appsettings.{Environment}.json", true, true)
-               .AddEnvironmentVariables();
+        configuration.SetBasePath(Environment.ContentRootPath)
+            .AddJsonFile("appsettings.json", true, true)
+            .AddJsonFile($"appsettings.{Environment}.json", true, true)
+            .AddEnvironmentVariables();
 
-            if (Environment.IsDevelopment())
-            {
-                configuration.AddUserSecrets<Program>();
-            }
+        if (Environment.IsDevelopment()) configuration.AddUserSecrets<Program>();
 
-            return configuration;
-        }
+        return configuration;
     }
 }

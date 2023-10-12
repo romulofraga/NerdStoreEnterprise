@@ -1,8 +1,7 @@
-﻿namespace NSE.Pagamentos.API.Models
+﻿namespace NSE.Pagamentos.API.Models;
+
+public enum TipoPagamento
 {
-    public enum TipoPagamento
-    {
-        CartaoCredito = 1,
-        Boleto
-    }
+    CartaoCredito = 1,
+    Boleto
 }

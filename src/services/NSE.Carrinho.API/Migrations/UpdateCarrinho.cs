@@ -1,35 +1,34 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿#nullable disable
 
-#nullable disable
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace NSE.Carrinho.API.Migrations
+namespace NSE.Carrinho.API.Migrations;
+
+public partial class UpdateCarrinho : Migration
 {
-    public partial class UpdateCarrinho : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.RenameColumn(
-                name: "Quantidadade",
-                table: "CarrinhoItens",
-                newName: "Quantidade");
+        migrationBuilder.RenameColumn(
+            "Quantidadade",
+            "CarrinhoItens",
+            "Quantidade");
 
-            migrationBuilder.RenameColumn(
-                name: "ClientId",
-                table: "CarrinhoClientes",
-                newName: "ClienteId");
-        }
+        migrationBuilder.RenameColumn(
+            "ClientId",
+            "CarrinhoClientes",
+            "ClienteId");
+    }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.RenameColumn(
-                name: "Quantidade",
-                table: "CarrinhoItens",
-                newName: "Quantidadade");
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.RenameColumn(
+            "Quantidade",
+            "CarrinhoItens",
+            "Quantidadade");
 
-            migrationBuilder.RenameColumn(
-                name: "ClienteId",
-                table: "CarrinhoClientes",
-                newName: "ClientId");
-        }
+        migrationBuilder.RenameColumn(
+            "ClienteId",
+            "CarrinhoClientes",
+            "ClientId");
     }
 }

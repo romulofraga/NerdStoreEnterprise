@@ -1,8 +1,7 @@
-﻿namespace NSE.Pedidos.Domain.Vouchers
+﻿namespace NSE.Pedidos.Domain.Vouchers;
+
+public enum TipoDescontoVoucher
 {
-    public enum TipoDescontoVoucher
-    {
-        Porcentagem = 0,
-        Valor = 1
-    }
+    Porcentagem = 0,
+    Valor = 1
 }

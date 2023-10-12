@@ -1,13 +1,12 @@
-﻿using NSE.Core.DomainObjects;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using NSE.Core.DomainObjects;
 
-namespace NSE.WebApp.MVC.Extensions
+namespace NSE.WebApp.MVC.Extensions;
+
+public class CpfAttribute : ValidationAttribute
 {
-    public class CpfAttribute : ValidationAttribute
+    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            return Cpf.Validar(value.ToString()) ? ValidationResult.Success : new ValidationResult("CPF invalido");
-        }
+        return Cpf.Validar(value.ToString()) ? ValidationResult.Success : new ValidationResult("CPF invalido");
     }
 }

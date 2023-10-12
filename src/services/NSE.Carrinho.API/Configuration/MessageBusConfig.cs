@@ -2,14 +2,13 @@
 using NSE.Core.Utils;
 using NSE.MessageBus;
 
-namespace NSE.Carrinho.API.Configuration
+namespace NSE.Carrinho.API.Configuration;
+
+public static class MessageBusConfig
 {
-    public static class MessageBusConfig
+    public static void AddMessageBusConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        public static void AddMessageBusConfiguration(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddMessageBus(configuration.GetMessageQeueConnection("MessageBus"))
-                .AddHostedService<CarrinhoIntegrationHandler>();
-        }
+        services.AddMessageBus(configuration.GetMessageQeueConnection("MessageBus"))
+            .AddHostedService<CarrinhoIntegrationHandler>();
     }
 }
