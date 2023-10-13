@@ -1,0 +1,69 @@
+﻿@model NSE.WebApp.MVC.Models.PedidoTransacaoViewModel
+@{
+    ViewData["Title"] = "Novo Endereço";
+}
+
+<div class="modal fade" id="enderecoModal" tabindex="-1" role="dialog" aria-labelledby="enderecoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="myModalContent">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">@ViewData["Title"]</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+
+                <form asp-action="NovoEndereco" asp-controller="Cliente">
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label asp-for="Endereco.Cep" class="form-label"></label>
+                            <input asp-for="Endereco.Cep" class="form-control" />
+                            <span asp-validation-for="Endereco.Cep" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Endereco.Logradouro" class="form-label"></label>
+                            <input asp-for="Endereco.Logradouro" class="form-control" />
+                            <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Endereco.Numero" class="form-label"></label>
+                            <input asp-for="Endereco.Numero" class="form-control" />
+                            <span asp-validation-for="Endereco.Numero" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Endereco.Complemento" class="form-label"></label>
+                            <input asp-for="Endereco.Complemento" class="form-control" />
+                            <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Endereco.Bairro" class="form-label"></label>
+                            <input asp-for="Endereco.Bairro" class="form-control" />
+                            <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Endereco.Cidade" class="form-label"></label>
+                            <input asp-for="Endereco.Cidade" class="form-control" />
+                            <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Endereco.Estado" class="form-label"></label>
+                            <input asp-for="Endereco.Estado" class="form-control" />
+                            <span asp-validation-for="Endereco.Estado" class="text-danger"></span>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div>
+                                <input type="submit" value="Cadastrar Endereço" class="btn btn-success" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    BuscaCep();
+</script>

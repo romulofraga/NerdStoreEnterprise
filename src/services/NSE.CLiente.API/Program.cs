@@ -1,4 +1,3 @@
-using NSE.Clientes.API.Configurarion;
 using NSE.Clientes.API.Configuration;
 using NSE.WebApi.Core.Identidade;
 

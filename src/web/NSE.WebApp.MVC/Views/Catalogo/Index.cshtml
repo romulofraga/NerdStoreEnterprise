@@ -16,18 +16,18 @@
             <div class="row">
                 @foreach (var produto in Model.OrderBy(p => p.Nome))
                 {
-                    <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="col-md-3">
                         <div class="card card-product-grid">
                             <a asp-controller="Catalogo" asp-action="ProdutoDetalhe" asp-route-id="@produto.Id" class="img-wrap">
                                 <img src="~/images/produtos/@produto.Imagem" alt="@produto.Nome" class="card-img-top">
                             </a>
-                            <div class="card-body">
-                                    <h5 class="card-title">
-                                        <a asp-controller="Catalogo" asp-action="ProdutoDetalhe" asp-route-id="@produto.Id">
-                                            <b>@produto.Nome</b>
-                                        </a>
-                                    </h5>
-                                <p class="card-text">
+                            <div class="card-body overflow-hidden">
+                                <h5 class="card-title text-center">
+                                    <a class="text-decoration-none text-nowrap" asp-controller="Catalogo" asp-action="ProdutoDetalhe" asp-route-id="@produto.Id">
+                                        <b class="text-truncate">@produto.Nome</b>
+                                    </a>
+                                </h5>
+                                <p class="card-text text-center">
                                     @this.MensagemEstoque(produto.QuantidadeEstoque)<br /><br />
                                     @produto.Descricao
                                 </p>
@@ -40,6 +40,7 @@
                 }
             </div>
         </div>
-     </div>
+
+    </div>
 </section>
 

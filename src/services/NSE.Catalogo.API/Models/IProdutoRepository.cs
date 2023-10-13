@@ -11,5 +11,6 @@ namespace NSE.Catalogo.API.Models
         void Adicionar(Produto produto);
 
         void Atualizar(Produto produto);
+        Task<List<Produto>> ObterProdutosPorId(string ids);
     }
 }

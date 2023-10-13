@@ -52,7 +52,7 @@ namespace NSE.Carrinho.API.Data
                     .SelectMany(e => e.GetForeignKeys());
 
                 foreach (var relationship in foreignKeys)
-                    relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+                    relationship.DeleteBehavior = DeleteBehavior.Cascade;
             }
 
             void SetModelConfiguration(ModelBuilder modelBuilder)
@@ -60,6 +60,24 @@ namespace NSE.Carrinho.API.Data
                 modelBuilder.Entity<CarrinhoCliente>()
                     .HasIndex(c => c.ClienteId)
                     .HasDatabaseName("IDX_Cliente");
+
+                modelBuilder.Entity<CarrinhoCliente>()
+                    .Ignore(c => c.Voucher)
+                    .OwnsOne(c => c.Voucher, v =>
+                    {
+                        v.Property(vc => vc.Codigo)
+                        .HasColumnName("VoucherCodigo")
+                        .HasColumnType("varchar(50)");
+
+                        v.Property(vc => vc.TipoDesconto)
+                        .HasColumnName("TipoDesconto");
+
+                        v.Property(vc => vc.Percentual)
+                        .HasColumnName("Percentual");
+
+                        v.Property(vc => vc.ValorDesconto)
+                        .HasColumnName("ValorDesconto");
+                    });
 
                 modelBuilder.Entity<CarrinhoCliente>()
                     .HasMany(c => c.Itens)

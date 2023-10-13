@@ -1,9 +1,16 @@
 ﻿using Microsoft.Extensions.Options;
+using NSE.Core.Comunication;
 using NSE.WebApp.MVC.Extensions;
 using NSE.WebApp.MVC.Models;
 
 namespace NSE.WebApp.MVC.Services
 {
+    public interface IAutenticacaoService
+    {
+        Task<UsuarioResponse> Login(UsuarioLogin usuarioLogin);
+        Task<UsuarioResponse> Registro(UsuarioRegistro usuarioRegistro);
+    }
+
     public class AutenticacaoService : Service, IAutenticacaoService
     {
         private readonly HttpClient _httpClient;

@@ -1,0 +1,22 @@
+﻿@model NSE.WebApp.MVC.Models.PedidoTransacaoViewModel
+
+<h4 class="card-title">Endereço</h4>
+@{
+    if (Model.Endereco == null)
+    {
+        <div class="text-start">
+            <a href="javascript:void(0)" class="btn btn-primary float-md-start" data-bs-toggle="modal" data-bs-target="#enderecoModal"> <i class="fas fa-location-arrow"></i> Adicionar Endereço</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-9 text-start">
+                @Model.Endereco.ToString()
+            </div>
+            <div class="col-3 text-end">
+                <a href="javascript:void(0)" class="btn btn-primary float-md-end"> <i class="fas fa-location-arrow"></i> Alterar Endereço</a>
+            </div>
+        </div>
+    }
+}

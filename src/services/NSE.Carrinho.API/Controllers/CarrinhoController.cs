@@ -43,7 +43,7 @@ namespace NSE.Carrinho.API.Controllers
             return CustomResponse();
         }
 
-        [HttpPut("carrinho/{produtoId:guid}")]
+        [HttpPut("carrinho/{produtoId}")]
         public async Task<IActionResult> AtualizarItemCarrinho(Guid produtoId, CarrinhoItem item)
         {
             var carrinho = await ObterCarrinhoCliente();
@@ -64,7 +64,7 @@ namespace NSE.Carrinho.API.Controllers
             return CustomResponse();
         }
 
-        [HttpDelete("carrinho/{produtoId:guid}")]
+        [HttpDelete("carrinho/{produtoId}")]
         public async Task<IActionResult> RemoverItemCarrinho(Guid produtoId)
         {
             var carrinho = await ObterCarrinhoCliente();
@@ -85,7 +85,21 @@ namespace NSE.Carrinho.API.Controllers
             return CustomResponse();
         }
 
-        private async Task<CarrinhoCliente?> ObterCarrinhoCliente()
+        [HttpPost]
+        [Route("carrinho/aplicar-voucher")]
+        public async Task<IActionResult> AplicarVoucher(Voucher voucher)
+        {
+            var carrinho = await ObterCarrinhoCliente();
+
+            carrinho.AplicarVoucher(voucher);
+
+            _context.CarrinhoClientes.Update(carrinho);
+
+            await PersistirDados();
+            return CustomResponse();
+        }
+
+        private async Task<CarrinhoCliente> ObterCarrinhoCliente()
         {
             return await _context.CarrinhoClientes
                 .Include(c => c.Itens)
@@ -117,7 +131,7 @@ namespace NSE.Carrinho.API.Controllers
             _context.CarrinhoClientes.Update(carrinho);
         }
 
-        private async Task<CarrinhoItem?> ObterItemCarrinhoValidado(Guid produtoId, CarrinhoCliente? carrinho, CarrinhoItem? item = null)
+        private async Task<CarrinhoItem> ObterItemCarrinhoValidado(Guid produtoId, CarrinhoCliente carrinho, CarrinhoItem item = null)
         {
             if (item is not null && produtoId != item?.ProdutoId)
             {

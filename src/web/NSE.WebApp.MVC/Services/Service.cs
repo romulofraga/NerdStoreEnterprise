@@ -1,5 +1,5 @@
-﻿using NSE.WebApp.MVC.Extensions;
-using NSE.WebApp.MVC.Models;
+﻿using NSE.Core.Comunication;
+using NSE.WebApp.MVC.Extensions;
 using System.Text;
 using System.Text.Json;
 
